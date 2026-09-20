@@ -25,5 +25,78 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
-  intent_profiles: []
-source_backends: {}
+  intent_profiles:
+    - tag: male-fert
+      description: 寻找生育挤压、婚姻加压的论文
+      enabled: true
+      paper_sources:
+        - arxiv
+        - biorxiv
+      keywords:
+        - keyword: male fertility
+          keyword_cn: 男性生育率
+          query: Research on male fertility in sociology and demography
+        - keyword: fertility differentials
+          keyword_cn: 生育率差异
+          query: Male-female fertility differentials across countries
+        - keyword: birth histories
+          keyword_cn: 生育史
+          query: Analyzing birth histories to compute fertility rates
+        - keyword: fertility estimation
+          keyword_cn: 生育率估计
+          query: Methods for estimating fertility rates from survey data
+        - keyword: male fertility measurement
+          keyword_cn: 男性生育率测量
+          query: Approaches to measuring male fertility in developing countries
+        - keyword: fertility squeeze
+          keyword_cn: 生育挤压
+          query: fertility squeeze and childbearing pressure in family formation
+      intent_queries:
+        - query: Find articles about male fertility estimation in sociology and demography
+          query_cn: 寻找社会学和人口学中关于男性生育率估计的文章
+          enabled: true
+          source: manual
+          note: ''
+        - query: Research on male female fertility differentials in high income countries
+          query_cn: 关于高收入国家男女生育率差异的研究
+          enabled: true
+          source: manual
+          note: ''
+        - query: Studies on measuring male fertility rates using demographic and health surveys
+          query_cn: 使用人口与健康调查测量男性生育率的研究
+          enabled: true
+          source: manual
+          note: ''
+        - query: Studies on fertility squeeze and marriage pressure affecting reproductive decisions
+          query_cn: 研究生育挤压和婚姻压力如何影响生育决策
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-09-20T08:20:34.245Z'
+source_backends:
+  arxiv:
+    papers_table: arxiv_papers
+    use_vector_rpc: true
+    vector_rpc: match_arxiv_papers
+    vector_rpc_exact: match_arxiv_papers_exact
+    use_bm25_rpc: true
+    bm25_rpc: match_arxiv_papers_bm25
+    sync_table: arxiv_sync_status
+    sync_success_value: success
+    schema: public
+    kind: supabase
+    enabled: true
+    url: https://lyucdwgefyfbmaiopjbk.supabase.co
+    anon_key: sb_publishable_lX-oi64Uxyd7SIVv3_w2Uw_MTOojeKq
+  biorxiv:
+    papers_table: biorxiv_papers
+    use_vector_rpc: true
+    vector_rpc: match_biorxiv_papers_exact
+    vector_rpc_exact: match_biorxiv_papers_exact
+    use_bm25_rpc: true
+    bm25_rpc: match_biorxiv_papers_bm25
+    schema: public
+    kind: supabase
+    enabled: true
+    url: https://lyucdwgefyfbmaiopjbk.supabase.co
+    anon_key: sb_publishable_lX-oi64Uxyd7SIVv3_w2Uw_MTOojeKq
