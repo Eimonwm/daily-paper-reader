@@ -1,0 +1,25 @@
+{
+  "date": "20260911-20260920",
+  "date_label": "2026-09-11 ~ 2026-09-20",
+  "generated_at": "2026-09-20 08:30:34 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.20065v1",
+      "route": "20260911-20260920/2609.20065v1-inference-for-two-stage-sampling-in-spatial-surveys",
+      "title": "Inference for two-stage sampling in spatial surveys",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "male-fert"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "两阶段抽样调查的设计推断理论",
+      "first_seen_at": "2026-09-20 08:30:34 UTC",
+      "updated_at": "2026-09-20 08:30:34 UTC"
+    }
+  ]
+}

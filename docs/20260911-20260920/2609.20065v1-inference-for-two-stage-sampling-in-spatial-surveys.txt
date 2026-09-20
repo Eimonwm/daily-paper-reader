@@ -1,0 +1,2682 @@
+Title: Inference for two-stage sampling in spatial surveys
+
+URL Source: https://arxiv.org/pdf/2609.20065v1
+
+Published Time: Fri, 18 Sep 2026 01:02:34 GMT
+
+Number of Pages: 37
+
+Markdown Content:
+# Inference for two-stage sampling in spatial surveys 
+
+# Guillaume Chauvet Olivier Bouriaud Trinh H.K. Duong September 18, 2026 
+
+Abstract 
+
+This paper develops a design-based asymptotic theory for two-stage sampling over a continuous spatial domain. The target parameters are integral totals, or smooth functions of such totals, defined over a fixed bounded territory partitioned into an in-creasingly fine collection of primary sampling units. Within this fixed-area framework, we derive the order of the variance components of the Horvitz–Thompson estimator when secondary sampling units are points selected from continuous sub-regions. We establish design consistency of the estimator, as well as consistency of variance estima-tors under explicit regularity conditions on inclusion probabilities, sampling densities, and the study variable. The results are extended to plug-in estimators of smooth scale-invariant functions of totals. For high-entropy first-stage designs, we further show that a H´ ajek-type variance estimator based only on first-order inclusion probabilities is con-sistent, and we prove asymptotic normality of both total and plug-in estimators. Asimulation study inspired by forest inventory applications illustrates the finite-sample performance of the proposed estimators and variance estimators. 
+
+Keywords: asymptotic normality; consistency; continuous population; design-based inference; Horvitz–Thompson estimator; variance estimation. 
+
+1arXiv:2609.20065v1 [math.ST] 17 Sep 2026 1 Introduction 
+
+Multistage sampling is a central component of design-based inference for complex sur-veys. In the classical finite-population framework, primary sampling units (PSUs) are selected at a first stage and secondary sampling units (SSUs) are drawn condition-ally at subsequent stages (S¨ arndal, Swensson and Wretman, 1992; Lohr, 2010). For such designs, the asymptotic theory is well established (Krewski and Rao, 1981; Ohls-son, 1989). More recently, Chauvet and Vall´ ee (2020) established general high-level conditions ensuring consistency and asymptotic normality of Horvitz–Thompson (HT) estimators under multistage sampling. These results are formulated for discrete finite populations at all stages. In many applications, however, the target of inference is defined over a continuous spatial do-main. Examples include forest inventories, soil surveys, and environmental monitoring, where a territory is partitioned into spatial sub-regions at the first stage (for example, grid cells), and sampling locations are selected within sampled regions at the second stage. Field measurements performed at sampled locations are used to estimate inte-gral parameters of interest over the territory, such as total biomass, total volume, or proportions of area. A design-based approach for such spatial settings can be traced back to extensions of the HT principle to continuous universes (Cordy, 1993), and to subsequent developments in spatial and environmental statistics (Fattorini and Pisani, 2004; Fattorini et al., 2011, 2017). Two-stage sampling when the PSUs are continuous sub-regions has been considered in Fattorini and Pisani (2004). These results are extended in Duong, Bouriaud and Chauvet (2024), who developed a framework for two-stage sampling schemes, where two-phase sampling can be applied inside the sampled sub-regions. Despite this liter-ature, a general asymptotic theory for two-stage sampling over continuous territories, parallel to that available for discrete multistage designs, remains incomplete. In the continous setting, second-stage inclusion probabilities are replaced by inclusion density functions and totals are expressed as integrals. Establishing consistency and asymptotic normality of estimators therefore requires explicit control of variability at both stages 
+
+2under assumptions adapted to continous domains. The present paper complements and extends Duong, Bouriaud and Chauvet (2024) by providing a formal design-based asymptotic theory for two-stage spatial sampling designs, including consistency, vari-ance estimation and asymptotic normality. Compared with Chauvet and Vall´ ee (2020), the present work does not merely transfer two-stage finite-population asymptotics to a continuous spatial setting. It also develops a design-based theory for plug-in estimators of smooth scale-invariant functions of spatial totals, including linearization and vari-ance estimation, which was not addressed in the earlier finite-population framework. The objective of this paper is to develop a design-based asymptotic theory for two-stage sampling over a continuous territory. We adopt the fixed-area asymptotic framework of Fattorini et al. (2017), in which the domain is partitioned into an increasingly fine collection of PSUs while its total measure remains fixed. Within this setting, we es-tablish the following results. First, we derive a decomposition of the variance of the two-stage HT estimator into first-stage and second-stage components adapted to con-tinuous secondary units, and determine their respective orders of magnitude under mild regularity conditions. This clarifies the relative contribution of the two stages, in particular when the number of within-PSU sampling locations is bounded. Secondly, we prove √nI -consistency of the HT estimator for integral totals, together with consis-tency of the associated HT and Yates–Grundy (YG) variance estimators under explicit assumptions on inclusion probabilities and sampling densities. We focus on two-stage designs in which the within-PSU sampling design allows the construction of second-order inclusion densities. The practically important one-point-per-cell case, as well as post-stratified and more general two-phase extensions, are not covered by the present asymptotic theory and are left for future work. Thirdly, we extend these results to smooth scale-invariant functions of totals. Under suitable regularity conditions on the functional of interest, we establish linearization-based approximations and consistency of the corresponding variance estimators. Finally, for high-entropy first-stage designs, we show that the first-stage variance component can be consistently estimated using a H´ ajek-type estimator that depends only on first-order inclusion probabilities. In this setting, we establish asymptotic normality of HT and plug-in estimators, thereby 
+
+3providing a rigorous justification for normal-approximation confidence intervals. 
+
+# 2 Notation 
+
+We consider a bounded measurable set F ⊂ Rd, endowed with the Lebesgue measure, whose total measure is denoted by A. The territory is partitioned into NI disjoint measurable sub-regions, forming a finite population UI = {u1, . . . , u NI } of PSUs. They need not have identical shapes or areas. We denote by Ai the measure of ui.To study asymptotic properties, we adopt the fixed-area consistency framework of Fattorini et al. (2017), under which the total measure A is fixed while the number of PSUs satisfies NI → ∞ . Consequently, the partition becomes increasingly fine and PSU diameters shrink to zero. This regime is natural in spatial sampling, and all asymptotic results are derived under this framework. 
+
+# 2.1 Estimation of a total 
+
+Let ρ : F → R be a Lebesgue integrable function. The target parameter is the integral 
+
+τρ =
+
+Z
+
+> F
+
+ρ(x) d x. (2.1.1) This formulation encompasses both intrinsic spatial variables and totals over finite populations U embedded in F. In the latter case, following Chauvet, Bouriaud and Brion (2023) and Bouriaud et al. (2024), we represent unit-level attributes yk, k ∈ U ,through a non-negative link function L(·, ·) : F × U → R+ and define 
+
+ρ(x) = X
+
+> k∈U
+
+L(x, k )yk
+
+M+k
+
+, M+k =
+
+Z
+
+> F
+
+L(x, k ) d x, (2.1.2) so that τρ = P 
+
+> k∈U
+
+yk provided that M+k > 0 for all k ∈ U .At the first-stage, a sample SI ⊂ UI of size nI is selected according to a sampling de-sign pI (·), with inclusion probabilities πIi and joint inclusion probabilities πIij . Con-ditionally on SI , for each selected PSU ui, a second-stage sample SIIi of nIIi loca-tions is drawn independently from a density fIIi supported on ui. The associated conditional inclusion density function is πIIi (x) = nIIi fIIi (x). The overall sample is 
+
+4S = S 
+
+> ui∈SI
+
+SIIi . We assume invariance of the second-stage design, meaning that the second-stage sampling mechanism does not depend on the realization of SI (S¨ arndal, Swensson and Wretman, 1992, chapter 4). In addition, the second-stage samples SIIi 
+
+are assumed to be conditionally independent across PSUs, given SI .The associated HT estimator of τρ (Cordy, 1993; Fattorini and Pisani, 2004; Duong, Bouriaud and Chauvet, 2024) is ˆτρ = X
+
+> ui∈SI
+
+ˆτρi 
+
+πIi 
+
+with ˆτρi = X
+
+> x∈SIIi
+
+ρ(x)
+
+πIIi (x) , (2.1.3) where ˆ τρi is an estimator of the sub-total τρi = R 
+
+> ui
+
+ρ(x) d x. The variance of ˆ τρ admits the decomposition 
+
+V (ˆ τρ) = V1(ˆ τρ) + V2(ˆ τρ) + V3(ˆ τρ), (2.1.4) where V1(ˆ τρ) corresponds the first-stage variability and V2(ˆ τρ) + V3(ˆ τρ) to second-stage contributions; explicit expressions for these quantities are recalled in Appendix A.1. Controlling the relative magnitude of these components is important for the asymptotic analysis developed below. We consider two variance estimators corresponding to the decomposition of V (ˆ τρ). The HT variance estimator is defined as ˆVHT (ˆ τρ) = ˆVHT,A (ˆ τρ) + ˆVB (ˆ τρ) , (2.1.5) where ˆVHT,A (ˆ τρ) estimates the first-stage contribution and ˆVB (ˆ τρ) estimates the second-stage component. For fixed-size sampling designs at the first-stage, The YG variance estimator may alternatively be used. It is defined by ˆVY G (ˆ τρ) = ˆVY G,A (ˆ τρ) + ˆVB (ˆ τρ) , (2.1.6) where ˆVY G,A (ˆ τρ) replaces the first-stage HT component in (2.1.5) by the corresponding YG form. Explicit expressions of these estimators are given in Appendix A.2. 
+
+# 2.2 Plug-in estimation 
+
+We consider parameters of the form 
+
+θ = g(τρ),
+
+5where ρ(x) ∈ RQ is a vector of measurable functions and g : RQ → R is differentiable. The natural estimator is the plug-in estimator ˆθ = g( ˆ τρ), where ˆ τρ denotes the vector of HT estimators. The linearized variable associated with θ is 
+
+l(x) = {g′(τρ)}⊤ρ(x), (2.2.1) and the corresponding linearization-based variance approximation is obtained by re-placing ρ(x) with l(x) in the variance decomposition (2.1.4). The associated variance estimators are defined by replacing ρ(x) with ˆl(x) = {g′( ˆ τρ)}⊤ρ(x). (2.2.2) in the HT or in the YG variance estimator. 
+
+# 3 Assumptions 
+
+To derive consistency and asymptotic normality results, we impose regularity con-ditions on the first-stage design, the second-stage design, and the variable of interest. These conditions ensure control of higher-order inclusion moments, regularity of spatial sampling densities, and stability of the variance component. We denote by 
+
+A0 = 1
+
+NINIX
+
+> i=1
+
+Ai = ANI
+
+, nII 0 = 1
+
+NINIX
+
+> i=1
+
+nIIi , (3.0.1) the average share of the territory measure per PSU and the average number of second-stage points selected per PSU. Under the fixed-area framework (Fattorini et al., 2017), we assume that NI → ∞ and A0 → 0 as the partition of the territory becomes increas-ingly fine, and that the number of sampled PSUs satisfied nI → ∞ .
+
+# 3.1 First-stage sampling design 
+
+The following conditions extend those of Chauvet and Vall´ ee (2020) to accommodate the continuous-domain structure and the control of higher-order moments required for plug-in estimation. 
+
+6FS1: The first-stage sampling fraction is bounded away from one, and inclusion probabilities are of order nI /N I ; that is, there exists constants fI0 < 1 and 0 < c I1 ≤ CI1 < ∞ such that 
+
+nI
+
+NI
+
+≤ fI0, cI1 ≤ NI
+
+nI
+
+πIi ≤ CI1. (3.1.1) FS2: Higher-order centered inclusion moments up to order four are uniformly bounded at rates consistent with simple random or high-entropy sampling. More precisely, there exist constants CI2, C I3, C I4 > 0 such that the following bounds hold: ∆I2 ≡ max 
+
+> i̸=j=1 ,...,N I
+
+|E {(IIi − πIi )( IIj − πIj )}| ≤ CI2N −2 
+
+> I
+
+nI ,
+
+∆I3 ≡ max  
+
+> i̸=j̸=i′=1 ,...,N I
+
+|E {(IIi − πIi )( IIj − πIj )( IIi ′ − πIi ′ )}| ≤ CI3N −3 
+
+> I
+
+n2 
+
+> I
+
+, (3.1.2) ∆I4 ≡ max   
+
+> i̸=j̸=i′̸=j′=1 ,...,N I
+
+E (IIi − πIi )( IIj − πIj )( IIi ′ − πIi ′ )( IIj ′ − πIj ′ ) ≤ CI4N −4 
+
+> I
+
+n2 
+
+> I
+
+,
+
+where IIi denote the sample membership indicator of PSU ui in SI .FS3: There exists cI2 > 0 such that for any i̸ = j = 1 , . . . , N I :
+
+cI2N −2 
+
+> I
+
+n2 
+
+> I
+
+≤ πIij . (3.1.3) Assumption (FS1) was done in Chauvet and Vall´ ee (2020). It concerns first-order inclu-sion probabilities and is controlled by the survey designer. Assumption (FS2) involves higher-order inclusion probabilities (orders 2-4) and holds for high-entropy designs such as simple random sampling or rejective sampling (H´ ajek, 1964; Boistard, Lopuha¨ a and Ruiz-Gazen, 2012). Conditions (FS1)–(FS2) imply Assumption 2 of Chauvet and Vall´ ee (2020), but additionally ensure control of fourth-order moments of the HT estimator. This strengthening is required to establish mean-square consistency of variance esti-mators and of plug-in functionals. Assumption (FS3) prevents instability of variance estimators; see Chauvet and Vall´ ee (2020, Section 3.1) for a more detailed discussion. 
+
+# 3.2 Second-stage sampling design 
+
+To control within-PSU variability under the fixed-area framework, we impose uniform regularity conditions on second-stage sample sizes, PSU areas, and sampling densities. 
+
+7SS1: There exist some constants 0 < λ 1 ≤ Λ1 < ∞, 0 < ϕ 1 ≤ Φ1 ≤ ∞ , and 0 < c 1 ≤
+
+C1 ≤ ∞ , such that for any PSU ui:
+
+λ1nII 0 ≤ nIIi ≤ Λ1nII 0, (3.2.1) 
+
+ϕ1
+
+ANI
+
+≤ Ai ≤ Φ1
+
+ANI
+
+, (3.2.2) 
+
+c1
+
+Ai
+
+≤ fIIi (x) ≤ C1
+
+Ai
+
+for any x ∈ ui. (3.2.3) Also, nIIi ≥ 2 for any PSU ui ∈ UI .These conditions ensure that second-stage sample sizes nIIi and PSU measures Ai
+
+remain comparable across the partition. This holds automatically under regular grid partitions and when selecting the same number of points per PSU. The marginal density 
+
+fIIi (·) is assumed to be uniformly bounded from zero and infinity; in particular, the condition is satisfied when fIIi (x) = A−1 
+
+> i
+
+, i.e., under independent uniform sampling. 
+
+# 3.3 Assumptions on the variable and on the functional 
+
+For total estimation, we require moment and non-degeneracy conditions. VA1: The function ρ has a bounded fourth moment and a mean bounded away from zero; that is, there exist constants m1, M 1 such that 1
+
+A
+
+Z
+
+> F
+
+{ρ(x)}4dx ≤ M1, 1
+
+A
+
+Z
+
+> F
+
+ρ(x)d x ≥ m1 > 0. (3.3.1) VA2: The leading first-stage variance component remains asymptotically non-negligible; that is, there exists some constant m2 such that 
+
+nI
+
+A2 V1(ˆ τρ) ≥ m2 > 0. (3.3.2) For parameters of the form θ = g(τρ), we impose smoothness conditions on g.PI1: The function g(·) is homogeneous of degree β = 0; that is, g(ra) = rβ g(a) = g(a)for any real r > 0 and any a ∈ RQ.PI2: The attribute density function ρ(·) takes values in a convex compact set C ⊂ RQ,and μρ = A−1τρ is an interior point of C. The function g(·) is differentiable on 
+
+8C, and the differential g′ is locally Lipschitz on C; that is, there exists Kg > 0such that 
+
+∥g′(b) − g′(a)∥ ≤ Kg∥b − a∥ for any a, b ∈ C 2,
+
+where ∥ · ∥ stands for the Euclidean norm. These conditions ensure validity of linearization and control of the remainder term in the delta expansion. The plug-in theory is aimed at the main nonlinear parameters used in spatial survey applications. Together with totals and linear combinations of totals, which are covered by the results of Section 2.1, Assumptions (PI1)-(PI2) cover scale-invariant smooth functionals such as ratios, proportions, domain means, relative changes and related composition indicators. These include the principal estimands considered in forest and environmental inventories. 
+
+# 4 Consistency of estimators 
+
+We first control the order of magnitude of each variance component. This allows us to establish √nI -consistency of the estimator. We then study consistency of variance estimators. Finally, we extend the results to plug-in functionals. 
+
+# 4.1 Estimators of totals 
+
+Proposition 1. Suppose that the first-stage assumptions (FS1)-(FS2), the second-stage assumption (SS1) and the assumption (VA1) hold. Then: 
+
+V1(ˆ τy) = O
+
+ A2
+
+nI
+
+
+
+(4.1.1) 
+
+V2(ˆ τy) = O
+
+ A2
+
+nI nII 0
+
+
+
+(4.1.2) 
+
+V3(ˆ τy) = O
+
+ A2
+
+NI nII 0
+
+
+
+. (4.1.3) The proof is provided in Appendix C. Proposition 1 shows that the leading variance component is of order A2n−1 
+
+> I
+
+. The second-stage contribution V2 is reduced by a factor 
+
+nII 0, while the term V3 is further reduced by the factor N −1 
+
+> I
+
+. In particular; if nII 0 → ∞ ,the second-stage contribution becomes negligible; if nII 0 remains bounded, V1 and V2
+
+9are of the same order; if the first-stage sampling fraction satisfies nI /N I → 0, the term 
+
+V3 is asymptotically negligible. Proposition 1 immediately implies the mean-square convergence of the HT estimator under the fixed-area asymptotic regime, as formalized in Proposition 2. 
+
+Proposition 2. Suppose that assumptions (FS1)-(FS2), (SS1) and (VA1) hold. Then the HT estimator is design-unbiased. Also, we have 
+
+E A−1 {ˆτy − τy}2 = O(n−1 
+
+> I
+
+) and ˆτy
+
+τy
+
+−→ P r 1, (4.1.4) 
+
+where →P r stands for the convergence in probability. 
+
+The √nI -consistency of the HT variance estimator and of the YG variance estimator is established in Propositions 3 and 4, respectively. The proof of Proposition 3 is given in Section 2 of the supplementary material. It proceeds by establishing √nI -consistency separately for the first-stage and second-stage components of the variance estimator. The proof of Proposition 4 follows similar arguments, and is therefore omitted. Both estimators rely on joint inclusion probabilities, which may be difficult to compute in complex designs. Section 5 addresses this limitation. 
+
+Proposition 3. If assumptions (FS1)-(FS3), (SS1) and (VA1) hold, we have: 
+
+E
+
+h
+
+A−2nI
+
+n ˆVHT,A (ˆ τy) − V1(ˆ τy) − V2(ˆ τy)
+
+oi 2
+
+= O(n−1 
+
+> I
+
+), (4.1.5) 
+
+E
+
+h
+
+A−2NI nII 0
+
+n ˆVB (ˆ τy) − V3(ˆ τy)
+
+oi 2
+
+= O(n−1 
+
+> I
+
+). (4.1.6) 
+
+If in addition assumption (VA2) holds, then: 
+
+E
+
+h
+
+A−2nI
+
+n ˆVHT (ˆ τy) − V (ˆ τy)
+
+oi 2
+
+= O(n−1 
+
+> I
+
+) and ˆVHT (ˆ τy)
+
+V (ˆ τy) →P r 1. (4.1.7) 
+
+Proposition 4. If assumptions (FS1)-(FS3),(SS1) and (VA1) hold, we have: 
+
+E
+
+h
+
+A−2nI
+
+n ˆVY G,A (ˆ τy) − V1(ˆ τy) − V2(ˆ τy)
+
+oi 2
+
+= O(n−1 
+
+> I
+
+). (4.1.8) 
+
+If in addition assumption (VA2) holds, then: 
+
+E
+
+h
+
+A−2nI
+
+n ˆVY G (ˆ τy) − V (ˆ τy)
+
+oi 2
+
+= O(n−1 
+
+> I
+
+) and ˆVY G (ˆ τy)
+
+V (ˆ τy) →P r 1. (4.1.9) 
+
+10 4.2 Plug-in estimators 
+
+We now extend the analysis to smooth scale-invariant functionals of totals. The next result establishes a second-order expansion of the plug-in estimator and shows that the linearization approximation is asymptotically valid. The proof is provided in Appendix D. 
+
+Proposition 5. Suppose that the first-stage assumptions (FS1)-(FS3), the second-stage assumption (SS1), and assumptions (PI1)-(PI2) hold. Then 
+
+E
+
+h
+
+(ˆθ − θ) − { g′(τρ)}⊤{ˆτρ − τρ}
+
+i2
+
+= O(n−2 
+
+> I
+
+), (4.2.1) 
+
+E
+
+h
+
+nI ˆVHT (ˆθ) − Vp(ˆ τl)
+
+i
+
+= O(n−1/2 
+
+> I
+
+), (4.2.2) 
+
+E
+
+h
+
+nI ˆVY G (ˆθ) − Vp(ˆ τl)
+
+i
+
+= O(n−1/2 
+
+> I
+
+), (4.2.3) 
+
+where ˆτl is obtained by replacing in (2.1.3) ρ(x) with the linearized variable l(x).
+
+Equation (4.2.1) shows that the remainder term in the linearization expansion is of smaller order Op(n−1 
+
+> I
+
+), implying √nI -consistency and asymptotic unbiasedness of the plug-in estimator. Moreover, it guarantees that the linearization variance Vp(ˆ τl) is asymptotically equivalent to the true variance. Equations (4.2.2) and (4.2.3) estab-lish L1-consistency of the linearized variance estimators. This is sufficient for weak consistency and for the validity of normal-based confidence intervals. Stronger mean-square consistency could be obtained under higher moment conditions, at the cost of strengthening (VA1). 
+
+# 5 High-entropy sampling designs 
+
+We now show that substantially sharper results can be obtained when the first-stage sampling design has high entropy. In this case, the dependence structure of inclusion indicators is sufficiently regular to (i) eliminate the need for explicit control of joint inclusion probabilities, (ii) weaken moment assumptions, and (iii) establish asymptotic normality of the HT and plug-in estimators. This extends the entropy-based asymptotic 
+
+11 theory developed for discrete multistage designs by Chauvet and Vall´ ee (2020) to the present continuous-domain setting. 
+
+# 5.1 Estimators of totals 
+
+We first consider rejective (conditional Poisson) sampling (H´ ajek, 1964). Under rejec-tive sampling, higher-order inclusion moments satisfy the bounds in (FS2) automat-ically (Boistard, Lopuha¨ a and Ruiz-Gazen, 2012; Chauvet and Vall´ ee, 2020). Simple random sampling without replacement is obtained as a special case when all first-order inclusion probabilities πIi are equal. Let prI (·) denote a rejective sampling design on 
+
+UI with inclusion probabilities πIi , and let SrI be the associated first-stage sample. The H´ ajek variance estimator is defined by ˆVHAJ (ˆ τρ) = ˆVHAJ,A (ˆ τρ) + ˆVB (ˆ τρ) (5.1.1) where the first-stage component is ˆVHAJ,A (ˆ τρ) = X
+
+> ui∈SrI
+
+(1 − πIi )
+
+ ˆτρi 
+
+πIi 
+
+− ˆˆRrπ 
+
+2
+
+(5.1.2) with ˆˆRrπ = 1ˆdrI 
+
+X
+
+> ui∈SrI
+
+(1 − πIi ) ˆτρi 
+
+πIi 
+
+, ˆdrI = X
+
+> ui∈SrI
+
+(1 − πIi ).
+
+This estimator does not involve the joint inclusion probabilities πIij ; consequently, assumption (FS3) is no longer required. In contrast to Chauvet and Vall´ ee (2020), truncation of ˆdrI is not required here. 
+
+Proposition 6. Suppose that rejective sampling is used at the first stage and that assumptions (FS1), (SS1) and (VA1) hold. Then 
+
+E
+
+h
+
+A−2nI
+
+n ˆVHAJ,A (ˆ τρ) − V1(ˆ τρ) − V2(ˆ τρ)
+
+oi 2
+
+= o(1) . (5.1.3) 
+
+If, in addition, (VA2) holds, then 
+
+ˆτρ − τρ
+
+pV (ˆ τρ) −→ L N (0 , 1) , (5.1.4) 
+
+where →L stands for the convergence in distribution. Also: 
+
+E
+
+h
+
+A−2nI
+
+n ˆVHAJ (ˆ τρ) − V (ˆ τρ)
+
+oi 2
+
+= o(1) , ˆVHAJ (ˆ τρ)
+
+V (ˆ τρ) →P r 1. (5.1.5) 
+
+12 Proposition 6 shows that, under rejective sampling, the standardized HT estimator con-verges to a Gaussian limit without requiring explicit control of second-order inclusion probabilities. This result parallels classical finite-population central limit theorems, but in the present continuous-domain setting the proof requires careful control of the second-stage variance components. The proof is given in Appendix E. The previous result is not restricted to rejective sampling. It extends to any fixed-size design that is asymptotically close to rejective sampling in chi-square distance. For a design pI (·) with inclusion probabilities πIi , define 
+
+d2(pI , p rI ) = X     
+
+> sI⊂UI;prI (sI)>0
+
+{pI (sI ) − prI (sI )}2
+
+prI (sI ) . (5.1.6) The design pI (·) is said to be close to prI (·) if d2(pI , p rI ) → 0; this condition is satisfied, for example, by the Rao-Sampford design (Sampford, 1967). Proposition 7 extends Proposition 6 to high-entropy sampling designs; see Appendix F for a proof. 
+
+Proposition 7. Suppose that (FS1), (SS1), (VA1)-(VA2) hold, and that d2(pI , p rI ) →
+
+0. Then 
+
+ˆτρ − τρ
+
+pV (ˆ τρ) −→ L N (0 , 1) . (5.1.7) 
+
+Also: 
+
+E
+
+h
+
+A−2nI ˆVHAJ (ˆ τρ) − V (ˆ τρ)
+
+i
+
+= o(1) , ˆVHAJ (ˆ τρ)
+
+V (ˆ τρ) →P r 1. (5.1.8) 
+
+# 5.2 Plug-in estimators 
+
+We now extend the asymptotic theory for high-entropy designs to smooth functionals of totals. Proposition 5 established that, under general conditions, the plug-in estimator admits a valid linearization expansion. We now show that, under high-entropy first-stage designs, this expansion leads to asymptotic normality and consistent variance estimation without requiring joint inclusion probabilities. 
+
+Proposition 8. Suppose that (FS1), (SS1), (PI1)-(PI2) hold, and that d2(pI , p rI ) → 0.Suppose that the first-stage variance component of ˆθ does not degenerate, i.e. there 
+
+13 exists some constant m3 such that 
+
+nI V1(ˆθ) ≥ m3 > 0. (5.2.1) 
+
+Then 
+
+ˆθ − θ
+
+q
+
+V (ˆθ)
+
+−→ L N (0 , 1) . (5.2.2) 
+
+Also: 
+
+E
+
+h
+
+A−2nI ˆVHAJ (ˆθ) − V (ˆθ)
+
+i
+
+= o(1) , ˆVHAJ (ˆθ)
+
+V (ˆθ) →P r 1. (5.2.3) Proposition 8 shows that, under high-entropy first-stage designs, the plug-in estimator inherits the asymptotic Gaussian behavior of its linearized counterpart. The addi-tional non-degeneracy condition (5.2.1) ensures that the first-stage variability remains asymptotically dominant. Combined with the L1-consistency of the H´ ajek variance estimator, this result justifies the use of normal-approximation confidence intervals for smooth functionals of totals in the continuous-domain two-stage framework. The proof is provided in Appendix G. 
+
+# 6 Simulation study 
+
+# 6.1 Simulation set-up 
+
+To evaluate the sampling designs and estimators considered in this article, we conduct a simulation study in a realistic artificial forest population. The study territory F is a square of area A = 100 km 2. The forest occupies part of this territory and contains a total of N = 228 , 385 trees, with an overall wood volume of V = 158 , 534 .74 m 3.For each tree, the available attributes are species, height, breast-height diameter, and volume. The spatial configuration of the forest within F is displayed in Figure 1. The dataset is available at Duong et al. (2023), version 2. The territory F is partitioned into PSUs to form the first-stage population UI . Two configurations are considered. Firstly, a regular grid with NI = 2 , 500 square cells of equal area Ai = A0 = 40 , 000 m 2. Secondly, an irregular partition into NI = 2 , 500 
+
+14 Figure 1: The study territory including the forest area (in green) 
+
+cells with heterogeneous areas ranging from approximately 11 , 954 m 2 to 78 , 185 m 2.These configurations are illustrated in Figures 2a and 3a, respectively. For the first-stage sample SI of size nI , we consider: simple random sampling without replacement (SRSwor), stratified simple random sampling with proportional allocation (StrSRS), and rejective sampling (REJ) with probabilities proportional to PSU area. For StrSRS, the PSUs are grouped into 10 strata (Figures 2b and 3b). Note that under the regular grid, all PSUs have equal area, so rejective sampling reduces to simple random sampling. We consider first-stage sample sizes nI ∈ { 100 , 200 , 500 }.At the second stage, for each selected PSU ui ∈ SI , we independently select nIIi = 2 points independently by uniform sampling over the cell. For each selected point, a circular plot of area Ar = 500 m 2 is centered at the point, and all trees whose centers lie inside the plot are measured. The tree-level measurements 
+
+yk are converted into a local attribute density ρ(x) at the sampled point, as defined in equation (2.1.2); see also Chauvet, Bouriaud and Brion (2023); Bouriaud et al. (2024) for details. We consider estimation of integral totals of the form τρ, corresponding to total volume of wood V , and on the other hand to the total number of trees N .These are estimated using the HT estimator ˆ τρ defined in equation (2.1.3). Variance 
+
+15 a b
+
+Figure 2: The territory with a regular tesselation (a) and partitioned into 10 strata (b) 
+
+estimation is performed using ˆVHT (ˆ τρ), ˆVY G (ˆ τρ), and ˆVHAJ (ˆ τρ), defined in equations (2.1.5), (2.1.6), and (5.1.1), respectively. We also consider ratios of the form θ = τρ1 /τ ρ2 , corresponding to percentage of tree volume per species ( Rv), and to percentage of total number of trees per species ( RN ). The dataset contains 33 species, including conifers (e.g., Abies alba , Picea abies , Pinus sylvestris ) and broadleaved species (e.g., Fagus sylvatica , Castanea sativa , Fraxinus excelsior ). We focus on Abies alba , which comprises Nabi = 83 , 395 trees and a total volume of Vabi = 72 , 531 .34 m 3, corresponding to Rv = 46% and RN = 37%. Let ˆRv and ˆRN denote the corresponding ratio estimators, using the plug-in estimator ˆR = ˆθ = ˆ τρ1 /ˆτρ2 as defined in section 2.2. The associated linearized variable is ˆl(x) = 1ˆτρ2
+
+n
+
+ρ1(x) − ˆθρ 2(x)
+
+o
+
+, (6.1.1) which is substituted into the variance estimators. For each population configuration, the sampling and estimation procedure is repeated 
+
+M = 50 , 000 times. For an estimator ˆθ, we compute the Monte Carlo percent relative 
+
+16 a b
+
+Figure 3: The territory with a irregular tesselation (a) and partitioned into 10 strata (b) 
+
+bias 
+
+RB M C (ˆθ) = 
+
+M −1 PMr=1 
+
+ˆθm − θ
+
+
+
+θ × 100 , (6.1.2) with ˆθm the value of the estimator on the m − th sample. For variance estimators, the true variance is approximated by an independent Monte Carlo run of 50 , 000 replica-tions. Also, we compute the Monte Carlo percent relative stability 
+
+RS M C ( ˆV ) = 
+
+
+
+M −1 PMr=1 
+
+n ˆV r − V (ˆθ)
+
+o20.5
+
+V (ˆθ) × 100 . (6.1.3) Finally, we compute empirical confidence interval error rates based on asymptotic nor-mality, using a nominal one-tailed error rate of 2 .5% in each tail (corresponding to a 95% confidence level). These are denoted by CI M C ( ˆV ). 
+
+17 6.2 Simulation results 
+
+The simulation results are presented in Tables 1–4. For SRSwor and StrSRS, the HT and YG variance estimators coincide exactly. In the case of rejective sampling (REJ), their numerical results were virtually identical. For the sake of brevity, we therefore report only the results obtained with the HT variance estimator. The results for the estimation of total wood volume are displayed in Table 1. As expected, the HT total estimator is unbiased across all sampling designs and sample sizes. The variance decreases steadily as the first-stage sample size nI increases, in agreement with the theoretical order of magnitude established earlier. The HT variance estimator is essentially unbiased in all scenarios. The HAJ variance estimator exhibits a slight negative bias for small sample sizes under StrSRS; however, this bias diminishes as nI increases. In terms of relative stability, the HT and HAJ variance estimators perform similarly. The empirical coverage rates of the normality-based confidence intervals are close to the nominal 95 % level, which supports the asymptotic results derived in the previous sections. A slightly lower coverage rate is observed for StrSRS combined with the HAJ variance estimator, which is consistent with the small negative bias noted above. The results for estimating the total number of trees are presented in Table 2. The qualitative conclusions are the same as for total wood volume: the estimator is unbi-ased, the variance decreases with increasing sample size, and the variance estimators perform comparably, with coverage rates close to the nominal level. The results for the estimation of the ratio of total wood volume attributable to Abies alba are reported in Table 3. The estimator of the ratio is essentially unbiased across all sampling designs and sample sizes. Its variance decreases as the first-stage sample size 
+
+nI increases, in agreement with the theoretical results established in Proposition 5. The HT linearized variance estimator shows a small negative bias for small sample sizes, but this bias diminishes as nI increases, which is consistent with the asymptotic theory. The HAJ variance estimator, however, exhibits a substantial bias under StrSRS. In terms of relative stability, the two variance estimators perform similarly. The empirical coverage rates are generally close to the nominal level. As expected, 
+
+18 Design Sample RB M C var M C RB M C RS M C CI M C 
+
+size (ˆ τv ) (ˆ τv ) ˆVHT ˆVHAJ ˆVHT ˆVHAJ ˆVHT ˆVHAJ 
+
+(%) (×10 8) (%) (%) (%) (%) (%) (%) 
+
+Regular grid 
+
+SRSwor 100 -0.02 9.59 0.51 -0.48 33.73 33.40 0.93 0.93 200 -0.19 4.66 0.63 0.14 23.65 23.53 0.94 0.94 500 0.00 1.72 1.25 1.06 14.59 14.55 0.95 0.95 StrSRS 100 -0.03 8.81 -0.38 -10.16 33.76 32.08 0.93 0.92 200 -0.06 4.30 -0.38 -5.17 23.54 22.98 0.94 0.93 500 -0.03 1.60 -0.15 -1.95 14.33 14.20 0.95 0.94 
+
+Irregular grid 
+
+SRSwor 100 -0.05 10.22 -0.43 -1.41 36.81 36.47 0.93 0.93 200 -0.08 5.03 -1.30 -1.78 25.66 25.56 0.94 0.94 500 -0.00 1.84 0.08 -0.10 15.77 15.74 0.95 0.95 StrSRS 100 -0.06 9.28 0.29 -9.55 37.08 34.75 0.93 0.92 200 -0.06 4.52 0.75 -4.10 26.09 25.15 0.94 0.93 500 0.02 1.73 -1.69 -3.46 15.68 15.69 0.94 0.94 REJ 100 0.02 9.67 -0.60 -1.57 33.50 33.18 0.93 0.93 200 0.10 4.69 -0.10 -0.58 23.42 23.31 0.94 0.94 500 0.02 1.72 0.31 0.13 14.38 14.35 0.95 0.95 
+
+Table 1: Monte Carlo results for the estimation of total wood volume ˆ τv: relative bias, variance, and performance of variance estimators (RB, RS, CI). 19 Design Sample RB M C var M C RB M C RS M C CI M C 
+
+size ( ˆN ) ( ˆN ) ˆVHT ˆVHAJ ˆVHT ˆVHAJ ˆVHT ˆVHAJ 
+
+(%) (× 10 8) (%) (%) (%) (%) (%) (%) 
+
+Regular grid 
+
+SRSwor 100 -0.03 14.69 -0.06 -1.05 24.42 24.20 0.94 0.94 200 -0.14 7.15 -0.63 -1.21 17.07 17.01 0.94 0.94 500 -0.01 2.54 0.73 0.54 14.59 14.55 0.95 0.95 StrSRS 100 -0.11 13.16 0.52 -9.44 25.27 24.63 0.94 0.92 200 -0.06 6.36 0.79 -4.15 17.31 16.95 0.95 0.94 500 -0.01 2.32 -0.14 -2.03 10.23 10.23 0.95 0.94 
+
+Irregular grid 
+
+SRSwor 100 0.03 15.78 -0.54 -1.52 28.59 28.34 0.94 0.93 200 -0.05 7.62 -0.44 -0.93 19.93 19.85 0.94 0.94 500 0.01 2.72 0.30 0.11 11.93 11.91 0.95 0.95 StrSRS 100 0.04 14.35 -0.67 -10.51 29.27 28.37 0.94 0.92 200 -0.06 6.84 0.77 -4.17 20.38 19.80 0.94 0.94 500 0.01 2.52 -1.27 -3.13 12.05 12.16 0.95 0.94 REJ 100 -0.02 14.66 -0.22 -1.21 24.42 24.21 0.94 0.94 200 0.12 7.14 -0.79 -1.28 16.97 16.91 0.94 0.94 500 0.01 2.53 -0.14 -0.32 10.21 10.19 0.95 0.95 
+
+Table 2: Monte Carlo results for the estimation of total number of trees ˆN : relative bias, variance, and performance of variance estimators (RB, RS, CI). 20 Design Sample RB M C var M C RB M C RS M C CI M C 
+
+size ( ˆRv ) ( ˆRv ) ˆVHT ˆVHAJ ˆVHT ˆVHAJ ˆVHT ˆVHAJ 
+
+(%) (× 10 −3) (%) (%) (%) (%) (%) (%) 
+
+Regular grid 
+
+SRSwor 100 -0.25 5.10 -7.67 -8.56 31.76 31.70 0.92 0.92 200 -0.13 2.51 -3.13 -3.58 22.58 22.54 0.94 0.94 500 -0.06 0.98 -1.75 -1.91 13.38 13.38 0.94 0.94 StrSRS 100 -0.32 5.04 -6.47 -15.51 31.43 31.76 0.92 0.91 200 -0.19 2.52 -4.00 -8.49 22.41 22.63 0.93 0.93 500 -0.07 0.99 -2.55 -4.17 13.25 13.43 0.94 0.94 
+
+Irregular grid 
+
+SRSwor 100 -0.23 5.33 -8.61 -9.49 33.07 33.00 0.92 0.91 200 -0.21 2.62 -3.74 -4.19 23.72 23.68 0.93 0.93 500 -0.03 1.03 -2.19 -2.36 14.18 14.19 0.94 0.94 StrSRS 100 -0.33 5.22 -7.02 -16.01 32.85 33.05 0.92 0.91 200 -0.11 2.65 -5.31 -9.72 23.37 23.73 0.93 0.93 500 -0.05 1.02 -1.92 -3.55 14.05 14.12 0.94 0.94 REJ 100 -0.27 5.10 -7.68 -8.57 31.76 31.69 0.92 0.92 200 -0.10 2.50 -3.29 -3.74 22.54 22.50 0.93 0.93 500 -0.06 0.98 -1.91 -2.07 13.50 13.50 0.94 0.94 
+
+Table 3: Monte Carlo results for the estimation of the proportion of wood volume of Abies alba ˆRv: relative bias, variance, and performance of variance estimators (RB, RS, CI). 21 slightly lower coverage is observed in settings where the variance estimator is negatively biased. The simulation results for the estimation of the percentage of Abies alba in terms of number of trees are presented in Table 4. The qualitative conclusions are the same as for the volume ratio. 
+
+Design Sample RB M C var M C RB M C RS M C CI M C 
+
+size ( ˆRN ) ( ˆRN ) ˆVHT ˆVHAJ ˆVHT ˆVHAJ ˆVHT ˆVHAJ 
+
+(%) (× 10 −3) (%) (%) (%) (%) (%) (%) 
+
+Regular grid 
+
+SRSwor 100 0.06 2.33 -5.35 -6.27 32.86 32.70 0.93 0.93 200 0.04 1.14 -1.72 -2.18 23.03 22.96 0.94 0.94 500 -0.02 0.45 -1.21 -1.37 13.24 13.24 0.95 0.95 StrSRS 100 -0.02 2.31 -4.87 -14.06 32.60 32.26 0.93 0.91 200 -0.04 1.13 -1.81 -6.39 22.76 22.50 0.94 0.93 500 -0.05 0.45 -1.43 -3.07 13.07 13110 0.94 0.94 
+
+Irregular grid 
+
+SRSwor 100 0.17 2.43 -4.91 -5.83 34.74 34.55 0.93 0.93 200 0.02 1.21 -2.96 -3.41 24.64 24.58 0.94 0.94 500 0.03 0.47 -1.04 -1.21 14.25 14.24 0.95 0.95 StrSRS 100 -0.01 2.44 -5.87 -14.96 34.46 34.04 0.93 0.91 200 0.01 1.20 -2.95 -7.48 24.15 23.98 0.94 0.93 500 0.00 0.46 0.07 -1.59 14.26 14.08 0.95 0.94 REJ 100 0.08 2.31 -4.01 -4.94 33.15 32.95 0.93 0.93 200 0.02 1.14 -1.84 -2.29 22.82 22.75 0.94 0.94 500 0.01 0.45 -1.54 -1.71 13.20 13.20 0.94 0.94 
+
+Table 4: Monte Carlo results for the estimation of the proportion of trees of Abies alba ˆRN :relative bias, variance, and performance of variance estimators (RB, RS, CI). 22 7 Conclusion 
+
+This paper develops a design-based asymptotic theory for two-stage sampling over a continuous spatial domain. Within a fixed-area framework, we establish consistency and asymptotic normality of Horvitz–Thompson estimators, together with the consis-tency of associated variance estimators. The results are further extended to smooth functions of totals through linearization arguments. Our analysis complements existing asymptotic theory for multistage sampling in finite populations by explicitly accounting for the continuous nature of second-stage units. In particular, we provide conditions under which standard variance estimators remain valid. These results are motivated by applications in environmental surveys, such as national forest inventories, where two-stage sampling over continuous territories is routinely im-plemented. In such settings, extensions to more complex designs, including two-phase sampling with post-stratification, are of practical importance. While convergence re-sults for two-phase designs have been established in the environmental literature (Fat-torini et al., 2017), the extension to nonlinear functionals and the derivation of asymp-totic normality for continuous populations remain open problems. Addressing these questions would provide a unified asymptotic framework for modern survey designs combining multistage, multiphase, and spatial sampling features. 
+
+# Supplementary Material 
+
+The supplementary material contains additional proofs of intermediary results. 
+
+# Acknowledgments 
+
+This work was supported by a grant from the institute of Mathematics for Planet Earth (iMPT, project CONIFER), and by the France 2030 program ”Initiative d’Excellence Lorraine (LUE)”, reference ANR-15-IDEX-04-LUE, project Artemis-BOOSTFOR. This work was also supported by project ”Interdisciplinary Cloud and Big Data Center at Stefan cel Mare University of Suceava” [POC/398/1/1, 343/390019], co-founded by 
+
+23 the European Union. OB acknowledges funding from EU Horizon Europe Research and Innovation Program, project INFORMA Grant agreement No. 101060309. ChatGPT was used in this paper as a language assistant for improving the writing of this paper and for limited code editing. 
+
+# A Additional notations 
+
+# A.1 Variance decomposition 
+
+The variance components of ˆ τρ are defined as 
+
+V (ˆ τρ) = X
+
+> ui∈UI
+
+X 
+
+> uj∈UI
+
+∆Iij 
+
+τρi 
+
+πIi 
+
+τρj 
+
+πIj 
+
++ X
+
+> ui∈UI
+
+1 − πIi 
+
+πIi 
+
+Vi + X
+
+> ui∈UI
+
+Vi,
+
+= V1(ˆ τρ) + V2(ˆ τρ) + V3(ˆ τρ), (A.1.1) where ∆ Iij = πIij − πIi πIj , and 
+
+Vi =
+
+Z
+
+> x∈ui
+
+{ρ(x)}2
+
+πIIi (x) dx+
+
+Z
+
+> x∈ui
+
+Z
+
+> x′∈ui
+
+πIIi (x, x ′) − πIIi (x)πIIi (x′) ρ(x)
+
+πIIi (x)
+
+ρ(x′)
+
+πIIi (x′) dxdx′,
+
+(A.1.2) see Proposition 1 in Duong, Bouriaud and Chauvet (2024). Since the nIIi points are independently selected within ui according to the marginal density fIIi (·), this term simplifies to 
+
+Vi =
+
+Z
+
+> x∈ui
+
+πIIi (x)
+
+ ρ(x)
+
+πIIi (x) − τρi 
+
+nIIi 
+
+2
+
+dx. (A.1.3) 
+
+# A.2 Variance estimation 
+
+The Horvitz-Thompson variance estimator is defined by ˆVHT (ˆ τρ) = X
+
+> ui∈SI
+
+X 
+
+> uj∈SI
+
+∆Iij 
+
+πIij 
+
+ˆτρi 
+
+πIi 
+
+ˆτρj 
+
+πIj 
+
++ X
+
+> ui∈SI
+
+ˆVi
+
+πIi 
+
+= ˆVHT,A (ˆ τρ) + ˆVB (ˆ τρ) (A.2.1) 
+
+24 where ˆVi = X
+
+> ui∈SI
+
+ ρ(x)
+
+πIIi (x)
+
+2
+
++ X
+
+> x̸=x′∈SI
+
+πIIi (x, x ′) − πIi (x)πIi (x′)
+
+πIIi (x, x ′)
+
+ρ(x)
+
+πIi (x)
+
+ρ(x′)
+
+πIi (x′)= nIIi 
+
+nIIi − 1
+
+X
+
+> x∈SIIi
+
+ ρ(x)
+
+πIIi (x) − ˆτρi 
+
+nIIi 
+
+2
+
+. (A.2.2) The estimator ˆVHT (ˆ τρ) is design-unbiased for V (ˆ τρ), provided that πIij > 0 for any 
+
+ui, u j ∈ UI and that nIIi ≥ 2 for any ui ∈ UI ; see Proposition 2 in Duong, Bouriaud and Chauvet (2024). The Yates-Grundy variance estimator is defined by ˆVY G (ˆ τρ) = − 12
+
+X  
+
+> ui̸=uj∈SI
+
+∆Iij 
+
+πIij 
+
+ ˆτρi 
+
+πIi 
+
+− ˆτρj 
+
+πIj 
+
+2
+
++ X
+
+> ui∈SI
+
+ˆVi
+
+πIi 
+
+= ˆVY G,A (ˆ τρ) + ˆVB (ˆ τρ) . (A.2.3) 
+
+# B Preliminary results 
+
+The proofs of lemmas are given in Section 1 of the supplementary material. 
+
+# B.1 Inequalities related to the first-stage inclusion prob-abilities 
+
+Lemma 1. Suppose that Assumption (FS1) holds, and that the sample SI is of fixed-size nI . Then 
+
+dI = X
+
+> ui∈UI
+
+πIi (1 − πIi ) ≥ cI1(1 − fI0)nI ,
+
+ˆdI = X
+
+> ui∈SI
+
+(1 − πIi ) ≥ 12 cI1(1 − fI0)nI .
+
+Lemma 2. Suppose that Assumptions (FS1) and (FS2) hold. Then some constants 
+
+25 C′
+
+> I3
+
+, C ′
+
+> I4
+
+, C ′ 
+
+> I5
+
+exist such that for any i̸ = j̸ = i′̸ = j′ ∈ UI :
+
+πIij ≤ C2 
+
+> I1
+
++ CI2 × n2
+
+> I
+
+N 2
+
+> I
+
+, (B.1.1) 
+
+|Cov (IIi IIj , I Ii IIj )| ≤ C2 
+
+> I1
+
++ CI2 × n2
+
+> I
+
+N 2
+
+> I
+
+, (B.1.2) 
+
+Cov (IIi IIj , I Ii IIj ′ ) ≤ C′ 
+
+> I3
+
+× n3
+
+> I
+
+N 3
+
+> I
+
+, (B.1.3) 
+
+Cov (IIi IIj , I Ii ′ IIj ′ ) ≤ C′ 
+
+> I4
+
+× n3
+
+> I
+
+N 4
+
+> I
+
+, (B.1.4) 
+
+πIiji ′ ≤ C′
+
+> I5
+
+n3
+
+> I
+
+N 3
+
+> I
+
+. (B.1.5) 
+
+# B.2 Moment inequalities for the sub-integrals 
+
+Lemma 3. Suppose that assumptions (SS1) and (VA1) hold. Then 
+
+> NI
+
+X
+
+> i=1
+
+{τρi }4 ≤ Φ31M1 × A4
+
+N 3
+
+> I
+
+.
+
+By using H¨ older’s inequality, it also follows from Lemma 3 that 
+
+> NI
+
+X
+
+> i=1
+
+{τρi }2 ≤ Φ 32 
+
+> 1
+
+M 12 
+
+> 1
+
+× A2
+
+NI
+
+, (B.2.1) 
+
+> NI
+
+X
+
+> i=1
+
+|τρi | ≤ Φ 34 
+
+> 1
+
+M 14 
+
+> 1
+
+× A. (B.2.2) 
+
+Lemma 4. Suppose that assumptions (FS1), (FS2) and (VA1) hold. Then 
+
+E
+
+X
+
+> i∈SI
+
+τρi 
+
+πIi 
+
+− τρ
+
+
+
+> 4
+
+ = O
+
+ A4
+
+n2
+
+> I
+
+
+
+.
+
+# B.3 Moment inequalities for the second-stage variance 
+
+Lemma 5. Suppose that assumptions (SS1) and (VA1) hold. Then 
+
+> NI
+
+X
+
+> i=1
+
+V 2 
+
+> i
+
+≤ Φ31M1
+
+(λ1c1)2 × A4
+
+N 3 
+
+> I
+
+n2
+
+> II 0
+
+.
+
+By using H¨ older’s inequality, we obtain from (B.3.1) that 
+
+> NI
+
+X
+
+> i=1
+
+Vi ≤ Φ 32 
+
+> 1
+
+M 12
+
+> 1
+
+λ1c1
+
+× A2
+
+NI nII 0
+
+. (B.3.1) 
+
+26 If in addition assumption (FS1) holds, then 
+
+> NI
+
+X
+
+> i=1
+
+Vi
+
+πIi 
+
+≤ Φ 32 
+
+> 1
+
+M 12
+
+> 1
+
+λ1c1cI1
+
+× A2
+
+nI nII 0
+
+. (B.3.2) 
+
+# B.4 Inequalities for higher moments 
+
+Lemma 6. Suppose that assumptions (FS1), (SS1) and (VA1) hold. Then 
+
+> NI
+
+X
+
+> i=1
+
+V (ˆ τ 2
+
+> ρi
+
+) ≤ 8M1
+
+λ1
+
+ Φ1
+
+c1
+
+3 A4
+
+N 3 
+
+> I
+
+nII 0
+
+, (B.4.1) 
+
+> NI
+
+X
+
+> i=1
+
+V
+
+ ˆVi
+
+
+
+πIi 
+
+≤ 16 M1
+
+cI1
+
+ Φ1
+
+λ1c1
+
+3 A4
+
+N 2 
+
+> I
+
+nI n3
+
+> II 0
+
+, (B.4.2) 
+
+> NI
+
+X
+
+> i=1
+
+E(ˆ τ 4
+
+> ρi
+
+) ≤ 12 Φ31M1
+
+λ21c31
+
+A4
+
+N 3
+
+> I
+
+. (B.4.3) 
+
+Lemma 7. Suppose that assumptions (FS1), (FS2), (SS1) and (VA1) hold. Then 
+
+E
+
+X
+
+> ui∈SI
+
+(1 − πIi ) ˆτρi 
+
+πIi 
+
+
+
+> 2
+
+−
+
+( NIX
+
+> i=1
+
+πIi (1 − πIi ) ˆτρi 
+
+πIi 
+
+)2
+
+> 2
+
+ = O
+
+ A4
+
+n2
+
+> I
+
+
+
+.
+
+Lemma 8. Suppose that assumptions (FS1), (FS2) and (VA1) are respected. Then 
+
+E
+
+n
+
+(ˆ τρ − τρ)4o
+
+= O
+
+ A2
+
+n2
+
+> I
+
+
+
+.
+
+Lemma 9. Suppose that assumptions (FS1), (FS2) and (VA1) are respected. Let us denote 
+
+μρ = τρ
+
+A and ˆμρ = ˆτρ
+
+ˆA , (B.4.4) 
+
+where 
+
+ˆA = X
+
+> ui∈SI
+
+1
+
+πIi 
+
+X
+
+> x∈SIIi
+
+1
+
+πIIi (x) .
+
+Then: 
+
+E
+
+n
+
+(ˆ μρ − μρ)4o
+
+= O
+
+ 1
+
+n2
+
+> I
+
+
+
+.
+
+27 C Proof of Proposition 1 
+
+The variance due to the first-stage is 
+
+V1(ˆ τρ) = X
+
+> ui∈UI
+
+X 
+
+> uj∈UI
+
+∆Iij 
+
+τρi 
+
+πIi 
+
+τρj 
+
+πIj 
+
+= X
+
+> ui∈UI
+
+1 − πIi 
+
+πIi 
+
+{τρi }2 + X  
+
+> ui̸=uj∈UI
+
+∆Iij 
+
+τρi 
+
+πIi 
+
+τρj 
+
+πIj 
+
+≤ 1min πIi 
+
+X
+
+> ui∈UI
+
+{τρi }2 + ∆I2
+
+{min πIi }2
+
+ X
+
+> ui∈UI
+
+τρi 
+
+
+
+> 2
+
+from line 1 in equation (3.1.2) .
+
+From equations (B.2.1) and (B.2.2), we have 
+
+V1(ˆ τρ) ≤ (Φ 1) 32 M 12 
+
+> 1
+
+×
+
+ 1min πIi 
+
+× A2
+
+NI
+
++ ∆I2
+
+{min πIi }2 × A2
+
+
+
+≤ (Φ 1) 32 M 12 
+
+> 1
+
+×
+
+ NI
+
+cI1 nI
+
+× A2
+
+NI
+
++ CI2
+
+nI
+
+N 2
+
+> I
+
+× N 2
+
+> I
+
+c2 
+
+> I1
+
+n2
+
+> I
+
+× A2
+
+
+
+from assumptions (FS1) and (FS2) 
+
+≤ (Φ 1) 32 M 12 
+
+> 1
+
+×
+
+ 1
+
+cI1
+
++ CI2
+
+c2
+
+> I1
+
+
+
+× A2
+
+nI
+
+,
+
+which leads to (4.1.1). Equation (4.1.2) follows directly from (B.3.2), and equation (4.1.3) follows directly from (B.3.2). 
+
+# D Proof of Proposition 5 
+
+We begin with equation (4.2.1). From assumption (PI1), we have ˆθ − θ = g( ˆ τρ) − g(τρ) = g( ˆ μρπ) − g(μρ),
+
+where μρ and ˆ μρπ are defined in equation (B.4.4). Using assumption (PI2) and the mean-value theorem, there exists some vector ˜ a ∈ C whose components lie between those of ˆ μρ and μρ, and such that ˆθ − θ = g′(˜ a) ⊤ { ˆμρ − μρ}. (D.0.1) From assumption (PI1), the differential g′ is homogeneous of degree −1, hence 
+
+{g′(τρ)}⊤{ ˆτρ − τρ} = {g′(μρ)}⊤{ ˆμρ − μρ}. (D.0.2) 
+
+28 From equations (D.0.1) and (D.0.2), we can write (ˆθ − θ) − { g′(τρ)}⊤{ ˆτρ − τρ} = g′(˜ a) − g′(μρ) ⊤ { ˆμρ − μρ}
+
+| {z }
+
+> T7
+
+.
+
+From the local Lipschitz assumption, we have 
+
+|T7| ≤ ∥g′(˜ a) − g′(μρ)∥ × ∥ ˆμρ − μρ∥ ≤ K∥ ˆμρ − μρ∥2,
+
+which gives E{| T7|2} ≤ K2E
+
+n
+
+∥ ˆμρ − μρ∥4o
+
+. By applying Lemma 8 componentwise, we obtain (4.2.1). To prove equation (4.2.3), we first write ˆVY G (ˆθ) − Vp(ˆ τl) = ˆVY G (ˆ τl) − Vp(ˆ τl)
+
+| {z }
+
+> T8
+
++ ˆVY G (ˆθ) − ˆVY G (ˆ τl)
+
+| {z }
+
+> T9
+
+.
+
+Since g′(·) is homogeneous of degree −1, we can write l(x) = A−1l0(x) with l0(x) = 
+
+{g′(μρ)}⊤ρ(x). From assumption (PI2), there exists some constant Kc such that 
+
+∥ρ(x)∥ ≤ Kc for any x ∈ F . (D.0.3) Also, the density l0(x) verifies the first moment condition in assumption (VA1). We study the two terms in (D.0.3) separately. From equation (4.1.9), we directly obtain E{| T8|2} = O(n−3 
+
+> I
+
+) and therefore, E{| T8|} = O(n−3/2). Also, we can rewrite 
+
+T9 = T91 + T92 with 
+
+T91 = ( ˆA)−2 × { g′( ˆ μρ) − g′(μρ)}⊤ × (B1 + B2) × { g′( ˆ μρ) + g′(μρ)},T92 =
+
+n
+
+( ˆA)−2 − A−2o
+
+g′(μρ)⊤ × (B1 + B2) × g′(μρ), (D.0.4) and where 
+
+B1 = − 12
+
+X  
+
+> ui̸=uj∈SI
+
+∆Iij 
+
+πIij 
+
+ ˆτρi
+
+πIi 
+
+− ˆτρj
+
+πIj 
+
+  ˆτρi
+
+πIi 
+
+− ˆτρj
+
+πIj 
+
+⊤
+
+,
+
+B2 = 12
+
+X
+
+> ui∈SI
+
+1(nIIi − 1) πIi 
+
+X
+
+> x̸=x′∈SIIi
+
+ ρ(x)
+
+πIIi (x) − ρ(x′)
+
+πIIi (x′)
+
+  ρ(x)
+
+πIIi (x) − ρ(x′)
+
+πIIi (x′)
+
+⊤
+
+.
+
+Using assumptions (FS1)-(FS3), we have 
+
+∥B1∥ ≤ CI2
+
+2cI2(cI1)2
+
+N 2
+
+> I
+
+n3
+
+> I
+
+X  
+
+> ui̸=uj∈SI
+
+(∥ ˆτρi∥ + ∥ ˆτρj ∥)2
+
+≤ 2CI2
+
+cI2(cI1)2
+
+N 2
+
+> I
+
+n2
+
+> I
+
+X
+
+> ui∈SI
+
+∥ ˆτρi∥2 . (D.0.5) 
+
+29 From equation (D.0.3) and using assumption (SS1), we have for any ui ∈ UI ∥ ˆτρi∥ ≤  
+
+> Φ1KcAc1NI
+
+, which together with (D.0.5) leads to 
+
+∥B1∥ ≤ 2CI2(Φ 1Kc)2
+
+cI2(cI1)2(c1)2
+
+A2
+
+nI
+
+. (D.0.6) Using assumptions (FS1) and (SS1), we have 
+
+∥B2∥ ≤ Φ21A2
+
+2cI1(c1)2n2
+
+> IIi
+
+(nIIi − 1) NI
+
+X
+
+> x̸=x′∈SIIi
+
+ ∥ρ(x)∥ + ρ(x′) 2
+
+≤ 2Φ 21A2
+
+cI1(c1)2n2
+
+> IIi
+
+NI
+
+X
+
+> x∈SIIi
+
+∥ρ(x)∥2
+
+≤ 2Φ 21(Kc)2A2
+
+cI1(c1)2λ1
+
+× A2
+
+nII 0NI
+
+from (D.0.3) and (SS1) . (D.0.7) From equations (D.0.6) and (D.0.7), there exists some constant C′ such that 
+
+∥B1 + B2∥ ≤ C′ A2
+
+nI
+
+. (D.0.8) We first consider the term T91 in (D.0.4). Since g′(·) is bounded on C, there exists some constant C” such that 
+
+|T91 | ≤ C” × ( ˆA)−2 × ∥ g′( ˆ μρ) − g′(μρ)∥ × ∥ B1 + B2∥≤ C” × K × ( ˆA)−2 × ∥ ˆμρ − μρ∥ × ∥ B1 + B2∥≤ C” × K × (CI1C1)2 × C′
+
+(ϕ1)2nI
+
+× ∥ ˆμρ − μρ∥, (D.0.9) where the last line in (D.0.9) follows from equation (D.0.8) and the fact that from assumptions (FS1) and (SS1), we have ˆA ≥ ϕ1ACI1C1 . We obtain 
+
+E{| T91 |} ≤ C” × K × (CI1C1)2 × C′
+
+(Φ 1)2nI
+
+×
+
+q
+
+E{∥ ˆμρ − μρ∥2}.
+
+Since E{∥ ˆμρ − μρ∥2} = O(n−1 
+
+> I
+
+) from Lemma 8, we obtain E{| T91 |} = O(n−3/2 
+
+> I
+
+). Also 
+
+|T92 | ≤ ˆA + A
+
+( ˆA)2(A)2 × | ˆA − A| × g′(μρ) 2 × ∥ B1 + B2∥≤ (Φ 1 + cI1c1)( CI1C1)2
+
+Φ21(cI1c1)A3 × g′(μρ) 2 × ∥ B1 + B2∥ × | ˆA − A|,
+
+which leads to 
+
+E {| T92 |} ≤ (Φ 1 + cI1c1)( CI1C1)2
+
+Φ21(cI1c1)A × (C”) 2C′
+
+nI
+
+×
+
+r
+
+E
+
+n
+
+( ˆA − A)2
+
+o
+
+.
+
+30 From equation (4.1.4) applied with ρ(x) = 1, we have E
+
+n
+
+( ˆA − A)2
+
+o
+
+= O(A2n−1 
+
+> I
+
+). This leads to E{| T92 |} = O(n−3/2 
+
+> I
+
+), which completes the proof for equation (4.2.3). The proof for equation (4.2.2) is similar. 
+
+# E Proof of Proposition 6 
+
+We first prove equation (5.1.3). We simplify the notation as ˆVHAJ,A ≡ ˆVHA , V1(ˆ τρ) ≡ V1
+
+and V2(ˆ τρ) ≡ V2. We also use the notation ˜VHA =
+
+> NI
+
+X
+
+> i=1
+
+πIi (1 − πIi )
+
+ ˆτρi 
+
+πIi 
+
+− ˆR
+
+2
+
+with ˆR = d−1
+
+> INI
+
+X
+
+> i=1
+
+πIi (1 − πIi ) ˆτρi 
+
+πIi 
+
+,
+
+˜VHT,A =
+
+> NI
+
+X
+
+> i,j =1
+
+∆Iij 
+
+πIi πIj 
+
+ˆτρi ˆτρj = E
+
+h ˆVHT,A (ˆ τρ) SII 
+
+i
+
+,
+
+and SII = ∪NI
+
+> i=1
+
+Si for the union of the second-stage samples. We write ˆVHAJ,A − V1 − V2 = TA1 − TA2 − TA3 + TA4 + TA5, (E.0.1) with 
+
+TA1 =
+
+> NI
+
+X
+
+> i=1
+
+(IIi − πIi )(1 − πIi )
+
+ ˆτρi 
+
+πIi 
+
+2
+
+,TA2 = ( ˆd−1 
+
+> rI
+
+− d−1 
+
+> I
+
+)
+
+( NIX
+
+> i=1
+
+πIi (1 − πIi ) ˆτρi 
+
+πIi 
+
+)
+
+,TA3 = d−1
+
+> I
+
+X
+
+> i∈SrI
+
+(1 − πIi ) ˆτρi 
+
+πIi 
+
+
+
+> 2
+
+−
+
+( NIX
+
+> i=1
+
+πIi (1 − πIi ) ˆτρi 
+
+πIi 
+
+)2 ,
+
+and with TA4 = ˜VHT,A − V1 − V2 and TA5 = ˜VHA − ˜VHT,A . For the first term in (E.0.1), we have 
+
+E(T 2
+
+> A1
+
+) ≤ E
+
+" NIX
+
+> i=1
+
+(IIi − πIi )(1 − πIi )
+
+ ˆτρi 
+
+πIi 
+
+2#2
+
+= EV 
+
+" NIX
+
+> i=1
+
+(IIi − πIi )(1 − πIi )
+
+ ˆτρi 
+
+πIi 
+
+2
+
+SII 
+
+#
+
+≤ E
+
+" NIX
+
+> i=1
+
+(1 − πIi )3
+
+π3
+
+> Ii
+
+(ˆ τρi )4
+
+#
+
+≤
+
+> NI
+
+X
+
+> i=1
+
+E(ˆ τρi )4
+
+π3
+
+> Ii
+
+,
+
+31 and from assumption (FS1) and equation (B.4.3) in Lemma 6, we obtain 
+
+E(T 2
+
+> A1
+
+) = O
+
+ A4
+
+n3
+
+> I
+
+
+
+. (E.0.2) For the second term in (E.0.1), we obtain from Lemma 1 
+
+E(T 2
+
+> A2
+
+) ≤ 4(cI1)4(1 − fI0)4n4
+
+> I
+
+E( ˆdrI − dI )2 × E
+
+( NIX
+
+> i=1
+
+(1 − πIi )ˆ τρi 
+
+)4
+
+≤ 4(cI1)4(1 − fI0)4n3
+
+> I
+
+× N 3
+
+> INI
+
+X
+
+> i=1
+
+E(ˆ τρi )4,
+
+and from equation (B.4.3) in Lemma 6, we obtain 
+
+E(T 2
+
+> A2
+
+) = O
+
+ A4
+
+n3
+
+> I
+
+
+
+. (E.0.3) For the third term in (E.0.1), we obtain from Lemmas 1 and 6 that 
+
+E(T 2
+
+> A3
+
+) = O
+
+ A4
+
+n4
+
+> I
+
+
+
+. (E.0.4) For the fourth term in (E.0.1), we have 
+
+E(T 2
+
+> A4
+
+) = V
+
+n ˜VHT,A 
+
+o
+
+≤ 2V
+
+( NIX
+
+> i=1
+
+1 − πIi 
+
+πIi 
+
+(ˆ τρi )2
+
+)
+
++ 2 V
+
+
+
+> NI
+
+X
+
+> i̸=j=1
+
+∆Iij 
+
+πIi πIj 
+
+ˆτρi ˆτρj 
+
+ .
+
+We have 
+
+V
+
+( NIX
+
+> i=1
+
+1 − πIi 
+
+πIi 
+
+(ˆ τρi )2
+
+)
+
+≤
+
+> NI
+
+X
+
+> i=1
+
+V {(ˆ τρi )2}
+
+π2
+
+> Ii
+
+= O
+
+ A4
+
+n3
+
+> I
+
+
+
+, (E.0.5) where the order of magnitude in (E.0.5) follows from assumption (FS1) and from equation (B.4.1) in Lemma 6. We also have 
+
+V
+
+
+
+> NI
+
+X
+
+> i̸=j=1
+
+∆Iij 
+
+πIi πIj 
+
+ˆτρi ˆτρj 
+
+ = 2 
+
+> NI
+
+X 
+
+> i̸=j̸=j′=1
+
+∆Iij 
+
+πIi πIj 
+
+∆Iij ′
+
+πIi πIj ′
+
+Cov ˆτρi ˆτρj , ˆτρi ˆτρj ′ +
+
+> NI
+
+X
+
+> i̸=j=1
+
+ ∆Iij 
+
+πIi πIj 
+
+2
+
+V (ˆ τρi ˆτρj )= 2 
+
+> NI
+
+X 
+
+> i̸=j̸=j′=1
+
+∆Iij 
+
+πIi πIj 
+
+∆Iij ′
+
+πIi πIj ′
+
+τρj τρj ′ Vi +
+
+> NI
+
+X
+
+> i̸=j=1
+
+ ∆Iij 
+
+πIi πIj 
+
+2 τ 2 
+
+> ρj
+
+Vi + τ 2
+
+> ρi
+
+Vj + ViVj
+
+≤ C2
+
+> I2
+
+c4
+
+> I1
+
+× 1
+
+n2
+
+> I
+
+×
+
+2
+
+( NIX
+
+> i=1
+
+τρi 
+
+)2 NIX
+
+> j=1
+
+Vj + 2 
+
+> NI
+
+X
+
+> i=1
+
+τ 2
+
+> ρi NI
+
+X
+
+> j=1
+
+Vj +
+
+
+
+> NI
+
+X
+
+> j=1
+
+Vj
+
+
+
+> 2
+
+
+
+= O
+
+ A4
+
+n3
+
+> I
+
+
+
+, (E.0.6) 
+
+32 where the order of magnitude in (E.0.6) follows from equations (B.2.1), (B.2.2) and (B.3.1). This leads to 
+
+E(T 2
+
+> A4
+
+) = V
+
+n ˜VHT,A 
+
+o
+
+= O
+
+ A4
+
+n3
+
+> I
+
+
+
+. (E.0.7) For the fifth term in (E.0.1), we have from H´ ajek (1964, Theorem 5.2) ˜VHA = ˜VHT,A {1+ 
+
+o(1) }, which leads to E(T 2
+
+> A5
+
+) ≤ E
+
+n
+
+( ˜VHT,A )2
+
+o
+
+× o(1). We have 
+
+E
+
+n
+
+( ˜VHT,A )2o
+
+= V
+
+n ˜VHT,A 
+
+o
+
++ [ V1 + V2]2 = O
+
+ A4
+
+n2
+
+> I
+
+
+
+, (E.0.8) where the order of magnitude in (E.0.8) follows from equation (E.0.7) and Proposition 1. This leads to E(T 2
+
+> A5
+
+) = o
+
+ A4
+
+> n2
+> I
+
+
+
+. This completes the proof. Now, we consider equation (5.1.4). From Section 3.2 in the supplementary material of Chauvet and Vall´ ee (2020), it is sufficient to prove that 
+
+PNI
+
+> i=1
+> E(ˆ τρi −τρi )4
+> π3
+> Ii
+
+{V (ˆ τρ)}2 = o(1) , (E.0.9) 
+
+PNI
+
+> i=1 (τρi −Rπ Ii )4
+> π3
+> Ii
+
+{V (ˆ τρ)}2 = o(1) , (E.0.10) where R = d−1
+
+> I
+
+PNI 
+
+> i=1
+
+πIi (1 − πIi ) τρi  
+
+> πIi
+
+. From assumption (FS1) and equation (B.4.3) in Lemma 6, we have 
+
+> NI
+
+X
+
+> i=1
+
+E(ˆ τρi − τρi )4
+
+π3
+
+> Ii
+
+= O
+
+ A4
+
+n3
+
+> I
+
+
+
+, (E.0.11) and equation (E.0.9) follows from (E.0.11) and assumption (VA2). From assumption (FS1) and from Lemma 3, we have 
+
+> NI
+
+X
+
+> i=1
+
+(τρi − Rπ Ii )4
+
+π3
+
+> Ii
+
+= O
+
+ A4
+
+n3
+
+> I
+
+
+
+, (E.0.12) and equation (E.0.10) follows from (E.0.12) and assumption (VA2). Finally, we consider (5.1.5). It follows directly from (4.1.6) and (5.1.3) and assumption (VA2). 
+
+# F Proof of Proposition 7 
+
+The proof is based in the coupling procedure given in Chauvet and Vall´ ee (2020, Al-gorithm 1). Using the same steps as in Section 4 of the supplementary material of 
+
+33 Chauvet and Vall´ ee (2020, Algorithm 1), it is sufficient to prove that 
+
+E
+
+ X
+
+> i∈SrI
+
+τρi 
+
+πIi 
+
+− τρ
+
+
+
+> 4
+
+ = O
+
+ A4
+
+n2
+
+> I
+
+
+
+, (F.0.1) 
+
+E
+
+ X
+
+> i∈SrI
+
+Vi
+
+π2
+
+> Ii
+
+
+
+> 2
+
+ = O
+
+ A4
+
+n2
+
+> I
+
+
+
+. (F.0.2) Equation (F.0.1) is established in Lemma 4. For equation (F.0.2), we have by the Cauchy-Schwartz inequality 
+
+E
+
+ X
+
+> i∈SrI
+
+Vi
+
+π2
+
+> Ii
+
+
+
+> 2
+
+= O
+
+ A4
+
+n2
+
+> I
+
+ ≤ nINIX
+
+> i=1
+
+Vi
+
+π3
+
+> Ii
+
+= O
+
+ A4
+
+n2 
+
+> I
+
+nII 0
+
+
+
+, (F.0.3) where the order of magnitude in (F.0.3) follows from assumption (FS2) and Lemma 5. 
+
+# G Proof of Proposition 8 
+
+Write ∆ = g( ˆ τρ) − g(τρ) − { g′(τρ)}⊤{ ˆτρ − τρ}. We have the identity ˆθ − θ
+
+q
+
+V (ˆθ)= ˆτl − τl
+
+pV (ˆ τl) ×
+
+s
+
+V (ˆ τl)
+
+V (ˆθ) + ∆
+
+q
+
+V (ˆθ)
+
+. (G.0.1) From equations (4.2.1) and (5.2.1), the second term in the right-hand side of (G.0.1) is op(1) and V (ˆ τl)−1V (ˆθ) →P r 1. From equation (5.1.7) and Slutsky’s theorem, we obtain (5.2.2). To prove equation (5.2.3), we obtain from (5.1.8) that 
+
+E
+
+h
+
+A−2nI ˆVHAJ (ˆ τl) − V (ˆθ)
+
+i
+
+= o(1) .
+
+It is therefore sufficient to prove that E
+
+h
+
+A−2nI ˆVHAJ (ˆθ) − ˆVHAJ (ˆ τl)
+
+i
+
+= o(1). The proof is similar to that of equation (4.2.3). 
+
+# References 
+
+Boistard, H., Lopuha¨ a, H. P., Ruiz-Gazen, A. (2012). Approximation of rejective sampling inclusion probabilities and application to high order correlations. Electron. J. Stat. , 6:1967–1983. 7, 12 
+
+34 Bouriaud, O., Brion, P., Chauvet, G., Duong, T. H. K., and Pulkkinen, M. (2024). The weight share method in forest inventories: refining the relation between points and trees. Can. J. For. Res. . 4, 15 Chauvet, G., Bouriaud, O., and Brion, P. (2023). An extension of the weight share method when using a continuous sampling frame. Surv. Methodol. , 49(1). 4, 15 Chauvet, G. and Vall´ ee, A.-A. (2020). Inference for two-stage sampling designs. J. R. Stat. Soc., B: Stat. Methodol. , 82(3):797–815. 2, 3, 6, 7, 12, 33, 34 Cordy, C. B. (1993). An extension of the Horvitz-Thompson theorem to point sampling from a continuous universe. Stat. Probab. Lett. , 18(5):353–362. 2, 5 Duong, T.H.K., Vega, C., Renaud, J-P., Chauvet, G., and Bouriaud, O. (2023). Alarge-scale artificial forest tree population to for sampling and estimation methods simulations. Zenodo . DOI: 10.5281/zenodo.10252805. 14 Duong, T. H., Bouriaud, O., and Chauvet, G. (2024). A new sampling framework for spatial surveys with application to the french national forest inventory. J. Surv. Stat. Methodol. , 13(1):197–222. 2, 3, 5, 24, 25 Fattorini, L., Ferretti, F., Pisani, C., and Sforzi, A. (2011). Two-stage estimation of ungulate abundance in mediterranean areas using pellet group count. Environ. Ecol. Stat. , 18:291–314. 2 Fattorini, L., Marcheselli, M., Pisani, C., and Pratelli, L. (2017). Design-based asymp-totics for two-phase sampling strategies in environmental surveys. Biometrika ,104(1):195–205. 2, 3, 4, 6, 23 Fattorini, L. and Pisani, C. (2004). Variance decomposition in two-stage plot sampling: theoretical and empirical results. Environ. Ecol. Stat. , 11:385–396. 2, 5 H´ ajek, J. (1964). Asymptotic theory of rejective sampling with varying probabilities from a finite population. Ann. Stat. , 35:1491–1523. 7, 12, 33 
+
+35 Krewski, D. and Rao, J. N. K. (1981). Inference from stratified samples: properties of the linearization, jackknife and balanced repeated replication methods. Ann. Stat. ,9(5):1010–1019. 2 Lohr, S. L. (2010). Sampling: design and analysis . Brooks/Cole, Cengage Learning, Boston, MA, second edition. 2 Ohlsson, E. (1989). Asymptotic normality for two-stage sampling from a finite popu-lation. Probab. Theory Relat. Fields , 81(3):341–352. 2 Sampford, M. (1967). On sampling without replacement with unequal probabilities of selection. Biometrika , 54(3-4):499–513. 13 S¨ arndal, C.-E., Swensson, B., and Wretman, J. (1992). Model assisted survey sampling .Springer Series in Statistics. 2, 5 
+
+36 Author information 
+
+Guillaume Chauvet, corresponding author Univ Rennes, Ensai, CNRS, CREST – UMR 9194, F-35000 Rennes, France guillaume.chauvet@ensai.fr Olivier Bouriaud S¸tefan cel Mare University of Suceava, Romania Universit´ e de Lorraine, G´ eodata Paris, IGN, LIF, F-54000, Nancy, France Universit´ e Gustave Eiffel, G´ eodata Paris, IGN, Laboratoire d’Inventaire Forestier, F-54000, Nancy, France obouriaud.lif@gmail.com Trinh H.K. Duong Universit´ e de Lorraine, G´ eodata Paris, IGN, LIF, F-54000, Nancy, France Universit´ e Gustave Eiffel, G´ eodata Paris, IGN, Laboratoire d’Inventaire Forestier, F-54000, Nancy, France kimtrinh0311@gmail.com 
+
+37

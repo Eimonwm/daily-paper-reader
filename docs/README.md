@@ -1,33 +1,115 @@
-<div class="dpr-home-notice-card">
-  <h3 class="dpr-home-notice-title">🚀 Start Here</h3>
-  <ul class="dpr-home-notice-list">
-    <li><a href="#/tutorial/README">使用教程</a></li>
-  </ul>
+<div class="dpr-home-notice-card dpr-home-panel">
+  <div class="dpr-home-notice-header dpr-home-panel-header">
+    <h3 class="dpr-home-notice-title">公告与更新</h3>
+    <a class="dpr-home-notice-tutorial" href="#/tutorial/README">使用教程 <span aria-hidden="true">›</span></a>
+  </div>
+  <div class="dpr-home-notice-entry">
+    <time class="dpr-home-notice-date" datetime="2026-09-09">09.09</time>
+    <div>
+      <strong class="dpr-home-notice-entry-title">90天/365天 arXiv 专题回溯</strong>
+      <span class="dpr-home-notice-entry-summary">支持分片召回、断点评审与分页查看，核心论文与待复核结果分开展示。DeepSeek 费用按实际用量计算，不下载全量 PDF。</span>
+    </div>
+  </div>
+  <div class="dpr-home-notice-entry">
+    <time class="dpr-home-notice-date" datetime="2026-09-09">09.09</time>
+    <div>
+      <strong class="dpr-home-notice-entry-title">ECCV 2026 已更新</strong>
+      <span class="dpr-home-notice-entry-summary">已收录 2,834 篇论文，摘要与 PDF 链接齐全，可按会议年份检索。EMNLP 2026 暂待可信官方数据开放。</span>
+    </div>
+  </div>
+  <div class="dpr-home-notice-entry">
+    <time class="dpr-home-notice-date" datetime="2026-09-05">09.05</time>
+    <div>
+      <strong class="dpr-home-notice-entry-title">CVPR 2026 已更新</strong>
+      <span class="dpr-home-notice-entry-summary">已收录 CVPR 2026 官方 Open Access 论文 4,042 篇，可在会议检索中查看。EMNLP 2026 预计于 10 月中下旬更新，具体以官方论文集开放时间为准。</span>
+    </div>
+  </div>
+  <div class="dpr-home-site-stats" data-dpr-site-stats hidden aria-live="polite">
+    <span>今天有 <strong class="dpr-home-site-stat-value" data-dpr-daily-readers>--</strong> 人在看论文</span>
+    <span class="dpr-home-site-stat-separator" aria-hidden="true">·</span>
+    <span>昨天有 <strong class="dpr-home-site-stat-value" data-dpr-yesterday-readers>--</strong> 人在看论文</span>
+    <span class="dpr-home-site-stat-separator" aria-hidden="true">·</span>
+    <span>已有 <strong class="dpr-home-site-stat-value" data-dpr-fork-count>--</strong> 人加入 Daily Paper Reader</span>
+    <span class="dpr-home-history">
+      <button type="button" class="dpr-home-history-trigger" data-dpr-history-trigger aria-label="查看最近 14 天阅读趋势"><span aria-hidden="true">🔍</span></button>
+      <span class="dpr-home-history-popover" data-dpr-history-popover role="tooltip">
+        <span class="dpr-home-history-header">近 14 天阅读趋势</span>
+        <span class="dpr-home-history-meta">
+          <span data-dpr-history-range>--</span>
+          <span>峰值 <strong data-dpr-history-peak>--</strong></span>
+        </span>
+        <span class="dpr-home-history-chart" data-dpr-history-chart></span>
+      </span>
+    </span>
+  </div>
 </div>
 
-## 每次日报
-- 最新运行日期：2026-03-06
-- 运行时间：2026-03-06 19:11:19 UTC
-- 运行状态：成功
-- 本次总论文数：0
-- 精读区：0
-- 速读区：0
+<div class="dpr-home-dashboard-grid">
+<section class="dpr-home-dashboard-card dpr-home-report-card">
+  <div class="dpr-home-dashboard-header">
+    <div>
+      <span class="dpr-home-dashboard-kicker">2026-09-11 ~ 2026-09-20</span>
+      <h3 class="dpr-home-dashboard-title">今日汇总</h3>
+    </div>
+    <strong class="dpr-home-dashboard-count">共 1 篇</strong>
+  </div>
+  <dl class="dpr-home-dashboard-stats">
+    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>1</dd></div>
+  </dl>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-20 08:30:34 UTC<br>状态：成功</p>
+</section>
+<section class="dpr-home-dashboard-card dpr-home-brief-card">
+  <div class="dpr-home-dashboard-header">
+    <div>
+      <span class="dpr-home-dashboard-kicker">合并后生成</span>
+      <h3 class="dpr-home-dashboard-title">今日简报</h3>
+    </div>
+    <strong class="dpr-home-dashboard-count">AI</strong>
+  </div>
+  <div class="dpr-home-dashboard-body">
+<p>2026年9月11日至20日的日报共筛出1篇速读文献，无精读，主题聚焦空间调查中的两阶段抽样推断。</p>
+<p>唯一可看的是《Inference for two-stage sampling in spatial surveys》（6.0/10），方向在于两阶段抽样下的统计推断方法，适合关注抽样设计与估计的人群。</p>
+<p>普通读者可先确认其推断假设是否匹配自己手头的空间调查数据结构，再决定是否深读原文。</p>
+  </div>
+</section>
+<section class="dpr-home-dashboard-card dpr-home-deep-card">
+  <div class="dpr-home-dashboard-header">
+    <div>
+      <span class="dpr-home-dashboard-kicker">今日累计</span>
+      <h3 class="dpr-home-dashboard-title">精读推荐</h3>
+    </div>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
+  </div>
+  <div class="dpr-home-dashboard-body">
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
+  </div>
 
-### 今日简报（AI）
-> 今日无新推荐，系统未产出可展示论文。
-- 详情：[/202603/06/README](/202603/06/README)
+</section>
+<section class="dpr-home-dashboard-card dpr-home-skim-card">
+  <div class="dpr-home-dashboard-header">
+    <div>
+      <span class="dpr-home-dashboard-kicker">今日累计</span>
+      <h3 class="dpr-home-dashboard-title">速读推荐</h3>
+    </div>
+    <strong class="dpr-home-dashboard-count">1 篇</strong>
+  </div>
+  <div class="dpr-home-dashboard-body">
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Inference for two-stage sampling in spatial surveys">Inference for two-stage sampling in spatial surveys</span></li></ul>
+  </div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">male-fert <strong>1</strong></span></div>
+</section>
+</div>
 
-### 精读区论文标签
-- 本次无精读推荐。
-
-### 速读区论文标签
-- 本次无速读推荐。
-
-
-<div class="dpr-home-promo-card">
-  <h3 class="dpr-home-promo-title">💬 社区与支持</h3>
-  <ul class="dpr-home-promo-list">
-    <li>欢迎 Star / Fork / Issue / PR</li>
-    <li>QQ群：583867967（欢迎交流，已有：1151人）</li>
-  </ul>
+<div class="dpr-home-promo-card dpr-home-panel">
+  <div class="dpr-home-panel-header">
+    <h3 class="dpr-home-promo-title">社区与支持</h3>
+  </div>
+  <p class="dpr-home-promo-copy">欢迎通过 Star、Fork、Issue 或 PR 一起完善 Daily Paper Reader。</p>
+  <div class="dpr-home-promo-meta">
+    <span>QQ群 <strong>583867967</strong></span>
+    <span class="dpr-home-promo-separator" aria-hidden="true">·</span>
+    <span>已有 <strong>1,491</strong> 人参与交流</span>
+  </div>
 </div>
