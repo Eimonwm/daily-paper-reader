@@ -1,0 +1,39 @@
+{
+  "label": "2026-06-22 ～ 2026-09-19",
+  "date": "2026-06-22 ~ 2026-09-19",
+  "generated_at": "2026-09-20T09:27:58",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "20260622-20260919/2608.27980v1",
+      "section": "quick",
+      "title_en": "The Race for Elite Destinations: Education Competition and Low Fertility in Korea",
+      "authors": "Dongwoo Kim",
+      "date": "2026-08-28",
+      "pdf": "https://arxiv.org/pdf/2608.27980v1",
+      "score": "8",
+      "evidence": "",
+      "tldr": "",
+      "tags": "query:male-fert",
+      "abstract_en": "South Korea has the world's lowest fertility and an intense education race. Families devote nine percent of lifetime income to education, mostly to private tutoring with near-zero measured returns. I show that competition for coveted careers generates an assignment externality: when all families spend more, the admission bar rises and children become costly. In a quantitative model calibrated to this mechanism, replacing score-based assignment with a capacity-preserving lottery raises completed fertility by 0.24 children per couple. Pronatal transfers deliver one eighth of that increase. Education taxes deliver almost none. Preference shifts, not a fiercer race, explain the decline across cohorts.",
+      "source": "arxiv",
+      "selection_source": "long-range"
+    },
+    {
+      "paper_id": "20260622-20260919/2607.23325v2",
+      "section": "quick",
+      "title_en": "Happy Birthday? Age Labels, Search Criteria, and Matching from Dating to Marriage",
+      "authors": "Suguru Otani",
+      "date": "2026-07-25",
+      "pdf": "https://arxiv.org/pdf/2607.23325v2",
+      "score": "6",
+      "evidence": "",
+      "tldr": "",
+      "tags": "query:male-fert",
+      "abstract_en": "Age is a match trait and a prominent label on search platforms. Using confidential records from a large Japanese marriage platform, I study how a birthday age update affects consideration, applications, relationship progression, and engagement. Only displayed age updates at birthdays. Receivers enter some acceptable-age ranges as they exit others, leaving only modest overall eligibility changes. Application counts often increase. Applications shift from younger to older suitors. Proposal counts fall at nine of ten female receiver ages \\(31\\text{--}40\\), with losses concentrated at entry into early dating. In stage-specific accounting for receivers in their thirties, the no-birthday proposal count is \\(12.9\\) percent above the benchmark for female receivers and \\(6.7\\) percent below it for male receivers; the younger-man share in the female-receiver channel is \\(4.8\\) percentage points higher. Age labels and filters are not neutral windows onto preferences: they govern who marries whom and how many marriages form.",
+      "source": "arxiv",
+      "selection_source": "long-range"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,41 @@
+{
+  "date": "20260622-20260919",
+  "date_label": "2026-06-22 ～ 2026-09-19",
+  "generated_at": "2026-09-20T09:27:58.331034+00:00",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.27980v1",
+      "route": "20260622-20260919/2608.27980v1",
+      "title": "The Race for Elite Destinations: Education Competition and Low Fertility in Korea",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "male-fert"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "韩国教育竞争与低生育率关联，涉及男性生育专题中家庭决策与政策评估。",
+      "first_seen_at": "2026-09-20T09:27:58.327580+00:00",
+      "updated_at": "2026-09-20T09:27:58.327580+00:00"
+    },
+    {
+      "paper_id": "2607.23325v2",
+      "route": "20260622-20260919/2607.23325v2",
+      "title": "Happy Birthday? Age Labels, Search Criteria, and Matching from Dating to Marriage",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "male-fert"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "以婚恋平台年龄标签与筛选为切入点，关联匹配与婚姻形成专题。",
+      "first_seen_at": "2026-09-20T09:27:58.331034+00:00",
+      "updated_at": "2026-09-20T09:27:58.331034+00:00"
+    }
+  ]
+}
