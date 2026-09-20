@@ -54,11 +54,11 @@
     <strong class="dpr-home-dashboard-count">共 1 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
-    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>2 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>1</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-20 08:30:34 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-20 08:57:54 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026年9月11日至20日的日报共筛出1篇速读文献，无精读，主题聚焦空间调查中的两阶段抽样推断。</p>
-<p>唯一可看的是《Inference for two-stage sampling in spatial surveys》（6.0/10），方向在于两阶段抽样下的统计推断方法，适合关注抽样设计与估计的人群。</p>
-<p>普通读者可先确认其推断假设是否匹配自己手头的空间调查数据结构，再决定是否深读原文。</p>
+<p>本期速读 1 篇、精读 0 篇，唯一入选的是评分 6.0 的《Inference for two-stage sampling in spatial surveys》。</p>
+<p>该文聚焦空间调查中两阶段抽样的统计推断问题，属中等参考价值，适合对抽样设计与空间调查方法感兴趣的读者浏览。</p>
+<p>建议普通读者先读摘要与结论判断是否与自己的调查场景相关，再决定要不要深入方法部分。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
