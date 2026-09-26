@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-09-26 <!--dpr-date:20260926-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202609/26/2609.22735v1-modeling-transition-dynamics-and-network-structure-in-cross-national-process-data-a-hierarchical-multi-state-survival-framework" data-sidebar-item="{&quot;title&quot;: &quot;Modeling Transition Dynamics and Network Structure in Cross-National Process Data: A Hierarchical Multi-State Survival Framework&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.22735v1-modeling-transition-dynamics-and-network-structure-in-cross-national-process-data-a-hierarchical-multi-state-survival-framework&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;male-fert&quot;}], &quot;evidence&quot;: &quot;跨国事件史的分层多状态生存建模&quot;}">Modeling Transition Dynamics and Network Structure in Cross-National Process Data: A Hierarchical Multi-State Survival Framework</a>
   * 2026-06-22 ～ 2026-09-19 <!--dpr-date:20260622-20260919-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/20260622-20260919/2608.27980v1" data-sidebar-item="{&quot;title&quot;: &quot;The Race for Elite Destinations: Education Competition and Low Fertility in Korea&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.27980v1&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;male-fert&quot;}], &quot;evidence&quot;: &quot;韩国教育竞争与低生育率关联，涉及男性生育专题中家庭决策与政策评估。&quot;, &quot;research_run_id&quot;: &quot;20260920-92cfb2208aa6&quot;, &quot;research_mode&quot;: &quot;90&quot;}">The Race for Elite Destinations: Education Competition and Low Fertility in Korea</a>

@@ -1,0 +1,24 @@
+{
+  "label": "2026-09-26",
+  "date": "2026-09-26",
+  "generated_at": "2026-09-26T22:26:01",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202609/26/2609.22735v1-modeling-transition-dynamics-and-network-structure-in-cross-national-process-data-a-hierarchical-multi-state-survival-framework",
+      "section": "quick",
+      "title_en": "Modeling Transition Dynamics and Network Structure in Cross-National Process Data: A Hierarchical Multi-State Survival Framework",
+      "authors": "Doungjun Kim, Daeun Hwangbo, Minjeong Jeon, Ick Hoon Jin",
+      "date": "2026-09-19",
+      "pdf": "https://arxiv.org/pdf/2609.22735v1",
+      "score": "6.0",
+      "evidence": "跨国事件史的分层多状态生存建模",
+      "tldr": "跨国过程数据常因国家×作答组样本小而失衡、转移支持不一致，难以建模。本文提出分层框架，将贝叶斯多状态生存模型与转移结构的网络表示结合，并通过部分汇聚估计各国协变量、关键动作效应与转移速度。再用适配异质支持的有向图自编码器嵌入后验转移概率网络，以1-Wasserstein距离传播不确定性。应用于PIAAC 14国两道题，揭示转移速度跨国异质、作答组网络组织差异及局部路径差异。",
+      "tags": "query:male-fert",
+      "abstract_en": "Process data from computer-based assessments record the sequence and timing of actions through which respondents solve a task, providing information about both the pace and structure of problem-solving behavior. Modeling such processes across countries is challenging because country-by-response-group cells are often small and unbalanced and the observed transition supports can differ substantially across countries. We propose a hierarchical framework that integrates a Bayesian multi-state survival model with a network-based representation of transition structure. Partial pooling across countries yields country-specific covariate and key-action effects, transition speed, and estimates of between-country heterogeneity. Posterior transition probability networks are embedded in a common latent space using a directed graph auto-encoder adapted to heterogeneous supports, and 1-Wasserstein distances between node-role distributions are evaluated across posterior draws to characterize global network structure while propagating estimation uncertainty. We apply the framework to two problem-solving items from the Programme for the International Assessment of Adult Competencies across 14 countries. The results reveal cross-country heterogeneity in transition speed, systematic response-group differences in global network organization, item-dependent variation in within-group dispersion across countries, and local differences in routing around shared intermediate actions.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

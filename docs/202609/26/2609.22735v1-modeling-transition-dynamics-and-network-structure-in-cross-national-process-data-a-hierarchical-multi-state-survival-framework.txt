@@ -1,0 +1,958 @@
+Title: Modeling Transition Dynamics and Network Structure in Cross-National Process Data: A Hierarchical Multi-State Survival Framework
+
+URL Source: https://arxiv.org/pdf/2609.22735v1
+
+Published Time: Tue, 22 Sep 2026 00:45:09 GMT
+
+Number of Pages: 38
+
+Markdown Content:
+# Modeling Transition Dynamics and Network Structure in Cross-National Process Data: A Hierarchical Multi-State Survival Framework 
+
+Doungjun Kim 1, Daeun Hwangbo 1, Minjeong Jeon 3, and Ick Hoon Jin 1,2,∗
+
+> 1
+
+Department of Statistics and Data Science, Yonsei University, Seoul, Republic of Korea 
+
+> 2
+
+Department of Applied Statistics, Yonsei University, Seoul, Republic of Korea 
+
+> 3
+
+School of Education and Information Studies, University of California, Los Angeles. USA. 
+
+> ∗
+
+Corresponding Author: Ick Hoon Jin Department of Applied Statistics, Department of Statistics and Data Science, Yonsei University 50 Yonsei-ro, Seodaemun-gu, Seoul 03722, Republic of Korea e-mail: ijin@yonsei.ac.kr 
+
+Short Running Head: Cross-National Transition Dynamics in Process Data arXiv:2609.22735v1 [stat.AP] 19 Sep 2026 Modeling Transition Dynamics and Network Structure in Cross-National Process Data: A Hierarchical Multi-State Survival Framework 
+
+Doungjun Kim 1, Daeun Hwangbo 1, Minjeong Jeon 3, and Ick Hoon Jin 1,2 1Department of Statistics and Data Science, Yonsei University. Republic of Korea. 
+
+> 2
+
+Department of Applied Statistics, Yonsei University. Republic of Korea. 
+
+> 3
+
+School of Education and Information Studies, University of California, Los Angeles. USA. 
+
+Abstract 
+
+Process data from computer-based assessments record the sequence and timing of actions through which respondents solve a task, providing information about both the pace and structure of problem-solving behavior. Modeling such processes across countries is challenging because country-by-response-group cells are often small and unbalanced and the observed transition supports can differ substan-tially across countries. We propose a hierarchical framework that integrates a Bayesian multi-state survival model with a network-based representation of transition structure. Partial pooling across countries yields country-specific covariate and key-action effects, transition speed, and estimates of between-country heterogeneity. Posterior transition probability networks are embedded in a com-mon latent space using a directed graph auto-encoder adapted to heterogeneous supports, and 1-Wasserstein distances between node-role distributions are evaluated across posterior draws to char-acterize global network structure while propagating estimation uncertainty. We apply the framework to two problem-solving items from the Programme for the International Assessment of Adult Com-petencies across 14 countries. The results reveal cross-country heterogeneity in transition speed, systematic response-group differences in global network organization, item-dependent variation in within-group dispersion across countries, and local differences in routing around shared intermediate actions. 
+
+Keywords: Process data; Bayesian hierarchical modeling; Multi-state survival models; Directed network comparison; Wasserstein distance; Cross-national comparison. 11 Introduction 
+
+Interactive computer-based tasks generate considerably richer data than a single final response. In addition to whether a respondent solves a task, the digital environment records a time-stamped sequence of actions such as opening a page, selecting an option, entering information, or returning to an earlier step. For respondent i, these data may be viewed as a trajectory through a finite state space together with the waiting times between successive states. Thus, process data have both a sequential 
+
+component—which actions follow which—and a temporal component—how quickly respondents move between them. Two respondents can arrive at the same final answer through different routes, or can follow the same route at very different speeds. These data therefore provide information about the organization of problem solving that is not available from response accuracy or total response time alone (Anghel et al., 2024; He and Cui, 2025). From a statistical perspective, such data raise several challenges. The state space can be moderately large, while only a small fraction of all possible transitions may be observed. Transition counts are therefore highly sparse and uneven, and the set of observed transitions may differ substantially across subpopulations. At the same time, both the timing and routing of transitions may vary systematically across respondents and groups. A useful analysis must therefore accommodate sparse event-history data, borrow information across related groups without eliminating meaningful heterogeneity, and characterize differences in entire transition structures rather than only in individual edges. These issues arise naturally in large-scale international assessments. We consider process data from the Problem Solving in Technology-Rich Environments (PSTRE) component of the Programme for the International Assessment of Adult Competencies (PIAAC), which records detailed respondent inter-actions with computer-based tasks across multiple countries (OECD, 2012, 2017, 2019). Most cross-national analyses of assessment data focus on proficiency scores or response accuracy, whereas the processes leading to those outcomes have received substantially less attention (Ercikan et al., 2020). Existing work nevertheless suggests that countries with similar levels of performance can differ in the prevalence and timing of characteristic response patterns (Zheng et al., 2023), and that the same digital behavior can differ across countries both in frequency and in its association with performance (Anghel and von Davier, 2025). This makes PIAAC process data a useful setting for studying heterogeneity in both transition dynamics and transition structure. Several methodological traditions have been used to analyze process data. Sequence-mining methods identify frequently occurring or performance-related subsequences and solution strategies (He and von 2Davier, 2015; He et al., 2021), while probabilistic models describe action sequences and inter-action times through latent states or respondent-level traits (Chen, 2020; Xu et al., 2020; Fu et al., 2024; Tang, 2024). A complementary representation treats actions as nodes and observed transitions as directed edges, producing transition networks that can be used to visualize solution paths, summarize behavioral structure, and identify subgroups (Zhu et al., 2016; Zhang and Andersson, 2023; Saqr et al., 2025). These approaches emphasize different features of the same stochastic process: event-history models describe transition intensities and waiting times, whereas network representations describe how probability is distributed among possible next actions. Integrating these two perspectives is particularly useful when both transition speed and global routing structure are of scientific interest. Continuous-time models provide a natural framework for the temporal component. The same tran-sition may occur quickly for one respondent and slowly for another, and the waiting time before a transition carries information about the pace of the response process. Chen (2020), for example, for-mulated process data as a marked point process in which the next action is modeled jointly with the waiting time. Park et al. (2025) instead adopted a multi-state survival formulation in which actions are states and the time between consecutive actions is a survival time. Transition-specific hazards can then incorporate respondent-level speed, covariate effects, and features of the source and destination actions. This representation is especially appealing because it separates the rate at which a respondent leaves a state from the routing among possible destination states. Extending this framework to multiple countries introduces a hierarchical problem that cannot be ad-dressed satisfactorily by fitting unrelated models country by country. In the PIAAC application, countries are further divided into correct- and incorrect-response groups, producing cells that vary substantially in size and contain many rare or unobserved transitions. Complete pooling would obscure country-level heterogeneity, whereas fitting separate models would yield unstable estimates in sparse cells and would not provide a direct estimate of between-country variation. Moreover, the observed transition support differs across country–response-group combinations, so the corresponding transition networks are not defined on identical edge sets. Finally, because the networks are functions of estimated transition pa-rameters, uncertainty in the fitted model should be propagated into any subsequent analysis of network structure rather than discarded through a single plug-in estimate. We develop a two-stage hierarchical framework for these data. In the first stage, we formulate a Bayesian multi-state survival model in which country-specific covariate effects, key-action effects, and country-level mean log-speed parameters are partially pooled across countries. Transition-specific base-line intensities are shared across countries within each response group, which stabilizes estimation for 3rare transitions, while hierarchical distributions allow the remaining effects to vary by country and quan-tify between-country heterogeneity. An interaction between source- and destination-key-action status allows transitions between two key actions to depart from an additive specification. In the second stage, the fitted hazards are transformed into posterior transition probability matri-ces and treated as directed weighted networks. Because the observed supports differ across country– response-group combinations, elementwise comparison of transition matrices is not well suited to the problem. We instead use a modified directed graph auto-encoder (Kollias et al., 2022) to embed the networks in a common latent space with separate source and target representations for each action. Network dissimilarity is then quantified by the 1-Wasserstein distance between the resulting distribu-tions of node-role embeddings (Togninalli et al., 2019). A common encoder is trained on posterior mean networks and then held fixed across posterior draws. Applying the encoder to each draw induces a poste-rior distribution of pairwise network dissimilarities, thereby propagating uncertainty from the multi-state model into the network analysis. The resulting framework separates three related features of the response process. The multi-state model characterizes transition intensity , including respondent characteristics, key-action effects, and overall speed. The hierarchical specification characterizes between-country heterogeneity in these quan-tities. The network representation characterizes routing structure , that is, how transition probability is distributed among possible next actions. This distinction is important because two groups may differ in how quickly they move through a task, in which transitions they favor, or in both. The paper makes three main contributions. First, we develop a hierarchical multi-state survival model for sparse and unbalanced cross-national process data that jointly estimates population-level effects, country-specific effects, and between-country heterogeneity. Second, we develop a network rep-resentation of the model-implied transition probabilities that accommodates heterogeneous transition supports and propagates posterior uncertainty into measures of global network structure. Third, we use the combined framework to study response processes in two PIAAC problem-solving tasks across 14 countries, examining transition speed, covariate and key-action effects, global routing structure, and local differences in transition pathways. The empirical analysis is organized around three questions: how respondent characteristics and key-action status are associated with transition intensities at the population and country levels; how much between-country heterogeneity is present in these associations and in transition speed; and how the global and local structure of transition networks varies across countries and response groups. The remainder of the paper is organized as follows. Section 2 describes the PIAAC process data, 4analytic samples, key actions, and transition sparsity. Section 3 presents the hierarchical multi-state survival model and the construction of posterior transition probability matrices. Section 4 introduces the directed graph embedding and Wasserstein-based network analysis. Section 5 presents the empirical results, and Section 6 discusses implications, limitations, and future directions. 
+
+# 2 Data Description 
+
+2.1 Items, Sample, and Covariates 
+
+We analyze process data from the 2012 Problem Solving in Technology-Rich Environments (PSTRE) component of the Programme for the International Assessment of Adult Competencies (PIAAC), ad-ministered by the Organisation for Economic Co-operation and Development (OECD) (OECD, 2012, 2016). The archived process-data files (OECD, 2017) contain time-stamped records of respondents’ interactions with the computer interface, including page changes, menu selections, mouse actions, and text entry. For each respondent and item, these records are converted into an ordered sequence of discrete actions together with the elapsed time between successive actions. Background characteristics are obtained from the corresponding PIAAC Public Use Files (OECD, 2016). We consider respondents from 14 countries and analyze two PSTRE items that differ substantially in their interface and task requirements. The two items involve different problem-solving tasks and digital environments. In CD Tally (U03A), respondents work in a combined web-browser and spreadsheet environment. The task places respondents in the role of an employee at a small music store whose manager has asked them to update the store’s online inventory summary for the month. The spreadsheet lists information about multiple CDs and provides functions such as sorting and Find to help respondents locate and organize the records. Respondents must determine the number of Blues CDs, select the corresponding count in the online inventory form, and submit the form. Completing the task requires respondents to navigate between the two environments and use the spreadsheet information; common task-relevant actions include opening the data menu, using the sorting functions, sorting by genre, and returning to the website to select and submit the answer. In Lamp Return (U23X), respondents work in a combined email and web-browser environment. The task places respondents in the role of a customer who ordered a desk lamp online but received one in a different color from the color ordered. Respondents are asked to use the company’s website to arrange an exchange for the lamp they originally ordered. To complete the task, they must navigate to the 5email environment, locate the relevant message, and retrieve the return authorization number. They then return to the website and navigate to the customer service and return pages. In the return form, respondents must indicate that the wrong item was shipped, request an exchange for the correct item, and enter the return authorization number obtained from the email before submitting the form. The task therefore requires respondents to coordinate information across the email and web environments while completing a sequence of related steps. The two tasks consequently generate action spaces of different sizes and complexity. After preprocess-ing the log files, CD Tally contains E = 52 distinct actions and Lamp Return contains E = 126 distinct actions. These actions include both task-relevant operations and more general interface events, such as page navigation and keyboard input. A complete list and description of the distinct actions for each item, together with screenshots of the task interfaces, are provided in the Section S1 of Supplementary Material. The two items also differ in their scoring. CD Tally is scored dichotomously, so respondents are classified directly as having either a correct or an incorrect response. Lamp Return is scored on a scale from 0 to 3; we classify respondents receiving the maximum score of 3 as the correct-response group 
+
+and those receiving scores from 0 to 2 as the incorrect-response group . We use these two response groups to examine whether the transition dynamics and routing patterns associated with successful task completion differ from those observed among respondents who do not fully complete the task. Together with the 14 countries, this classification yields 28 country–response-group combinations for each item. Among the background variables available in PIAAC, we consider five respondent characteristics that capture demographic, socioeconomic, and technology-related differences that may be relevant to how respondents work through computer-based problem-solving tasks. These variables are gender, age, educational attainment, income, and Eskill . Eskill is a standardized composite based on seven questions about the frequency of computer and Internet use and provides a measure of respondents’ familiarity with digital technology. Education and income provide indicators of respondents’ educational and socioeconomic backgrounds, while age and gender capture broader demographic differences. Details of the variable coding and descriptive statistics are provided in Section S1.2 of the Supplementary Material. The analytic samples are restricted to respondents with complete information on these five covariates. This results in N = 9 ,117 respondents for CD Tally and N = 12 ,557 respondents for Lamp Return, with country-specific sample sizes reported in Table 1. The proportion of respondents in the correct-response group ranges from 0.58 to 0.73 across countries for CD Tally and from 0.32 to 0.54 for Lamp Return. 6Table 1: Sample sizes for the correct- and incorrect-response groups and proportions of correct responses by country and item. CD Tally is scored dichotomously. For Lamp Return, which is scored from 0 to 3, a score of 3 is classified as correct and scores of 0–2 as incorrect. CD Tally Lamp Return Country Correct Incorrect Proportion correct Correct Incorrect Proportion correct Austria 437 217 0.67 262 560 0.32 Belgium 342 199 0.63 304 443 0.41 Germany 476 248 0.66 318 656 0.33 Denmark 491 361 0.58 470 739 0.39 Estonia 315 197 0.62 303 411 0.42 Finland 449 249 0.64 499 432 0.54 United Kingdom 625 364 0.63 534 817 0.40 Ireland 298 189 0.61 249 446 0.36 South Korea 447 165 0.73 316 528 0.37 Netherlands 425 285 0.60 457 559 0.45 Norway 540 319 0.63 429 623 0.41 Poland 331 196 0.63 341 487 0.41 Slovakia 275 121 0.69 222 370 0.38 United States 335 221 0.60 267 515 0.34 Total 5,786 3,331 4,971 7,586 Consequently, the sample sizes of the 28 country–response-group combinations are unequal, with several cells containing fewer than 200 respondents. This imbalance, together with the sparsity of the observed transitions described in Section 2.3, motivates the partial-pooling structure of the hierarchical model introduced in Section 3. 
+
+2.2 Key Actions 
+
+Because the action spaces are relatively large, it is useful to distinguish a smaller subset of actions that are especially informative about successful task completion. We refer to these as key actions .Identifying such actions serves two purposes. First, it provides a substantively interpretable summary of 7Item Action Description CD Tally so 1 3 Sort by third column (Genre) so 2 asc Sort the spreadsheet in ascending order so 2 desc Sort the spreadsheet in descending order so ok Confirm sorting options so Open the sort engine via the data menu ss data Click the data menu on the spreadsheet page ss so Open the sort engine on the spreadsheet page Lamp Return wb pg 8 4 reason 4 Select the reason for return (wrong item) wb pg 8 4 submit Submit the return form wb pg 8 4 request 1 Select the request (exchange) wb pg 8 4 Open the return form wb pg 8 Link to the Customer Service page wb pg 8 2 View updated orders and shipping wb pg 8 3 Obtain the authorization number wb Switch to the website page wb hist back Go to the previous page em Switch to the email page em m view 305 View email 305 (authorization number) em f view View the email folder keypress Press a keyboard key 
+
+Table 2: Key actions identified for the CD Tally and Lamp Return items. Key actions are those whose occurrence is most strongly associated with response correctness and are used to characterize transitions involving task-relevant actions. the parts of the response process that are most strongly associated with response correctness. Second, it allows the multi-state survival model to capture systematic differences in transition intensity involving task-relevant actions without introducing separate regression effects for every individual action. We define the set of key actions, denoted by A, as those whose occurrence is most strongly associated with whether a respondent answers the item correctly. The key-action sets are identified using the χ2
+
+procedure of He and von Davier (2015). For each action, the procedure measures the association between its weighted occurrence frequency and response correctness; actions are then ranked by this association, and those above an elbow point in the ordered scores are retained (Park et al., 2025). 8Table 2 lists the resulting seven key actions for CD Tally and thirteen for Lamp Return. For CD Tally, the selected actions primarily involve spreadsheet sorting operations that are central to identifying the requested CD genre. For Lamp Return, they primarily involve navigating the return process, obtaining the authorization number, and completing the online return form. The complete action inventories, including descriptions of both key and non-key actions, are provided in Section S1.4 of the Supplementary Material. 
+
+2.3 Cross-National Structure and Transition-Level Sparsity 
+
+Let g = ( q, c ) denote a combination of country q = 1 , . . . , Q (Q = 14 ) and response group 
+
+c ∈ { 0, 1} with c = 1 for correct responses (hereafter a country-group combination) and let the observed transition support of g be the set of ordered action pairs (m, l ) with m̸ = l observed at least once among respondents in g. There are G = 2 Q = 28 combinations per item. Three features of these data motivate the modeling strategy. First, the data are nested and the cells are small and unbalanced. As shown in Table 1, cell sizes range from 121 to 625 for CD Tally and from 222 to 817 for Lamp Return whereas the countries differ in the proportion of correct responses. A single set of coefficients would suppress differences that the data indicate whereas separate coefficients for every country would rest on as few as 121 respondents. A hierarchical specification estimates country-specific coefficients and their common distribution so that the degree of shrinkage is determined by the data (Gelman and Hill, 2007). Table 3: Structural summary of the observed transition data by item and response group. Entries are minimum / median / maximum across the 14 countries in each row. Support size is the number of ordered action pairs observed at least once. Coverage is the support size as a percentage of the E(E −1) possible pairs. Pairs < 5 is the percentage of observed pairs occurring fewer than five times. Item Group n Support size Coverage (%) Pairs < 5 (%) CD Tally Correct 275 / 431 / 625 205 / 422 / 483 7.7 / 15.9 / 18.2 66.7 / 73.0 / 77.6 Incorrect 121 / 219 / 364 142 / 302 / 397 5.4 / 11.4 / 15.0 72.2 / 82.0 / 92.3 Lamp Return Correct 222 / 317 / 534 354 / 513 / 717 2.2 / 3.3 / 4.6 63.5 / 67.6 / 73.2 Incorrect 370 / 522 / 817 494 / 695 / 998 3.1 / 4.4 / 6.3 67.5 / 70.3 / 77.0 Second, the supports are heterogeneous in size and composition. As shown in Table 3 support sizes range from 142 to 483 of the E(E − 1) = 2 ,652 possible pairs for CD Tally and from 354 to 998 9of 15 ,750 for Lamp Return. The pairwise Jaccard similarity between supports has median 0.46 for CD Tally and 0.45 for Lamp Return and the overlap coefficient which adjusts for differences in support size has median 0.73 and 0.71. Country-group combinations thus traverse partly distinct regions of the action space and a comparison of transition structures must accommodate networks defined on different supports. Third, transition counts are concentrated on rare pairs. In all 28 combinations at least half of the observed pairs occur three times or fewer and the proportion occurring fewer than five times ranges from 63.5% to 92.3% as reported in the last column of Table 3. Separate estimation of transition-specific baselines within each combination would therefore rest on little information for most pairs. The baseline intensities are hence shared across countries within each response group and country-level variation is carried by the covariate effects, the key-action effects, and the country-specific speed distributions. 
+
+# 3 Hierarchical Multi-state Survival Models 
+
+3.1 Model Specification 
+
+A multi-state survival model (MSM; Commenges, 1999; Hougaard, 1999; Andersen et al., 2002; Putter et al., 2007; Meira-Machado et al., 2009; Crowther and Lambert, 2017) represents an action sequence as a trajectory through a finite set of states in which the time between consecutive actions is a survival time and transition intensities are hazard functions. We extend the Bayesian multi-state survival model (Park et al., 2025) in two main ways. First, whereas their model was fitted separately to each country, we introduce a hierarchical structure across countries, enabling partial pooling and estimation of between-country heterogeneity. Second, we add an interaction between source- and destination-key-action status, allowing the key-action contribution to the log-hazard of key-to-key transitions to depart from additivity. We retain the time-homogeneous Markov assumption under which transition rates are constant over time and depend only on the current state. We define the model on a common transition support T ,the set of off-diagonal transitions observed in the pooled sample. For (m, l ) ∈ T , the hazard of the transition from action m to action l for respondent i in country q is 
+
+λm,l,i,q = κci,m,l τi exp 
+
+( PX
+
+> p=1
+
+αp,q xi,p + βci,1,q I(m ∈ A ) + βci,2,q I(l ∈ A ) + βci,3,q I(m ∈ A )I(l ∈ A )
+
+)
+
+,
+
+(1) where P is the number of covariates and A is the set of key actions. The baseline hazard κci,m,l > 0 is specific to response group ci ∈ { 0, 1} and shared across countries. The speed parameter τi > 0 captures 10 the overall pace of respondent i. The coefficient αp,q is the effect of covariate p on the log-hazard in country q. The parameters βci,1,q and βci,2,q are the source-key and destination-key main effects and 
+
+βci,3,q is their interaction which gives the additional log-hazard when both source and destination are key actions. The country-specific effects are partially pooled. For each covariate p the coefficients {αp,q }Qq=1 share a population mean μα,p and a between-country variance σ2
+
+> α,p
+
+. For each response group c and effect type 
+
+r the coefficients {βc,r,q }Qq=1 share μβ,c,r and σ2
+
+> β,c,r
+
+. The parameters of the country-specific distributions of τi follow a parallel hierarchy. The variance components quantify between-country heterogeneity and the partial pooling stabilizes estimation in small cells. 
+
+3.2 Prior and Computation 
+
+Let ai,j denote the jth action of respondent i for j = 0 , 1, · · · , E i where ai, 0 is the initial action and Ei is the number of observed transitions. Let ti,j denote the time of the jth transition with ti, 0 = 0 
+
+and let q(i) denote the country of respondent i. Define the transition count Dm,l,i = PEi 
+
+> j=1
+
+I(ai,j −1 =
+
+m, a i,j = l) and the time at risk Rm,i = PEi
+
+> j=1
+
+(ti,j −ti,j −1)I(ai,j −1 = m). Under the time-homogeneous Markov assumption the likelihood of the data Y given the parameters Θ is 
+
+L(Y | Θ) = 
+
+> N
+
+Y
+
+> i=1
+> E
+
+Y
+
+> m=1
+
+Y
+
+> (m,l )∈T
+
+λDm,l,i  
+
+> m,l,i,q (i)
+
+exp  −λm,l,i,q (i)Rm,i 
+
+ . (2) Let r = 1 , 2, 3 index the source-key main effect, the destination-key main effect, and the interaction. The priors are 
+
+κc,m,l ∼ LN( μκ, σ 2
+
+> κ
+
+), τi ∼ LN( μτ,q (i), σ 2
+
+> τ,q (i)
+
+), σ2 
+
+> τ,q
+
+∼ IG( aτ , b τ ), μτ,q ∼ N(0 , σ 2 
+
+> μτ
+
+),σ2 
+
+> μτ
+
+∼ IG( cτ , d τ ), αp,q ∼ N( μα,p , σ 2
+
+> α,p
+
+), μα,p ∼ N(0 , σ 2
+
+> α
+
+), σ2 
+
+> α,p
+
+∼ IG( aα, b α),βc,r,q ∼ N( μβ,c,r , σ 2
+
+> β,c,r
+
+), μβ,c,r ∼ N(0 , σ 2 
+
+> μβ
+
+), σ2 
+
+> β,c,r
+
+∼ IG( aβ , b β ),
+
+(3) where LN and IG denote the log-normal and inverse-gamma distributions and the indices run over 
+
+c ∈ { 0, 1}, (m, l ) ∈ T , i = 1 , · · · , N , q = 1 , · · · , Q , p = 1 , · · · , P , and r = 1 , 2, 3. The posterior distribution is 
+
+π
+
+
+
+Θ | Y 
+
+
+
+∝ L
+
+
+
+Y | Θ
+
+ Y
+
+> c,m, (m,l )∈T
+
+π
+
+
+
+κc,m,l 
+
+ Y 
+
+> i
+
+π
+
+
+
+τi | μτ,q (i), σ 2
+
+> τ,q (i)
+
+
+
+× Y
+
+> q
+
+π
+
+
+
+μτ,q | σ2
+
+> μτ
+
+
+
+π
+
+
+
+σ2
+
+> τ,q
+
+
+
+π
+
+
+
+σ2
+
+> μτ
+
+ Y 
+
+> p,q
+
+π
+
+
+
+αp,q | μα,p , σ 2
+
+> α,p
+
+ Y 
+
+> p
+
+π
+
+
+
+μα,p 
+
+
+
+π
+
+
+
+σ2
+
+> α,p
+
+
+
+× Y
+
+> c,r,q
+
+π
+
+
+
+βc,r,q | μβ,c,r , σ 2
+
+> β,c,r
+
+ Y 
+
+> c,r
+
+π
+
+
+
+μβ,c,r 
+
+
+
+π
+
+
+
+σ2
+
+> β,c,r
+
+
+
+,
+
+(4) 11 where L(Y | Θ) is the likelihood in (2) and each prior density is given in (3). The variances σ2 
+
+> α
+
+and σ2
+
+> μβ
+
+of the population means are fixed whereas σ2 
+
+> α,p
+
+and σ2 
+
+> β,c,r
+
+are estimated between-country variances. We set μκ = 0 , σ2 
+
+> κ
+
+= σ2 
+
+> α
+
+= σ2 
+
+> μβ
+
+= 1 , and all inverse-gamma shape and scale parameters to 0.001 .Posterior inference used four MCMC chains of 300,000 iterations each. The first 100,000 iterations were discarded and every 20th draw was retained so that each chain yielded 10,000 draws. Proposal variances of the Metropolis–Hastings updates were tuned to acceptance rates between 0.2 and 0.5. Con-vergence was assessed with the rank-normalized split- bR diagnostic (Vehtari et al., 2021). Implementation details are given in the Section S2 of the Supplementary Material. 
+
+3.3 Transition Probability Matrices 
+
+The fitted hazards are converted into transition probability matrices that give the conditional dis-tribution of the next action given the current action. Let S = {1, . . . , E } denote the set of all actions of an item and let g(i) = ( q(i), c i) denote the country-group combination of respondent i. For combi-nation g, let Ng(m, l ) = P 
+
+> i:g(i)= g
+
+Dm,l,i denote the number of observed transitions from m to l and 
+
+ng(m) = P  
+
+> l̸=m
+
+Ng(m, l ) the number of observed transitions out of m. The empirical transition support is Eg = {(m, l ) : m̸ = l, N g(m, l ) > 0, n g(m) ≥ ν0} with ν0 = 3 so that transition probabilities are con-structed only for source actions with at least three observed exits. Let N + 
+
+> g
+
+(m) = {u ∈ S : ( m, u ) ∈ E g}
+
+denote the observed destinations of m.Row-normalizing the hazards in (1) over N + 
+
+> g
+
+(m) at posterior draw s gives for g = ( q, c )
+
+A(s,g ) 
+
+> m,l
+
+= κ(s) 
+
+> c,m,l
+
+exp {η(s) 
+
+> c,q
+
+(m, l )}
+
+P   
+
+> u∈N +
+> g(m)
+
+κ(s) 
+
+> c,m,u
+
+exp {η(s) 
+
+> c,q
+
+(m, u )} for l ∈ N + 
+
+> g
+
+(m), (5) where η(s) 
+
+> c,q
+
+(m, l ) = 
+
+n
+
+β(s) 
+
+> c, 2,q
+
++ β(s)
+
+> c, 3,q
+
+I(m ∈ A )
+
+o
+
+I(l ∈ A ) and A(s,g ) 
+
+> m,l
+
+= 0 otherwise. The speed parameter 
+
+τi, the covariate effects αp,q , and the source-key effect βc, 1,q multiply all outgoing hazards of a source action by a common factor. They govern the exit rate and the time spent in the current action and cancel under the normalization so that A(s,g ) does not depend on respondent-level quantities and no reference covariate profile is needed. The baseline hazards κc,m,l and the routing effects βc, 2,q and βc, 3,q 
+
+vary across destinations and determine how probability is allocated among the outgoing edges. Because 
+
+κc,m,l is shared across countries within each response group cross-country differences in the networks arise only through (βc, 2,q , β c, 3,q ) and the supports Eg. Each nonzero row of A(s,g ) sums to one over the observed destinations. Rows with N + 
+
+> g
+
+(m) = ∅ are zero and self-transitions are excluded. The entry 
+
+A(s,g ) 
+
+> m,l
+
+is the embedded probability of the next transition rather than a finite-time transition probability. 12 4 Embedding and Comparison of Transition Probability Networks 
+
+The transition probability matrix A(s,g ) of each country-group combination g at posterior draw s is a directed weighted network on the support Eg. These matrices are deterministic functions of the model parameters rather than parameters themselves and the posterior distribution of the parameters therefore induces a posterior distribution over the network of every combination. The goal of this section is to compare the networks across combinations and to identify structural similarities and differences among countries and response groups. Two features of the networks complicate this comparison. The supports Eg differ in size and com-position so that a source action without observed exits in one combination may be well populated in another. Elementwise distances between transition matrices treat such support differences as differences in probability values and ignore the relational structure of directed graphs. We therefore proceed in two stages. A modified directed graph auto-encoder (DiGAE) adapted to row-stochastic matrices with heterogeneous supports first embeds all networks in a common latent space. The 1-Wasserstein distance between the node embedding distributions of two networks is then computed for each posterior draw so that posterior uncertainty in the networks is carried into the pairwise distances. Averaging the draw-specific distances over the posterior sample yields a distance matrix that summarizes the dissimilarity among the 28 networks of an item. 
+
+4.1 Directed Graph Auto-Encoder (DiGAE) Framework 
+
+The transition networks are directed and weighted and the direction of an edge is substantively meaningful. We therefore use the directed graph auto-encoder (DiGAE; Kollias et al., 2022) which learns two latent vectors for each node. Let d denote the embedding dimension. Each action m has a source embedding zS,m ∈ Rd that encodes its role as the origin of transitions and a target embedding 
+
+zT,m ∈ Rd that encodes its role as the destination of transitions. The encoder consists of directed graph convolutional layers that update source embeddings by aggregating over target neighbors and target embeddings by aggregating over source neighbors. Collecting the embeddings as rows of ZS and 
+
+ZT ∈ RE×d the decoder reconstructs the network as ¯A = ς(ZS Z⊤ 
+
+> T
+
+) where ς is the elementwise sigmoid function. The asymmetric inner product z⊤
+
+> S,m
+
+zT,l allows the edges m → l and l → m to receive different weights. Three properties of the transition networks motivate the modifications in Section 4.2. Each nonzero row of A(s,g ) is a probability distribution without self-transitions whereas the standard decoder predicts 13 independent edge probabilities. The node and edge supports differ across combinations. The trained encoder is applied to all posterior draws rather than to a single network so that posterior uncertainty is carried into the embedding space. 
+
+4.2 Adaptations for Transition Probability Networks 
+
+4.2.1 Graph Convolutional Encoder 
+
+We retain the encoder (Kollias et al., 2022) and modify the treatment of the adjacency matrix. Let ˜A denote the augmented adjacency matrix defined below and let ˜D+ and ˜D− denote the diagonal matrices of its out-degrees and in-degrees. With ˆA = ( ˜D+)−γ+ ˜A( ˜D−)−γ−
+
+, the updates at layer ℓ are 
+
+S(ℓ+1) = ˆA T (ℓ)W (ℓ) 
+
+> T
+
+and T (ℓ+1) = ˆA⊤S(ℓ)W (ℓ) 
+
+> S
+
+,
+
+where W (ℓ) 
+
+> S
+
+and W (ℓ) 
+
+> T
+
+are trainable weight matrices and γ+, γ − ∈ [0 , 1] control the strength of out-degree and in-degree normalization. Standard DiGAE sets ˜A = A + I and adds a self-loop to every node. We instead distinguish nodes with at least one outgoing transition, sink nodes with incoming transitions only, and isolated nodes with no transitions and define 
+
+˜Aml = Aml if P 
+
+> k
+
+Amk > 0,
+
+˜Aml = δml if P 
+
+> k
+
+Amk = 0 and P 
+
+> k
+
+Akm > 0,
+
+˜Aml = 0 otherwise ,
+
+(6) where δml is the Kronecker delta. A node with outgoing transitions keeps its row of A so that the transition structure is preserved. A sink node receives a self-loop so that its representation remains informative across the layers. An isolated node retains a zero row and a zero column. Sink and isolated nodes have empty outgoing supports and are excluded from the reconstruction loss below. We use two layers with ReLU nonlinearity and the identity matrix X = IE as node features so that each action enters as a one-hot vector. The encoder is 
+
+ZS = ˆA ReLU( ˆA⊤XW (0)  
+
+> S
+
+)W (1)  
+
+> T
+
+and ZT = ˆA⊤ReLU( ˆAXW (0)  
+
+> T
+
+)W (1) 
+
+> S
+
+where W (0)  
+
+> S
+
+, W (0)  
+
+> T
+
+∈ RE×d1 and W (1)  
+
+> S
+
+, W (1)  
+
+> T
+
+∈ Rd1×d where d1 is the hidden dimension. The cross use of W (1)  
+
+> T
+
+in the source path and W (1)  
+
+> S
+
+in the target path follows the block-antidiagonal parameterization (Kollias et al., 2022) so that the source and target embeddings are learned jointly rather than as two separate encoders. 14 4.2.2 Decoder and Loss Function 
+
+The standard decoder ¯A = ς(ZS Z⊤ 
+
+> T
+
+) predicts an independent existence probability for each edge. This decoder does not match the transition networks because each nonzero row of A(g) is a probability distribution over the observed destinations N + 
+
+> g
+
+(m) and self-transitions are excluded by construction. Let Mg = {m ∈ S : N + 
+
+> g
+
+(m)̸ = ∅} denote the source actions with at least one observed destination and let Ψ(g) denote the mask with Ψ(g) 
+
+> ml
+
+= 0 for (m, l ) ∈ E g and Ψ(g) 
+
+> ml
+
+= −∞ otherwise under the convention 
+
+exp( −∞ ) = 0 . The decoder is 
+
+¯A(g) = Softmax row 
+
+
+
+ZS Z⊤ 
+
+> T
+
++ Ψ (g)
+
+, (7) where the softmax is applied to each row m ∈ M g and rows with m / ∈ M g are set to zero. The decoder allocates probability only among the observed destinations so that ¯A(g) has the support of A(g) and 
+
+¯A(g) 
+
+> ml
+
+is the reconstructed conditional probability of action l given action m. The diagonal is masked because Eg excludes self-transitions and the self-loops added to sink nodes in the encoder therefore affect message passing only and do not enter the reconstructed network. The encoder is trained on the posterior mean networks A(g) = N −1draw 
+
+P 
+
+> s
+
+A(s,g ) by minimizing the forward Kullback–Leibler divergence averaged over source actions with observed exits, 
+
+L(g) = |M g|−1 X
+
+> m∈M g
+
+KL  A(g) 
+
+> m:
+
+∥ ¯A(g)
+
+> m:
+
+, (8) with the convention 0 log(0 /q ) = 0 . A single encoder is trained jointly on the G posterior mean networks with the Adam optimizer (Kingma and Ba, 2015) and is held fixed when applied to the posterior draws. Auto-encoder representations are identifiable only up to transformations of the latent coordinates so that separate encoders per draw would yield latent spaces without a common scale. A fixed encoder places all networks and all draws in one latent space in which distances are comparable across graphs and across draws. Posterior uncertainty is thus propagated through the encoder inputs rather than through the encoder parameters. Reconstruction losses on the posterior draws are comparable to those on the training networks and are provided in the Section S3.3 of the Supplementary Material. 
+
+4.3 Wasserstein Distance-based Network Comparison 
+
+The fixed encoder maps each network A(s,g ) to a set of node embeddings Z(s,g ) = {z(s,g ) 
+
+> m
+
+} ⊂ R2d
+
+in a common latent space where zm = [ zS,m ; zT,m ] concatenates the source and target embeddings of action m. Comparing two networks then amounts to comparing two discrete distributions over R2d. We 15 use the 1-Wasserstein distance for two reasons. First, the supports differ across combinations so that the sets of actions with positive mass differ. Optimal transport moves mass between nearby embeddings and aligns structurally similar node roles without forcing the same action to be matched across networks. The distance is therefore a dissimilarity between distributions of learned node roles rather than an action-by-action discrepancy. Second, aggregating node embeddings by summation or averaging discards distributional information that may carry differences between graphs (Togninalli et al., 2019). Following Togninalli et al. (2019), we use the Euclidean ground cost which places less emphasis on large embedding differences than squared-cost alternatives such as W2. Section S4 of the Supplementary Material reports a sensitivity analysis in which the pairwise distances were also computed with the energy distance (Sz´ ekely and Rizzo, 2013), maximum mean discrepancy with an RBF kernel (Gretton et al., 2012), and the Chamfer distance (Barrow et al., 1977; Fan et al., 2017) and compared with the Wasserstein distances through Spearman rank correlations of the resulting distance matrices. For graphs g and h at draw s let C(s;g,h ) 
+
+> ml
+
+= ∥z(s,g ) 
+
+> m
+
+− z(s,h ) 
+
+> l
+
+∥2 and let a and b denote uniform distributions over the nodes that participate in at least one transition of the respective graph with zero mass on isolated nodes. The draw-specific distance is the optimal transport cost (Peyr´ e and Cuturi, 2019) 
+
+d(s)(g, h ) = min  
+
+> Γ∈U(a,b )
+
+⟨Γ, C (s;g,h )⟩, (9) where U (a, b ) is the set of nonnegative matrices with row sums a and column sums b and ⟨Γ, C ⟩ =
+
+P 
+
+> m,l
+
+Γml Cml . Isolated nodes have zero rows and columns in the augmented adjacency matrix and carry no transition information so that excluding them keeps the distance focused on the roles of participating actions. The same draw s is used for both graphs so that d(s)(g, h ) reflects a joint draw of the hierarchical model and preserves the posterior dependence between the two networks. Conditional on the fixed encoder the collection {d(s)(g, h )}Ndraw  
+
+> s=1
+
+is an induced posterior distribution of the dissimilarity between g and h. We summarize it by the posterior mean ¯Dgh = N −1draw 
+
+P 
+
+> s
+
+d(s)(g, h ) and by the 95% highest posterior density (HPD) interval. 
+
+# 5 Results 
+
+We applied the proposed framework to the CD Tally and Lamp Return items of the PSTRE assess-ment in PIAAC. For each item we first summarize the posterior estimates of the hierarchical MSM and then compare the posterior transition networks in two steps. Distance-based analyses of the Wasserstein distance matrix characterize the global structure of the 28 networks and a decomposition of selected 16 pairwise contrasts examines local differences in transition structure. The maximum rank-normalized split- bR across parameters was 1.03 for CD Tally and 1.06 for Lamp Return. Complete diagnostics and trace plots are given in the Section S2.5 of the Supplementary Material and in the accompanying code repository. 
+
+5.1 CD Tally Item 
+
+5.1.1 Parameter Estimation Country-level Speed Figure 1 shows the posterior means of the country-level median speed exp( μτ,q )
+
+and of the within-country standard deviation of log speed στ,q . Countries are labeled by their two-letter codes throughout the results and the correspondence between codes and country names is given in the Section S1.1 of the Supplementary Material. The median speed varies across countries. Finland (FI) is fastest and Slovakia (SK) slowest and their 95% HPD intervals do not overlap. FI, NO, KR, NL, and DK lie at the upper end and SK, IE, EE, and US at the lower end. The within-country heterogeneity in log speed is roughly similar across countries. 
+
+Figure 1: Posterior means and 95% HPD intervals of the country-level median speed exp( μτ,q ) (left) and the within-country standard deviation of log speed στ,q (right) for CD Tally. Dotted lines mark the means across countries. 17 Covariate Effects Figure 2 shows the country-specific covariate effects αp,q . Age is credibly negative and Eskill credibly positive in all 14 countries. Gender is negative in all countries and credibly negative in 11 of them. Education is mostly positive and credibly positive in four countries. Income has the smallest effects and is credibly positive in five countries. Age and Eskill thus show the most consistent cross-national associations with transition intensity. 
+
+Figure 2: Country-specific covariate effects αp,q on the log-hazard for CD Tally. Points are posterior means and bars are 95% HPD intervals. Blue and red mark intervals above and below zero and black marks intervals that include zero. Dashed lines mark the pooled effects μα,p and dotted lines mark zero. 
+
+Key-action Effects Table 4 reports the country-specific key-action effects. Relative to a transition between two non-key actions the log-hazard changes by βc, 1,q for a transition from a key action to a non-key action, by βc, 2,q for a transition from a non-key action to a key action, and by βc, 1,q + βc, 2,q + βc, 3,q 
+
+for a transition between two key actions. In the correct group β1,1,q is credibly negative and β1,2,q , β1,3,q ,and the total effect are credibly positive in all 14 countries. Correct respondents thus move from key actions to non-key actions at lower intensity and move into and among key actions at higher intensity. In the incorrect group neither main effect has an interval excluding zero in any country whereas β0,3,q 
+
+and the total effect are credibly positive in all countries. The contrasts ∆β1,q = β1,1,q − β0,1,q and ∆β2,q 
+
+are credibly negative and credibly positive in all countries whereas the intervals of ∆β3,q and of the total contrast include zero in every country. The response groups therefore differ at the boundary of the 18 key-action set rather than in the elevation of key-to-key transitions which is present in both groups. Table 4: Posterior means of key-action effects by country for CD Tally. The total effect P3
+
+r=1 βc,r,q is the log-hazard effect of a key-to-key transition. The contrast is ∆βr,q = β1,r,q − β0,r,q . Blue and red mark 95% HPD intervals above and below zero and black marks intervals that include zero.                                                                                                                                                                                         
+
+> Correct Group Incorrect Group Correct −Incorrect Country β1,1β1,2β1,3
+> P3
+> r=1 β1,r β0,1β0,2β0,3
+> P3
+> r=1 β0,r ∆β1∆β2∆β3
+> P3
+> r=1 ∆βr
+> AT −1.214 0.594 1.819 1.200 −0.260 −0.095 1.375 1.020 −0.954 0.689 0.444 0.180
+> BE −1.222 0.805 1.762 1.345 −0.234 −0.121 1.575 1.220 −0.988 0.926 0.187 0.125
+> DE −1.204 0.575 1.898 1.269 −0.210 −0.080 1.544 1.254 −0.994 0.655 0.354 0.015
+> DK −1.218 0.611 1.916 1.309 −0.249 −0.051 1.616 1.317 −0.970 0.662 0.300 −0.008
+> EE −1.217 0.668 1.661 1.112 −0.256 0.034 1.486 1.264 −0.961 0.634 0.175 −0.152
+> FI −1.228 0.462 1.962 1.196 −0.181 −0.155 1.540 1.204 −1.047 0.617 0.422 −0.008
+> GB −1.203 0.701 1.835 1.333 −0.206 −0.212 1.512 1.094 −0.997 0.913 0.323 0.239
+> IE −1.212 0.644 1.920 1.353 −0.201 −0.001 1.425 1.223 −1.010 0.646 0.495 0.130
+> KR −1.234 0.815 1.771 1.351 −0.236 0.018 1.422 1.204 −0.999 0.797 0.348 0.147
+> NL −1.219 0.727 1.786 1.294 −0.216 −0.095 1.520 1.208 −1.003 0.823 0.266 0.086
+> NO −1.204 0.555 1.929 1.281 −0.190 −0.166 1.741 1.385 −1.014 0.722 0.188 −0.104
+> PL −1.222 0.653 1.760 1.191 −0.224 −0.073 1.391 1.094 −0.997 0.726 0.369 0.097
+> SK −1.229 0.823 1.815 1.409 −0.186 −0.130 1.747 1.432 −1.043 0.953 0.068 −0.022
+> US −1.209 0.604 1.939 1.334 −0.210 0.001 1.620 1.410 −0.999 0.604 0.320 −0.075
+
+Baseline Transition Intensities Table 5 lists the five largest posterior mean baseline intensities κc,m,l 
+
+per response group. In both groups the transitions from sch and ss sch to keypress are largest with higher values in the correct group. The transition from book m l to book m ok is among the top five in both groups with similar magnitude. Complete results are given in the accompanying code repository. Because these parameters are baseline intensities rather than transition probabilities, the routing structure is examined through the derived networks in Section 5.1.2. 
+
+5.1.2 Transition-Network Comparisons Across Countries and Response Groups 
+
+We compare the 28 country-group networks of CD Tally at two levels. At the global level three distance-based analyses of the G×G posterior mean Wasserstein distance matrix ¯D address whether the response groups differ in network structure and how much countries vary within each group. Non-metric multidimensional scaling (nMDS) (Kruskal, 1964a,b) visualizes ¯D in two dimensions. Permutational multivariate analysis of variance (PERMANOVA) (Anderson, 2001) tests whether the two response 19 Table 5: Five largest posterior mean baseline hazards κc,m,l by response group for CD Tally with 95% HPD intervals. Log-scale summaries are computed from posterior draws of log κ.
+
+Group From To κ mean [95% HPD] log( κ) mean [95% HPD] Correct (c = 1) 
+
+sch keypress 123.7 [103.6, 145.4] 4.81 [4.64, 4.98] 
+
+ss sch keypress 107.8 [96.8, 120.8] 4.68 [4.57, 4.79] 
+
+so ok wb 72.3 [59.0, 86.6] 4.28 [4.09, 4.47] 
+
+book m l book m ok 41.7 [7.2, 87.1] 3.59 [2.49, 4.63] 
+
+combobox ss 38.4 [35.0, 41.5] 3.65 [3.56, 3.73] Incorrect (c = 0) 
+
+ss sch keypress 68.1 [55.0, 82.2] 4.22 [4.01, 4.41] 
+
+sch keypress 57.8 [38.4, 77.8] 4.04 [3.70, 4.39] 
+
+book m l book m ok 49.2 [15.5, 90.7] 3.81 [2.97, 4.61] 
+
+book a book a ok 40.2 [19.0, 62.3] 3.65 [3.11, 4.22] 
+
+ss pst ss so 33.0 [10.5, 58.3] 3.42 [2.67, 4.19]     
+
+> Note. Rows are ordered by posterior mean within each response group. κdenotes the baseline transition hazard. Log-scale summaries were computed from posterior draws of log( κ), not by taking the logarithm of the posterior mean of
+> κ.
+
+groups differ in location in the distance space and permutational analysis of multivariate dispersions (PERMDISP) (Anderson, 2006) tests whether they differ in within-group dispersion. At the local level, an additive and multiplicative effects (AME) network model (Hoff, 2009, 2021) of the difference between two selected networks identifies the actions and pathways that account for their dissimilarity. 
+
+Embedding and Distances The shared DiGAE encoder was trained on the G = 28 posterior mean networks with d = 16 , d1 = 32 , γ+ = 0 .1, and γ− = 0 .6. The selection procedure for these hy-perparameters is described in the Section S3.1 of the Supplementary Material. Applied to the 280,000 posterior network draws the fixed encoder reduced the row-averaged KL divergence relative to a support-restricted uniform baseline by 83.7% to 92.7% across combinations with a mean of 88.9% and preserved the ranking of dominant transitions with a mean normalized discounted cumulative gain at rank 5 (NDCG@5) of 0.971 (J¨ arvelin and Kek¨ al¨ ainen, 2002). Full diagnostics are given in the Section S3.3 of the Supplementary Material. 
+
+Global Differences Figure 3 shows the two-dimensional nMDS solution of ¯D (Stress-1 = 0.116). Correct and incorrect networks occupy partly distinct regions and the correct networks form a more 20 Figure 3: nMDS representation of the 28 CD Tally networks based on ¯D (Stress-1 = 0.116). Circles are correct networks and triangles are incorrect networks. compact cluster. PERMANOVA with permutations restricted within country (Anderson and ter Braak, 2003) indicated a difference between the two response groups ( F (1 , 26) = 6 .588 , R2 = 0 .202 , p < 
+
+0.001 ). PERMDISP indicated a difference in within-group dispersion ( F (1 , 26) = 12 .422 , p < 0.001 )with a larger mean distance to the group spatial median for incorrect networks (1.072 versus 0.736) as shown in Figure 4. The PERMANOVA result therefore reflects both a shift in location and greater cross-country heterogeneity among incorrect networks (Anderson and Walsh, 2013). Correct responses were associated with a routing structure that is shared across countries whereas incorrect responses were associated with more country-specific structures. 
+
+Local Structure To relate the global differences to specific transitions we applied an additive and multiplicative effects (AME) network model (Hoff, 2009, 2021) to two contrasts: the correct and incorrect networks of Austria (AT) and the incorrect networks of Slovakia (SK) and United Kingdom (GB) where GB is central and SK peripheral within the incorrect group. For each contrast the differential network ∆ is the difference between the posterior mean transition matrices with positive entries indicating transitions that are relatively stronger in the first network. Source actions observed in both networks are retained 21 (a) (b) 
+
+Figure 4: Dispersion of the CD Tally networks by response group. (a) Distances of the country networks to their group spatial median. (b) The same distances by network. Dashed lines mark group means. and target actions are the union of observed targets. The decomposition ∆ml = μ+am +bl +u⊤
+
+> m
+
+vl +ϵml 
+
+separates a sender effect am, a receiver effect bl, and a source-target component u⊤
+
+> m
+
+vl. Source actions observed in only one network are summarized separately. Details are given in the Section S5 of the Supplementary Material. 
+
+• Austria: Correct versus Incorrect Panels (a) and (b) of Figure 5 show the receiver effects and the multiplicative effects among key actions. Among key actions so (bl = 0 .130 ) and so 1 3 
+
+(bl = 0 .123 ) have the largest positive receiver effects so that incoming probability is allocated more toward these actions in the correct network whereas so 2 asc has a negative effect ( bl =
+
+−0.056 ). The multiplicative component identifies pathway differences beyond the receiver effects. The pathway ss so → so 1 3 (entering the sort dialog and selecting genre) is correct-oriented (u⊤
+
+> m
+
+vl = 0 .181 , ∆ml = 0 .455 ). Following confirmation, so ok → wb (returning to the website where the answer is entered) is correct-oriented ( u⊤
+
+> m
+
+vl = 0 .089 , ∆ml = 0 .145 ) whereas so ok →
+
+ss so (returning to the sort dialog) is incorrect-oriented ( u⊤
+
+> m
+
+vl = −0.017 , ∆ml = −0.073 ). The two groups thus differ in what follows the same sorting confirmation step. Support also differs. The key action so 2 desc appears as a source only in the correct network with most of its probability on so ok (0.782) and ss cut appears as a source only in the incorrect network with the largest probability on ss edit (0.599). 22 • Slovakia versus the United Kingdom within the Incorrect Group Panels (c) and (d) of Figure 5 show the SK versus GB contrast. Among key actions so 1 3 has the largest positive receiver effect ( bl = 0 .263 ) toward SK and ss so a negative effect ( bl = −0.048 ) toward GB. The pathway ss so → so 1 3 is SK-oriented ( u⊤
+
+> m
+
+vl = 0 .044 , ∆ml = 0 .304 ) and so ok → ss so 
+
+(returning to the sort dialog after confirmation) is GB-oriented ( u⊤
+
+> m
+
+vl = −0.067 , ∆ml = −0.136 ). The genre-sorting sequence thus contributes to both contrasts although its meaning depends on the surrounding network. The contrast also shows an asymmetry in support. Eleven source actions appear only in GB and none only in SK so that the separation of SK reflects both different routing among shared sources and a narrower set of source actions. 
+
+5.2 Lamp Return Item 
+
+5.2.1 Parameter Estimation Country-level Speed Figure 6 shows the country-level speed parameters. South Korea has the highest posterior mean of exp( μτ,q ) and Slovakia the lowest and their 95% HPD intervals do not overlap. The within-country standard deviation of log speed is largest for South Korea and Slovakia and smallest for Denmark and Finland. Slovakia is slowest in both items whereas the fastest country differs (Finland for CD Tally and South Korea for Lamp Return). 
+
+Covariate Effects Figure 7 shows the covariate effects. Age is credibly negative and Eskill credibly positive in all 14 countries as in CD Tally. Gender is negative in all countries and credibly negative only in DE, NL, and NO. Education is mostly positive and credibly positive only in NL. Income is credibly positive in AT, DK, FI, NO, and US and credibly negative in IE. Age and Eskill are thus consistent across items whereas gender, education, and income vary by item and country. 
+
+Key-action Effects Table 6 reports the key-action effects. In the correct group β1,1,q is credibly negative and β1,2,q , β1,3,q , and the total effect are credibly positive in all 14 countries. Unlike CD Tally the incorrect group shows the same pattern: β0,1,q is credibly negative and β0,2,q and β0,3,q are credibly positive in every country and the total effect is credibly positive in 13 countries with the interval including zero only in South Korea. The contrasts also differ from CD Tally. ∆β1,q is credibly negative and ∆β3,q credibly positive in all countries whereas the intervals of ∆β2,q and of the total contrast include zero throughout. CD Tally thus separates the groups through both main effects whereas Lamp 23 (a) (b)  
+
+> (c) (d)
+
+Figure 5: AME decomposition of two CD Tally contrasts. Panels (a) and (b): correct versus incorrect networks of AT. Panels (c) and (d): incorrect networks of SK versus GB. Panels (a) and (c) show receiver effects bl for the 15 actions with the largest absolute effects together with all key actions (highlighted). Panels (b) and (d) show multiplicative effects u⊤
+
+> m
+
+vl for observed pathways between key actions. Positive values are oriented toward the first network of each contrast. Return separates them through a stronger negative source effect and a stronger key-to-key interaction in the correct group. In neither item does the total key-to-key effect differ credibly between groups. 
+
+Baseline Intensities Table 7 lists the five largest baseline intensities per response group. The same five transitions appear in both groups with different order and magnitude. Transitions associated with obtaining the authorization number and submitting the return form dominate in both groups. The highest-intensity transitions thus overlap more between groups than in CD Tally. Response-group differ-24 Figure 6: Posterior means and 95% HPD intervals of the country-level median speed exp( μτ,q ) (left) and the within-country standard deviation of log speed στ,q (right) for Lamp Return. Dotted lines mark the means across countries. ences in routing are examined in Section 5.2.2. 
+
+5.2.2 Transition-Network Comparisons Across Countries and Response Groups Embedding and Distances The same procedure was applied to the 28 Lamp Return networks with 
+
+d = 32 , d1 = 64 , γ+ = 0 .3, and γ− = 0 .6. Across the 280,000 posterior network draws the fixed encoder reduced the support-restricted KL divergence relative to the uniform baseline by 94.8% on average (range 92.6% to 96.0% across combinations) with a mean NDCG@5 of 0.992. Full diagnostics are given in the Section S3.3 of the Supplementary Material. 
+
+Global Differences Figure 8 shows the nMDS solution (Stress-1 = 0.134). Correct and incorrect networks occupy partly distinct regions. PERMANOVA indicated a difference between the response groups ( F (1 , 26) = 7 .353 , R2 = 0 .220 , p < 0.001 ). Unlike CD Tally PERMDISP did not indicate a difference in within-group dispersion ( F (1 , 26) = 2 .975 , p = 0 .069 ; Figure 9). The two groups thus differ in location in the network-distance space whereas the difference in within-group dispersion was 25 Figure 7: Country-specific covariate effects αp,q on the log-hazard for Lamp Return. Points are posterior means and bars are 95% HPD intervals. Blue and red mark intervals above and below zero and black marks intervals that include zero. Dashed lines mark the pooled effects μα,p and dotted lines mark zero. not statistically significant. 
+
+Local Structure We applied the AME decomposition to the correct and incorrect networks of GB and to the correct networks of SK and GB where SK lies apart from the main cluster of the correct group in the nMDS solution. Receiver and multiplicative effects are reported in the Section S5 of the Supplementary Material. 
+
+• United Kingdom: Correct versus Incorrect Among key actions wb pg 8 4 (opening the re-turn form) has the largest positive receiver effect toward the correct network ( bl = 0 .078 ) fol-lowed by wb pg 8 4 reason 4 (selecting the wrong-item return reason; bl = 0 .070 ). The action 
+
+em m view 305 (viewing the email with the authorization number) also has a positive effect (bl = 0 .044 ), whereas em f view has a small negative effect ( bl = −0.019 ). Two branching points carry the multiplicative differences. From the return-reason state wb pg 8 4 reason 6 the transition to wb pg 8 4 reason 4 is correct-oriented ( u⊤
+
+> m
+
+vl = 0 .553 , ∆ml = 0 .632 ) whereas the transition to wb pg 8 4 request 1 is incorrect-oriented ( u⊤
+
+> m
+
+vl = −0.361 , ∆ml = −0.375 ). 
+
+wb pg 8 4 request 1 is itself the task-relevant exchange request and its receiver effect is rela-tively small ( bl = 0 .011 ). The pathway difference highlights how respondents proceed from the 26 Table 6: Posterior means of key-action effects by country for Lamp Return. The total effect P3
+
+r=1 βc,r,q 
+
+is the log-hazard effect of a key-to-key transition. The contrast is ∆βr,q = β1,r,q − β0,r,q . Blue and red mark 95% HPD intervals above and below zero and black marks intervals that include zero.                                                                                                                                                                                         
+
+> Correct Group Incorrect Group Correct −Incorrect Country β1,1β1,2β1,3
+> P3
+> r=1 β1,r β0,1β0,2β0,3
+> P3
+> r=1 β0,r ∆β1∆β2∆β3
+> P3
+> r=1 ∆βr
+> AT −3.120 1.352 2.320 0.552 −2.396 1.297 1.411 0.312 −0.724 0.055 0.909 0.240
+> BE −3.183 1.398 2.384 0.599 −2.405 1.386 1.514 0.495 −0.778 0.011 0.871 0.104
+> DE −3.113 1.337 2.344 0.568 −2.381 1.304 1.442 0.365 −0.732 0.033 0.902 0.203
+> DK −3.128 1.290 2.453 0.616 −2.364 1.336 1.519 0.491 −0.764 −0.045 0.934 0.125
+> EE −3.029 1.317 2.183 0.471 −2.363 1.226 1.421 0.283 −0.666 0.091 0.763 0.188
+> FI −3.090 1.207 2.282 0.399 −2.351 1.161 1.530 0.340 −0.739 0.046 0.752 0.059
+> GB −3.109 1.355 2.414 0.660 −2.369 1.399 1.397 0.427 −0.740 −0.044 1.017 0.233
+> IE −3.149 1.372 2.390 0.613 −2.341 1.227 1.508 0.394 −0.808 0.145 0.882 0.219
+> KR −2.866 1.132 2.156 0.422 −2.284 1.124 1.327 0.167 −0.582 0.008 0.829 0.255
+> NL −3.133 1.352 2.368 0.587 −2.404 1.368 1.526 0.491 −0.729 −0.017 0.842 0.096
+> NO −3.116 1.273 2.310 0.466 −2.387 1.337 1.465 0.415 −0.730 −0.064 0.845 0.051
+> PL −3.025 1.334 2.296 0.604 −2.360 1.285 1.513 0.438 −0.665 0.048 0.782 0.166
+> SK −3.114 1.398 2.338 0.622 −2.322 1.287 1.505 0.471 −0.792 0.111 0.832 0.151
+> US −3.146 1.232 2.507 0.593 −2.338 1.241 1.524 0.427 −0.808 −0.009 0.983 0.166
+
+preceding reason state. After viewing the authorization email the transition em m view 305 →
+
+wb is correct-oriented ( u⊤
+
+mvl = 0 .226 , ∆ml = 0 .404 ) whereas em m view 305 → keypress is incorrect-oriented ( u⊤
+
+mvl = −0.200 , ∆ml = −0.190 ). Support also differs. From the incorrect reason wb pg 8 4 reason 1 the correct network contains a transition to wb pg 8 4 reason 4 
+
+whereas the incorrect network contains a transition directly to wb pg 8 4 request 1 . The cor-rect network thus contains a correction of an inappropriate intermediate choice that the incorrect network lacks. 
+
+• Slovakia versus United Kingdom within the Correct Group The differences are small. Among key actions wb pg 8 has the largest positive receiver effect toward SK ( bl = 0 .036 ) and wb pg 8 4 reason 4 
+
+a smaller one ( bl = 0 .009 ) whereas em f view (bl = −0.016 ) and wb pg 8 4 request 1 (bl =
+
+−0.013 ) are oriented toward GB. The transition wb pg 8 4 reason 6 → wb pg 8 4 reason 4 is stronger in SK ( u⊤
+
+mvl = 0 .141 , ∆ml = 0 .199 ) and the direct pathway from wb pg 8 4 reason 6 to 
+
+wb pg 8 4 request 1 is observed only in GB. Because both networks represent correct responses these patterns reflect different intermediate routes to a successful solution. The core key-action structure is largely shared. Of the 85 key-to-key pathways observed in the union of the two net-27 Table 7: Five largest posterior mean baseline hazards κc,m,l by response group for Lamp Return with 95% HPD intervals. Log-scale summaries are computed from posterior draws of log κ.
+
+Group From To κ mean [95% HPD] log( κ) mean [95% HPD] Correct (c = 1) 
+
+wb pg 8 3 wb pg 8 3 1 1867.7 [1633.1, 2083.4] 7.53 [7.41, 7.65] 
+
+wb pg 8 4 submit wb pg pop3 1630.3 [1397.7, 1869.1] 7.39 [7.25, 7.54] 
+
+wb pg 8 2 wb pg 8 1149.7 [919.6, 1360.5] 7.04 [6.84, 7.23] 
+
+em move ok em m move 553.4 [297.9, 825.8] 6.28 [5.79, 6.78] 
+
+paste keypress 304.1 [237.3, 376.1] 5.71 [5.47, 5.93] Incorrect (c = 0) 
+
+wb pg 8 4 submit wb pg pop3 1218.7 [1057.7, 1386.9] 7.10 [6.96, 7.23] 
+
+wb pg 8 2 wb pg 8 1073.6 [856.2, 1306.2] 6.97 [6.78, 7.20] 
+
+wb pg 8 3 wb pg 8 3 1 883.7 [786.7, 983.0] 6.78 [6.67, 6.89] 
+
+em move ok em m move 793.0 [326.4, 1303.5] 6.62 [5.98, 7.27] 
+
+paste keypress 467.9 [392.3, 550.2] 6.14 [5.97, 6.31]     
+
+> Note. Rows are ordered by posterior mean within each response group. κdenotes the baseline transition hazard. Log-scale summaries were computed from posterior draws of log( κ), not by taking the logarithm of the posterior mean of
+> κ.
+
+works 70 (82.4%) are present in both and the largest absolute difference among shared pathways is |∆ml | = 0 .022 with the largest multiplicative component |u⊤
+
+> m
+
+vl| = 0 .030 . Cross-country dif-ferences among correct respondents thus lie in the routes into the task-relevant structure rather than in the connections among key actions. 
+
+# 6 Discussion 
+
+Process data make it possible to study not only whether respondents solve a task, but also how they move through it and how quickly those transitions occur. The present analysis shows that these different aspects of the response process need not tell the same story. Across the two PIAAC tasks, countries differed in transition pace, respondent characteristics showed systematic associations with transition intensity, and correct and incorrect respondents differed in the global organization of their transition networks. At the same time, the form and extent of these differences depended on the task. These findings illustrate the value of treating timing and routing as distinct but related components of the response process rather than reducing process data to a single summary such as total response time or final accuracy. 28 Figure 8: nMDS representation of the 28 Lamp Return transition networks based on the posterior mean Wasserstein distance matrix. Circles denote correct-response networks and triangles denote incorrect-response networks. Stress-1 = 0.134. The statistical framework was developed to address several features of these data that arise together in the PIAAC application. Country-by-response-group samples are unequal, many transitions are rare, and the sets of observed transitions differ across groups. The hierarchical multi-state survival model addresses the first two features by partially pooling country-specific effects while estimating between-country heterogeneity directly. The network component addresses the third by representing posterior transition probabilities as directed weighted networks and comparing their structure in a common latent space despite heterogeneous supports. Evaluating Wasserstein distances across posterior draws further carries uncertainty from the fitted transition model into the global network analysis. The combination therefore separates three features of the data that would otherwise be difficult to study jointly: transition pace and intensity, between-country heterogeneity, and the routing of respondents among possible next actions. The empirical results demonstrate why this separation is useful. Age and Eskill showed the most consistent associations with transition intensity across countries and across both items: older respondents tended to move more slowly through the tasks, whereas respondents with greater computer and Internet 29 (a) (b) 
+
+Figure 9: Dispersion of the Lamp Return transition networks by response group. (a) Distances from country-specific networks to their response-group spatial median. (b) Network-specific distances to the corresponding group spatial median. Dashed lines indicate response-group means. experience tended to move more quickly. Country-level mean speed also varied appreciably. These findings concern the pace of task performance, however, and do not by themselves describe how respondents navigate the task. The transition-network analysis revealed additional structure that was not captured by the speed and covariate effects. For CD Tally, the correct-response networks were considerably more concentrated across countries than the incorrect-response networks. One interpretation is that successful performance on this task tends to involve a relatively common routing structure centered on the task-relevant spreadsheet operations, whereas unsuccessful performance can arise through a wider range of paths. This pattern was not equally apparent for Lamp Return. Correct and incorrect networks differed in their global location, but the evidence for a difference in cross-country dispersion was weaker. The difference between the two items is substantively informative. Lamp Return involves a larger action space and requires respondents to coordinate information across email and web environments, and its incorrect-response group combines scores from 0 to 2. Consequently, respondents classified as incorrect may include both those who made little progress and those who completed several task-relevant steps without receiving full credit. The observed heterogeneity in process structure therefore depends not only on response correctness but also on the architecture and scoring of the task. The key-action effects provide a second example of this task dependence. For CD Tally, the correct 30 and incorrect groups differed primarily in the source- and destination-key effects: correct respondents were less likely to move away from key actions toward non-key actions and more likely to move into key actions. For Lamp Return, both response groups showed the same general pattern of key-action effects, and the distinction between groups was more strongly expressed through the source effect and the interaction between source and destination key-action status. Thus, treating an action simply as “important” or “unimportant” would obscure meaningful differences in how it functions within a response sequence. Distinguishing whether a key action serves as the origin of a transition, the destination of a transition, or part of a key-to-key transition provides a more informative description of the response process. The local network analyses further show that global network differences can often be traced to a small number of interpretable branching points. In CD Tally, the Austrian correct and incorrect networks differed in what respondents did after confirming the spreadsheet sorting options. In Lamp Return, the United Kingdom networks differed in whether respondents revised the reason for the return and in what they did after viewing the authorization email. By contrast, the correct networks for Slovakia and the United Kingdom shared most of their key-action connections and differed mainly in the surrounding routes into those actions. These examples illustrate an important feature of process data: the interpre-tation of an action depends on the path through which it is reached and on what follows it. Global network summaries identify where response processes differ, whereas local decompositions help identify the specific transitions responsible for those differences. In summary, the results suggest that cross-national process data are most informative when examined at multiple resolutions. Country differences in overall transition pace need not coincide with differences in routing, and similar final outcomes need not imply similar response processes. Conversely, respondents from different countries can reach the same successful outcome through somewhat different intermediate routes while sharing a common core of task-relevant actions. The framework therefore complements conventional cross-national comparisons of proficiency or accuracy by providing information about the processes through which those outcomes are produced. Such information may be useful for understanding task functioning, identifying common and atypical solution pathways, and generating hypotheses about why a task operates differently across groups. Because the analysis is observational, however, country differences should be interpreted descriptively rather than as effects of national or cultural context. Several modeling choices delimit these conclusions. Transition-pair baseline intensities are shared across countries within each response group. This stabilizes estimation for sparse transitions but places cross-country variation primarily in the hierarchical covariate, key-action, and speed effects; allowing 31 country-specific deviations in the baseline intensities would provide a more flexible alternative when larger samples are available. The time-homogeneous Markov specification conditions on the current action only, so dependence on longer response histories is not represented. History-dependent transition effects could be incorporated in future extensions. The network analysis also conditions on the observed transition support. Unobserved transitions are assigned zero probability, although absence from a finite sample does not imply that a transition is impossible. Some apparent support differences may therefore reflect limited opportunities to observe rare transitions rather than genuine differences in response processes. Similarly, the key-action sets are selected from their association with response correctness in the same data, so substantive interpretations are conditional on that selection procedure. External or task-design-based definitions of key actions would provide a useful sensitivity analysis. Finally, posterior uncertainty is propagated from the multi-state model into the pairwise Wasser-stein distances, but the subsequent nMDS, PERMANOVA, PERMDISP, and AME analyses are based on posterior summaries. Extending uncertainty propagation through these downstream analyses would provide a more fully Bayesian treatment. The network results also depend on the learned representa-tion. In the present analyses, reconstruction diagnostics indicated that dominant transitions were well preserved and the Wasserstein distances were strongly consistent in rank with alternative distributional dissimilarities, but alternative encoders may induce somewhat different network geometries. Developing joint hierarchical models for local network structure across all countries, rather than examining selected pairwise AME contrasts, is another natural direction for future work. More broadly, the statistical issues motivating this analysis are not unique to educational assessment. Similar data structures arise whenever individuals move through a sequence of discrete states over continuous time and the transition systems are sparse and heterogeneous across groups. The present framework provides one way to combine hierarchical event-history modeling with global and local network representations in such settings. In the PIAAC application, this combination reveals variation at three complementary levels: how quickly respondents move through a task, how their overall routing structures differ, and which local transitions account for those differences. These distinctions would be difficult to recover from final outcomes or from either the survival or network representation alone. 32 Acknowledgments 
+
+This work was partially supported by the National Research Foundation of Korea [grant number RS-2023-00217705, and RS-2024-00333701; Basic Science Research Program awarded to I.H.J.], the ICAN (ICT Challenge and Advanced Network of HRD) support program [grant number RS-2023-00259934, awarded to I.H.J.], supervised by the IITP (Institute of Information & Communications Technology Planning & Evaluation), and the Ministry of Trade, Industry, and Energy (MOTIE), Korea, under the project “Industrial Technology Infrastructure Program” [RS-2024-00466693, awarded to I.H.J.]. Correspondence should be addressed to Ick Hoon Jin, Department of Applied Statistics, Department of Statistics and Data Science, Yonsei University, Seoul, Republic of Korea. E-Mail: ijin@yonsei.ac.kr. 
+
+# Data Availability 
+
+The PIAAC log data analyzed in this study are available through GESIS at https://doi.org/10. 4232/1.12955 . Preprocessing followed the procedures described by Park et al. (2025), with additional processing to combine the country-specific datasets for the joint analysis. Code for this additional processing, model estimation, and network analysis is available at https://github.com/Leeju1/HMSM .
+
+# AI Use Statement 
+
+GPT-6 Astra (medium reasoning setting) and Claude Fable 5.1 were used to check for typographical and grammatical errors. The authors reviewed all suggested corrections and take full responsibility for the content of the manuscript. 
+
+# References 
+
+Andersen, P. K., Abildstrom, S. Z., and Rosthøj, S. (2002). Competing risks as a multi-state model. 
+
+Statistical Methods in Medical Research , 11(2):203–215. Anderson, M. J. (2001). A new method for non-parametric multivariate analysis of variance. Austral Ecology , 26(1):32–46. Anderson, M. J. (2006). Distance-based tests for homogeneity of multivariate dispersions. Biometrics ,62(1):245–253. 33 Anderson, M. J. and ter Braak, C. J. F. (2003). Permutation tests for multi-factorial analysis of variance. 
+
+Journal of Statistical Computation and Simulation , 73(2):85–113. Anderson, M. J. and Walsh, D. C. I. (2013). PERMANOVA, ANOSIM, and the Mantel test in the face of heterogeneous dispersions: what null hypothesis are you testing? Ecological Monographs ,83(4):557–574. Anghel, E., Khorramdel, L., and von Davier, M. (2024). The use of process data in large-scale assess-ments: A literature review. Large-scale Assessments in Education , 12(1):13. Anghel, E. and von Davier, M. (2025). The highlighting divide: does highlighting strategy help explain international gaps in reading achievement? Large-scale Assessments in Education , 13(1):6. Barrow, H. G., Tenenbaum, J. M., Bolles, R. C., and Wolf, H. C. (1977). Parametric correspondence and chamfer matching: Two new techniques for image matching. In Proceedings of the 5th International Joint Conference on Artificial Intelligence , pages 659–663. Chen, Y. (2020). A continuous-time dynamic choice measurement model for problem-solving process data. Psychometrika , 85(4):1052–1075. Commenges, D. (1999). Multi-state models in epidemiology. Lifetime Data Analysis , 5(4):315–327. Crowther, M. J. and Lambert, P. C. (2017). Parametric multistate survival models: flexible modelling allowing transition-specific distributions with application to estimating clinically useful measures of effect differences. Statistics in Medicine , 36(29):4719–4742. Ercikan, K., Guo, H., and He, Q. (2020). Use of response process data to inform group comparisons and fairness research. Educational Assessment , 25(3):179–197. Fan, H., Su, H., and Guibas, L. J. (2017). A point set generation network for 3D object reconstruc-tion from a single image. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition , pages 605–613. Fu, Y., Zhan, P., Chen, Q., and Jiao, H. (2024). Joint modeling of action sequences and action time in computer-based interactive tasks. Behavior Research Methods , 56(5):4293–4310. Gelman, A. and Hill, J. (2007). Data Analysis Using Regression and Multilevel/Hierarchical Models .Cambridge University Press. 34 Gretton, A., Borgwardt, K. M., Rasch, M. J., Sch¨ olkopf, B., and Smola, A. (2012). A kernel two-sample test. Journal of Machine Learning Research , 13(25):723–773. He, Q., Borgonovi, F., and Paccagnella, M. (2021). Leveraging process data to assess adults’ problem-solving skills: Using sequence mining to identify behavioral patterns across digital tasks. Computers & Education , 166:104170. He, Q. and von Davier, M. (2015). Identifying feature sequences from process data in problem-solving items with n-grams. In van der Ark, L. A., Bolt, D. M., Wang, W.-C., Douglas, J. A., and Chow, S.-M., editors, Quantitative Psychology Research: The 79th Annual Meeting of the Psychometric Society, Madison, Wisconsin, 2014 , pages 173–190. Springer. He, S. and Cui, Y. (2025). A systematic review of the use of log-based process data in computer-based assessments. Computers & Education , 228:105245. Hoff, P. (2021). Additive and multiplicative effects network models. Statistical Science , 36(1):34–50. Hoff, P. D. (2009). Multiplicative latent factor models for description and prediction of social networks. 
+
+Computational and Mathematical Organization Theory , 15(4):261–272. Hougaard, P. (1999). Multi-state models: a review. Lifetime Data Analysis , 5(3):239–264. J¨ arvelin, K. and Kek¨ al¨ ainen, J. (2002). Cumulated gain-based evaluation of IR techniques. ACM Transactions on Information Systems , 20(4):422–446. Kingma, D. P. and Ba, J. (2015). Adam: A Method for Stochastic Optimization. In International Conference on Learning Representations .Kollias, G., Kalantzis, V., Id´ e, T., Lozano, A., and Abe, N. (2022). Directed graph auto-encoders. In 
+
+Proceedings of the AAAI Conference on Artificial Intelligence , volume 36, pages 7211–7219. Kruskal, J. B. (1964a). Multidimensional scaling by optimizing goodness of fit to a nonmetric hypothesis. 
+
+Psychometrika , 29(1):1–27. Kruskal, J. B. (1964b). Nonmetric multidimensional scaling: a numerical method. Psychometrika ,29(2):115–129. Meira-Machado, L., de U˜ na-´ Alvarez, J., Cadarso-Su´ arez, C., and Andersen, P. K. (2009). Multi-state models for the analysis of time-to-event data. Statistical Methods in Medical Research , 18(2):195– 222. 35 OECD (2012). Literacy, Numeracy and Problem Solving in Technology-Rich Environments: Framework for the OECD Survey of Adult Skills . OECD Publishing, Paris. OECD (2016). The Survey of Adult Skills: Reader’s Companion, Second Edition . OECD Skills Studies. OECD Publishing, Paris. OECD (2017). Programme for the international assessment of adult competencies (PIAAC), log files. (ZA6712; Version 2.0.0) [Data set]. GESIS, Cologne. OECD (2019). Beyond Proficiency: Using Log Files to Understand Respondent Behaviour in the Survey of Adult Skills . OECD Skills Studies. OECD Publishing, Paris. Park, J., Jin, I. H., and Jeon, M. (2025). Analysis of log data from an international online educational assessment system: A multi-state survival modeling approach to reaction time between and across action sequence. Psychometrika , 90(4):1506–1535. Peyr´ e, G. and Cuturi, M. (2019). Computational optimal transport. Foundations and Trends in Machine Learning , 11:355–607. Putter, H., Fiocco, M., and Geskus, R. B. (2007). Tutorial in biostatistics: competing risks and multi-state models. Statistics in Medicine , 26(11):2389–2430. Saqr, M., L´ opez-Pernas, S., T¨ orm¨ anen, T., Kaliisa, R., Misiejuk, K., and Tikka, S. (2025). Transition network analysis: A novel framework for modeling, visualizing, and identifying the temporal patterns of learners and learning processes. In Proceedings of the 15th International Learning Analytics and Knowledge Conference , pages 351–361. Sz´ ekely, G. J. and Rizzo, M. L. (2013). Energy statistics: A class of statistics based on distances. Journal of Statistical Planning and Inference , 143(8):1249–1272. Tang, X. (2024). A latent hidden Markov model for process data. Psychometrika , 89(1):205–240. Togninalli, M., Ghisu, E., Llinares-L´ opez, F., Rieck, B., and Borgwardt, K. (2019). Wasserstein Weisfeiler–Lehman graph kernels. In Advances in Neural Information Processing Systems , volume 32, pages 6436–6446. Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., and B¨ urkner, P.-C. (2021). Rank-normalization, folding, and localization: An improved bR for assessing convergence of MCMC (with discussion). 
+
+Bayesian Analysis , 16(2):667–718. 36 Xu, H., Fang, G., and Ying, Z. (2020). A latent topic model with Markov transition for process data. 
+
+British Journal of Mathematical and Statistical Psychology , 73(3):474–505. Zhang, M. and Andersson, B. (2023). Identifying problem-solving solution patterns using network analysis of operation sequences and response times. Educational Assessment , 28(3):172–189. Zheng, X., Sahin, F., Erberber, E., and Fonseca, F. (2023). Identification and cross-country comparison of students’ test-taking behaviors in selected eTIMSS 2019 countries. Large-scale Assessments in Education , 11(1):32. Zhu, M., Shu, Z., and von Davier, A. A. (2016). Using networks to visualize and analyze process data for educational assessment. Journal of Educational Measurement , 53(2):190–211. 37
