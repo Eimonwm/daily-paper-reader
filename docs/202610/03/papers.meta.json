@@ -1,0 +1,24 @@
+{
+  "label": "2026-10-03",
+  "date": "2026-10-03",
+  "generated_at": "2026-10-03T22:11:57",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202610/03/2609.34959v1-a-joint-sampling-design-for-the-related-populations-of-parents-and-children",
+      "section": "quick",
+      "title_en": "A Joint Sampling Design for the Related Populations of Parents and Children",
+      "authors": "Yves Tillé, María Guadarrama Sanz",
+      "date": "2026-09-28",
+      "pdf": "https://arxiv.org/pdf/2609.34959v1",
+      "score": "6.0",
+      "evidence": "父母子女联合抽样设计与家庭调查方法",
+      "tldr": "针对父母与子女两类相互关联总体的家庭调查，现有抽样难以处理共同抚养、重组家庭等复杂结构。本文提出联合抽样设计，用图表示共同抚养关系并结合平衡抽样：第一阶段从每个共同责任对中仅选一名家长，第二阶段按不等概率为每位入选家长选一名子女。卢森堡人口登记册实证显示，各平衡变量及其他辅助变量的估计总量与已知总量几乎一致，表明该设计兼顾两总体推断并具高精度与效率。",
+      "tags": "query:male-fert",
+      "abstract_en": "We propose a novel joint sampling design for surveys involving two interrelated populations of parents and children in the presence of complex family structures, including shared parental responsibility and blended families. The design combines a graph-theoretic representation of co-parenting relationships with balanced sampling. This framework ensures that, in the first sampling phase, exactly one parent is selected from each co-responsibility pair while maintaining accurate inference for both the parent and child populations. A second sampling phase selects one child per sampled parent using unequal probabilities that produce consistent weighting and unbiased estimation. The proposed framework accommodates overlapping family relationships while balancing auxiliary information for both populations. Results based on the Luxembourg population registers show that the estimated totals are virtually identical to the known population totals for all balancing variables, and other auxiliary variables, demonstrating the excellent precision and efficiency of the proposed sampling design.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

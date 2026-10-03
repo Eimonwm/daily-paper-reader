@@ -1,0 +1,25 @@
+{
+  "date": "20261003",
+  "date_label": "",
+  "generated_at": "2026-10-03 22:11:53 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.34959v1",
+      "route": "202610/03/2609.34959v1-a-joint-sampling-design-for-the-related-populations-of-parents-and-children",
+      "title": "A Joint Sampling Design for the Related Populations of Parents and Children",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "male-fert"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "父母子女联合抽样设计与家庭调查方法",
+      "first_seen_at": "2026-10-03 22:11:53 UTC",
+      "updated_at": "2026-10-03 22:11:53 UTC"
+    }
+  ]
+}

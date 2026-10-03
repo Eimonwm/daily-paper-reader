@@ -1,0 +1,684 @@
+Title: A Joint Sampling Design for the Related Populations of Parents and Children
+
+URL Source: https://arxiv.org/pdf/2609.34959v1
+
+Published Time: Tue, 29 Sep 2026 03:03:48 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+# A Joint Sampling Design for the Related Populations of Parents and Children 
+
+## Yves Till´ e1 and Mar´ ıa Guadarrama Sanz ∗21Institut de statistique, Universit´ e de Neuchˆ atel. Switzerland 
+
+> 2
+
+Luxembourg Institute of Socio-Economic Research, Luxembourg 
+
+Abstract 
+
+We propose a novel joint sampling design for surveys involving two interrelated populations of parents and children in the presence of complex family structures, including shared parental responsibility and blended families. The design combines a graph-theoretic representation of co-parenting relationships with balanced sampling. This framework ensures that, in the first sampling phase, exactly one parent is selected from each co-responsibility pair while maintaining accurate inference for both the parent and child populations. A second sampling phase selects one child per sampled parent using unequal probabilities that produce consistent weighting and unbiased estimation. The proposed framework accommodates overlapping family relationships while balancing auxiliary information for both populations. Results based on the Luxembourg population registers show that the estimated totals are virtually identical to the known population totals for all balancing variables, and other auxiliary variables, demonstrating the excellent precision and efficiency of the proposed sampling design. 
+
+Keywords: Auxiliary Variables, Balanced sampling, Family Relationships, Graph sampling, Two-steps sampling. 
+
+> ∗
+
+Corresponding author. Luxembourg Institute of Socio-Economic Research (LISER). Address: 11, Porte des Sciences, L-4366 Esch-sur.Alzette/Belval (Luxembourg). Tel: +352 585855605. maria.guadarramasanz@liser.lu 
+
+1arXiv:2609.34959v1 [stat.ME] 28 Sep 2026 1 Introduction and Recommendations 
+
+The Luxembourgish Ministry of Education aims to understand parental perceptions of non-formal education among children aged 0–12 years in the country. In Luxembourg, non-formal education refers to organized educational and care services that are provided outside of the formal school system. This includes childcare centers, after-school care cen-ters and registered childminders. The focus is on fostering children’s development through everyday learning experiences rather than formal instruction or academic assessment. The administrative data, currently available, provide insight into who does (or does not) par-ticipate in non-formal education, how frequently, and along what pathways. These data have a major limitation: they provide no information on the perceptions, motivations, or daily constraints that influence parental decisions. Therefore, to answer the question posed by an attached Ministry’s unit, the National Observatory for Children, Youth and School Quality (OEJQS in French) “How do families perceive non-formal education, its quality, and its benefits?” administrative data alone are insufficient. In a context where the OEJQS seeks to increase participation in non-formal education by making it free and expanding its availability, it is essential to understand why certain families, particularly those with the lowest incomes, still do not participate. Therefore, collecting information directly from parents of children eligible for non-formal education with a survey is impor-tant. The study population and the reference population coincide and are defined as all parents of children aged between 0 and 12 years old, regardless of whether they partici-pate in non-formal education and who were living in Luxembourg in December 2025. The parents will answer questions about themselves, their household composition, and one of the children for whom they are responsible. The requirements of this survey are: 
+
+• to survey all parents who are solely responsible for all of their children, 
+
+• to survey one of the two parents in each pair sharing responsibility for at least one child. 
+
+• Subsequently, one child is selected at random from among all children for whom 2the selected parent is the sole responsible parent or shares responsibility so that the parent replies the questions targeted to the selected child. The random selection of parents and then children is complex for blended families, where a parent may share responsibility for children with several other parents. Further-more, a child may have only one responsible parent, who may in turn share responsibility for one or more children with other parents. Each child may have one or two parental relationships, which complicates the management of family relationships. We account for these situations in order to construct a balanced sampling design as defined in Deville and Till´ e (2004). The proposed sampling design allows for accurate extrapolation not only for the par-ent population but also for the child population. Furthermore, the sampling design must be balanced on certain auxiliary variables, for both parents and children, to ensure the accuracy of the estimators. The survey therefore targets two related populations simulta-neously: the population of parents and the population of children. The sampling design is constructed so that valid and balanced estimators can be produced for both populations. The remainder of the paper is organized as follows. Section 2 describes the parent–child relationships observed in the registers and introduces the concepts of co-responsibility pairs and co-responsibility chains. Section 3 describes these relationships in the regis-ters. Section 4 presents the notation and formal framework used throughout the paper. Section 5 develops the proposed sampling design for the parent population. Section 6 describes the selection of children and the estimation procedures. Section 7 presents the sampling results and balancing properties of the design. In Section 8, we provide some tables that allow to asses the quality of the balanced sample. Finally, Section 9 concludes the paper. 32 Description of the Relationships Between Parents and Children 
+
+The sampling frame is constructed from two administrative registers, precisely, the na-tional register of the physical persons (RNPP, in French) and the register of affiliated in-dividuals in the Luxembourgish Social Security, held by the Inspection of Social Security (IGSS, in French). These registers contain socio-demographic information, employment characteristics, gross earnings, social benefits, and parental relationship records (see In-spection G´ en´ erale de la S´ ecurit´ e Sociale, 2024, for further details). After data cleaning, we encountered 177 237 parent-child relationships. The resulting database contains 115 290 parents and 92 515 children. Children depend on either a single parent, which is the case for 7 819 children, or two responsible parents, this happens for 84 696 children. A co-responsibility pair is defined as the relationship between two parents who are co-responsible for at least one child. These pairs may overlap (a parent may belong to multiple co-responsibility pairs). It is, then, possible to split the parent population into three groups, according to the type of co-responsibility pair they belong to: 
+
+• Group A. Parents who do not belong to any co-responsibility pair. That is, those who are solely responsible for all their children. All of these parents will be included in the sample. 
+
+• Group B. Parents who belong to a co-responsibility pair that does not overlap with any other co-responsibility pair. A parent in Group B may be solely responsible for one or more children while also sharing responsibility for one or more other children with a single other parent. From each pair, one of the two parents will be selected at random. 
+
+• Group C. All parents belonging to a co-responsibility pair that overlaps with at least one other co-responsibility pair. In each pair, one of the two parents is selected at random. A parent in Group C may be solely responsible for one or more children while also sharing responsibility for one or more other children with one or more 4other parents. Let U = {p1, . . . , p k, . . . , p N } denote the set of N parents, and let V = {c1, . . . , c i, . . . , c M }
+
+denote the set of M children. For each parent pk, the set of children for whom pk is respon-sible or jointly responsible is denoted by Pk. Relationships between parents and children can be complex. Figure 1 shows some examples of relationships between parents and children according to the groups in the populations of N = 21 parents and M = 24 chil-dren. Children c13 , c17 , and c22 each have a single responsible parent, but their responsible parent is also co-responsible for another child. 
+
+p1 c1
+
+p2 c2
+
+c3
+
+p3
+
+c4
+
+c5
+
+c6
+
+Group A 
+
+p4
+
+p5 c7
+
+p6
+
+p7
+
+c8
+
+c9
+
+p8
+
+p9
+
+c10 
+
+c11 
+
+c12 
+
+p10 
+
+p11 
+
+c13 
+
+c14 
+
+Group B 
+
+p12 
+
+p13 
+
+p14 
+
+c15 
+
+c16 
+
+p15 
+
+p16 
+
+p17 
+
+p18 
+
+c17 
+
+c18 
+
+c19 
+
+c20 
+
+c21 
+
+p19 
+
+p20 
+
+p21 
+
+c22 
+
+c23 
+
+c24 
+
+Group C 
+
+Figure 1: Examples of relationships between parents and children according to Groups A, B, and C.Co-responsibility chains are defined as connected components in the sense of graph theory. The co-responsibility chains are thus the largest sets of parents linked to one another by ties of co-responsibility. Using the example in Figure 1, we can identify 10 chains of co-responsibility, 3 in Group A (these are responsibility chains), 4 in Group B 
+
+and 3 in Group C , which are described in Table 1. Each co-responsibility chain consists 5c1 p1 c2 p2 c3 c4 p3 c5 c6 c7 p4 p5 c8 p6 p7 c9 p10 c10 p8 p9 c11 c12 c13 c14 p11 c15 p12 p13 c16 p14 c17 p15 c18 p16 c19 p17 c20 p18 c21 c22 p19 c23 p20 c24 p21 
+
+Figure 2: Graph representation of co-responsibility chains described in Figure 1. Parent nodes ( p) are shown in blue, while child nodes ( c) appear highlighted in yellow. of a certain number of parents and a certain number of children. It is essential to identify chains of shared responsibility in order to assign parents to groups and for the sample selection described below. 
+
+# 3 Analysis of the Relationship in the Registers 
+
+We analyzed the RNPP and IGSS registries. After identifying 177 237 parent-child rela-tionships, we then constructed all co-responsibility chains. The total number of parents (115 290) is split as follows: There are 5 386 parents belonging to Group A , 106 222 par-ents in Group B , and finally 3 682 parents in Group C . Parents are grouped into 59 631 co-responsibility chains. Precisely, there are 5 386 responsibility chains in Group A , 53 111 6Table 1: Co-responsibility chain (connected components) related to the example in Fig-ure 1 
+
+Group Number of Parents Number of Children Parents children 
+
+Group A 1 {p1} 1 {c1}
+
+1 {p2} 2 {c2, c 3}
+
+1 {p3} 3 {c4, c 5, c 6}
+
+Group B 2 {p4, p 5} 1 {c7}
+
+2 {p6, p 7} 2 {c8, c 9}
+
+2 {p8, p 9} 3 {c10 , c 11 , c 12 }
+
+2 {p10 , p 11 } 2 {c13 , c 14 }
+
+Group C 3 {p12 , p 13 , p 14 } 2 {c15 , c 16 }
+
+4 {p15 , p 16 , p 17 , p 18 } 5 {c17 , c 18 , c 19 , c 20 , c 21 }
+
+3 {p19 , p 20 , p 21 } 3 {c22 , c 23 , c 24 }
+
+co-responsibility chains in Group B , and 1 134 co-responsibility chains in Group C . The distribution of parents and children by co-responsibility chains is described in Table 2. Table 2: Number of co-responsibility chains with respect to the number of children and number of parents 
+
+Number of Number of parents Total of Total of children 1 2 3 4 5 6 7 9 chains children 1 4 196 29 010 33 206 33 206 2 1 013 19 660 525 21 198 42 396 3 148 3 742 279 84 4 253 12 759 4 25 590 93 62 15 785 3 140 5 4 85 13 21 19 1 143 715 6 20 3 4 3 2 1 33 198 7 4 1 4 9 63 8 1 1 89 1 1 910 1 1 10 11 1 1 11 Total of chains 5 386 53 111 914 172 41 4 2 1 59 631 92 515 Total of parents 5 386 106 222 2 742 688 205 24 14 9 115 290 
+
+Group A Group B Group C 
+
+The interpretation of Table 2 is as follows. The column corresponding to one parent belongs to Group A . The column corresponding to two parents belongs to Group B , and the columns corresponding from three to nine parents belong to Group C . Table 2 reveals that the most common situation consists of two parents and one child (29 010), followed by two parents and two children (19 660), and then, one parent and one child (4 196). There are 3 682 (2 742 + 688 + 205 + 24 + 14 + 9) parents who are part of a co-responsibility chain involving more than two adult people. The largest co-responsibility chain consists 7of 9 parents and 11 children. Table 2 indicates that most family structures are simple co-responsibility pairs, with one or two parents, while complex overlapping co-responsibility chains remain relatively rare being around 6% of the cases. Figure 3 plots the largest co-responsibility chains with 9 parents, on the left, and 7 parents, on the middle and on the right, respectively. These are the most complicated co-responsibility chains that we have encountered for the survey. In addition to the large amount of parents present in the co-responsibility chain, there are children with only one responsible parent. Precisely, child c11 in Figure 3 left, and child c8 in Figure 3 center. Because of confidentiality rules, we cannot disclose any further information on the characteristics of the parents nor the children.    
+
+> c1 p1 p2 c2 c3 p3 c4 p4 c5 c6 p5 c7 c8 c9 p6 c10 p7 c11 p8 p9 c1 p1 c2 p2 c3 p3 c4 c5 c6 p4 c7 p5 c8 p6 c9 p7 c1 p1 c2 p2 c3 c4 p3 c5 p4 p5 p6 c6 p7
+
+Figure 3: Co-responsibility chains displaying nine parents (left) and seven parents (middle and right figures) within the sampling frame. Parent nodes ( p) are shown in blue, while child nodes c appear highlighted in yellow 
+
+# 4 Notation and Formalization 
+
+For each parent k in the parent population U = {p1, . . . , p N }, we assume that a vector of auxiliary variables xk is available (such as age group, sex, social security enrollment status, and nationality). For each child i in the child population V = {c1, . . . , c M }, we also assume that we know a vector zi of auxiliary variables (such as age group, sex, and nationality). The set of children for whom parent k is responsible or jointly responsible is denoted by Pk.Since a child with two responsible parents appears in the records of both parents, its 8auxiliary information must be split equally between them to avoid double counting. The aggregated child auxiliary information associated with parent k is defined by ˇzk = ∑
+
+> i∈Pk
+
+zi
+
+ri
+
+,
+
+where ri is the number of parents responsible for child i (1 or 2). The child-level auxiliary variables are divided by two whenever the child has two responsible parents. This allows us to preserve the following equality: 
+
+∑
+
+> k∈U
+
+ˇzk = ∑
+
+> k∈U
+
+∑
+
+> i∈Pk
+
+zi
+
+ri
+
+= ∑
+
+> i∈V
+
+zi.
+
+This transformation enables child-level auxiliary information to be incorporated into the parent-level balancing equations. By summing the ˇ zk over U, we obtain exactly the sum of the zi over V .
+
+# 5 Sampling Design for Parents 
+
+In Group A , we select all the parents. In Groups B and C, we select a sample of parents, balanced across auxiliary variables, such that only one parent is selected from each co-responsibility pair. This is a problem of overlapping stratification, in which pairs form the strata and one parent is selected from each pair. In the first step, the inclusion probabilities πk for each parent are therefore 1/2 or 1. We select a balanced sample or approximately balanced sample of parents that satisfies the balancing equations 
+
+∑
+
+> k∈U
+
+xk
+
+πk
+
+Ik ≈ ∑
+
+> k∈U
+
+xk and ∑
+
+> k∈U
+
+ˇzk
+
+πk
+
+Ik ≈ ∑
+
+> k∈U
+
+ˇzk = ∑
+
+> i∈V
+
+zi, (1) where Ik is 1 if parent k is selected and 0 otherwise. Furthermore, if parents k and ℓ are in the same pair, then Ik + Iℓ = 1. Co-responsibility pairs are therefore strata in which exactly one parent is always selected. The main difficulty is that co-responsibility pairs 9may overlap. In practice, sampling is carried out as follows: 
+
+• In Group A , all parents are selected with inclusion probability of 1. 
+
+• In Group B , a balanced and highly stratified sample (Hasler and Till´ e, 2014; Jauslin et al., 2021) is selected with inclusion probabilities equal to 1/2. The strata corre-spond to pairs of co-responsibility. We include the balancing variables for parents 
+
+xk and children ˇ zk.
+
+• In Group C , we identify all co-responsibility chains (connected components in the graph-theoretic sense) which are the largest sets of parents linked together by ties of co-responsibility. Connected components may contain cycles. A connected com-ponent admits a partition into two clusters such that exactly one parent is selected from each co-responsibility pair if and only if the component is bipartite. We thus assume that every connected component is bipartite, equivalently that it contains no odd cycle. In this case, each connected graph can be split into two subsets, which form two clusters. By traversing each connected component, we alternately assign parents to one cluster or the other. If, within a connected component, all pairs consist of parents of different genders, this method simply involves placing all women in one cluster and all men in the other. We then implement a balanced stratified cluster sampling design with inclusion probabilities of 1/2 : each stratum corresponds to a connected component and contains the two associated clusters. Balancing can be achieved by summing up the values of the auxiliary variables of the parents xk and the children ˇ zk within each cluster. 
+
+Example 1 From Figure 1, and Table 1, in Group C, there are three connected compo-nents: {p12 , p 13 , p 14 }, {p15 , p 16 , p 17 , p 18 }, and {p19 , p 20 , p 21 }. We partition each connected component into two groups: 
+
+• {{ p12 , p 14 }, {p13 }} ,
+
+• {{ p15 , p 17 }, {p16 , p 18 }} and 
+
+10 • {{ p19 , p 21 }, {p20 }} .In each connected component, one of the two groups is selected with probability 1/2. 
+
+Example 2 If the connected component contains a cycle of four pairs {{ p1, p 2}, {p2, p 3},
+
+{p3, p 4}, {p4, p 1}} , the two groups are {{ p1, p 3}, {p2, p 4}} . By selecting one of the two groups, we select only one parent per pair. 
+
+In Group C , a problem could arise when there is a circular chain of pairs containing an odd number of parents, which necessarily implies that at least one pair consists of two parents of the same gender. 
+
+Example 3 Suppose we have three parents {p1, p 2, p 3} belonging to the three co-responsibility pairs {p1, p 2}, {p2, p 3}, and {p3, p 1}. This results in an odd cycle of length 3. It is im-possible to select exactly one parent from each pair. Indeed, if we select p1, we cannot select p2, which forces us to select p3; we then select both parents from the pair {p3, p 1}.Conversely, if we do not select p1, we must select p2, which prevents us from selecting p3;in this case, no parent is selected from the pair {p3, p 1}. This shows that it is impossible to simultaneously satisfy the “one parent per pair” constraint in a connected component containing an odd cycle. 
+
+In the present application, such a situation would imply the existence of at least one same-gender parental pair. No odd cycle was observed among the 59 631 connected components identified in the registers. We proceeded as follows: 
+
+• Parents in Group B and Group C are partitioned into two clusters within each co-responsibility chain. More specifically, in Group B , the clusters have a size 1. We assigned the man in cluster 1 and the woman in cluster 2. For the cases in which there are two men (35 pairs) or two women (168 pairs), we assigned (indistinct) one of the parents to cluster 1 and the other to cluster 2. 11 In Group C , we proceeded as follows. When, in a chain of co-responsibility, all pairs consist of people of different genders, all men are assigned to one cluster and all women to the other cluster. In Group C , we encountered two co-responsibility chains in which a pair of co-responsible individuals consists of two parents of the same gender. In both cases, the clusters were created manually to ensure that the two co-responsible parents of a child do not appear in the same cluster. The distribution of the number of parents by Group and cluster is described in Table 3. Note that for Group A assign the parents to cluster 1 or cluster 2 is indifferent as we select them all. Table 3: Distribution of parents by Group and cluster 
+
+Cluster Group 1 2A 5 386 
+
+B 53 111 53 111 
+
+C 1 763 1 919 
+
+• We have defined the following balanced variables. 1. At the level of the parents, we consider the following variables xk (1) national-ity being Luxembourger or not, and (2) the affiliation status to Luxembourgish social security. Precisely, a) being in full-time parental leave or blue collar; b) white collar; c) civil servant; d) self-employed, unemployed (receiving unem-ployment benefits), pre-retired, invalid, retired or widow (receiving a surviving spouse pension); e) voluntary insured (paying one’s own social security con-tributions, but as a category other than that of a self-employed worker), not affiliated into social security (that happens when a person is working for (or retired from) an international or foreign institution, or is in a mission in Lux-embourg for more than three months); f) co-insured (insured in the name of someone else). 2. At the level of the children, we cross the following variables, (1) gender; (2) three age class, a) 0-4 years old; b) 5-7 years old; and c) 8-12 years old. There-12 fore, we have 6 auxiliary variables, zi.These variables were selected because they are available in the administrative registers and are expected to be associated with both survey participation and the use of non-formal education services. Table 4 details the population totals of parents and children with respect to the auxiliary variables used for the sample draw, for the whole population, and within each Group .Table 4: Population distribution of parents and children by nationality (for parents) social security affiliation status (for parents), and by gender and age group (for children), for the whole population and within each Group .
+
+Auxiliary variable All Group AGroup BGroup C
+
+Parents total 115 290 5 386 106 222 3 682 Nationality Luxembourger 49 832 1 932 45 853 2 047 Not Luxembourger 65 458 3 454 60 369 1 635 Social security affiliation status Parent, blue collar 23 129 1 278 20 833 1 018 White collar 46 799 1 850 43 619 1 330 Civil servant 13 028 228 12 373 427 Self-employed, unemployed, pre-retired, invalid, retired, widow 11 628 555 10 692 381 Voluntary insured, Non-affiliated 11 841 1 277 10 161 403 Co-insured 8 865 198 8 544 123 Children total 92 515 6 786 82 489 3 240 Boy 0-4 years old 17 365 1 048 15 644 673 5-7 years old 10 976 775 9 850 351 8-12 years old 18 907 1 683 16 517 707 Girl 0-4 years old 16 511 965 14 931 615 5-7 years old 10 607 716 9 581 310 8-12 years old 18 149 1 599 15 966 584 
+
+We have selected a total of 60 338 parents, precisely 5 386 parents from Group A ,53 111 parents from Group B and 1 841 parents from Group C .
+
+# 6 Selection of Children 
+
+In the second phase, a single child of each selected parent is selected at random. The procedure is as follows: 13 • For parents in Group A , one child is selected with equal probability. In this case, let 
+
+mk denote the number of children of parent k. The probability of selecting a child is therefore qi = 1 /m k, where i ∈ Pk. The weights of the children in Group A are thus 
+
+wi = 1
+
+πkqi
+
+= mk, i ∈ Pk, k ∈ Group A .
+
+• For parents in Groups B and Group C , we select a single child for each selected parent with unequal probabilities. Children with a single responsible parent whose parent also shares responsibility for another child are assigned twice the selection probability of children with two responsible parents. There are 451 children with a single responsible parent in Group B and 67 children in Group C , which is 0 .55 % of the cases in Group B and 2 .11 % of the cases in Group C respectively. Let 
+
+mk = 2 ∑
+
+> i∈Pk
+
+1
+
+ri
+
+be the number of children of parent k, counting twice those children who have only one responsible parent and whose responsible parent is also co-responsible for at least one other child. Next, we calculate the unequal probabilities 
+
+qi = 2
+
+rimk
+
+, i ∈ Pk.
+
+Thus, we have ∑ 
+
+> i∈Pk
+
+qi = 1 .
+
+From Expression (1), we have the balancing equations of the first phase: 
+
+∑
+
+> k∈U
+
+Ik
+
+πk
+
+∑
+
+> i∈Pk
+
+zi
+
+ri
+
+= ∑
+
+> k∈U
+
+ˇzk
+
+πk
+
+Ik ≈ ∑
+
+> k∈U
+
+ˇzk = ∑
+
+> i∈V
+
+zi,
+
+We again select a highly stratified and balanced design such that 
+
+∑
+
+> k∈U
+
+Ik
+
+πk
+
+∑
+
+> i∈Pk
+
+ziJi
+
+qiri
+
+≈ ∑
+
+> k∈U
+
+Ik
+
+πk
+
+∑
+
+> i∈Pk
+
+zi
+
+ri
+
+, (2) where Ji is 1 if child i is selected and 0 otherwise. We must therefore select a sample of 14 children with inclusion probabilities qi by balancing on the auxiliary variable zi/(πkri). Since 
+
+∑
+
+> i∈Pk
+
+Ji = 1 , for all k ∈ U, 
+
+we must also stratify by the Pk. Balancing will ensure that the estimates of the totals for the children’s auxiliary variables are equal to the population totals. The weights of the children are as follows: 
+
+• In Group A 
+
+1
+
+πkqiri
+
+= mk
+
+1 · 1 = mk, i ∈ Pk, k ∈ Group A .
+
+• In Groups B and C :
+
+wi = 1
+
+πkqiri
+
+= 2 ri mk
+
+2ri
+
+= mk, i ∈ Pk, k ∈ Group B or Group C .
+
+Equation (2), can also be written 
+
+∑
+
+> k∈U
+
+Ikmk
+
+∑
+
+> i∈Pk
+
+ziJi = ∑
+
+> k∈U
+
+Ik
+
+πk
+
+∑
+
+> i∈Pk
+
+zi
+
+ri
+
+.
+
+This is a two-phase design, in which the second phase depends on the first. The weights of the children are therefore always 
+
+wi = mk, i ∈ Pk, k ∈ U. 
+
+These weights are random, since they vary depending on which parent the child was selected from. We can estimate Y using ̂
+
+Y = ∑
+
+> i∈V
+
+wiyiJi.
+
+Example 4 Consider a selected parent k who is responsible for two children, i1 and i2.Child i1 has only one responsible parent, whereas child i2 has two responsible parents. Thus ri1 = 1 and ri2 = 2 .
+
+15 mk = 2 
+
+( 1
+
+ri1
+
++ 1
+
+ri2
+
+)
+
+= 2 
+
+(
+
+1 + 12
+
+)
+
+= 3 .
+
+The child-selection probabilities are 
+
+qi1 = 2
+
+mkri1
+
+= 23, qi2 = 2
+
+mkri2
+
+= 13 .
+
+The parent k must belong to either Group B or Group C, so πk = 1 /2. The resulting weights of the children are 
+
+wi1 = 1(1 /2)(2 /3)(1) = 3 ,
+
+and 
+
+wi2 = 1(1 /2)(1 /3)(2) = 3 .
+
+Therefore, both selected children receive the same weight mk = 3 , illustrating the gen-eral result 
+
+wi = 1
+
+πkqiri
+
+= mk.
+
+# 7 Sampling Results and Balancing Quality 
+
+After selecting the sample, we estimated the totals of the auxiliary variables and compared them with the corresponding population totals. Table 4 presents the estimated totals obtained after the first sampling phase. More precisely, we computed 
+
+∑
+
+> k∈U
+
+xk
+
+πk
+
+Ik and ∑
+
+> k∈U
+
+ˇzk
+
+πk
+
+Ik,
+
+as defined in Equation (1). These estimates can be compared with the true population totals reported in Table 3. The estimated totals are almost identical to the correspond-ing population totals, indicating that the first-phase sample reproduces the balancing variables remarkably well. 16 Table 5 reports the estimated totals for the variables zi after the second sampling phase. Specifically, we computed 
+
+∑
+
+> k∈U
+
+Ik
+
+πk
+
+∑
+
+> i∈Pk
+
+ziJi
+
+qiri
+
+,
+
+as defined in Equation (2). The results can be compared both with the true population totals in Table 3 and with the intermediate estimates reported in Table 4. Once again, the estimated totals are almost identical to the corresponding population totals. Table 4 presents the population totals. Tables 5 and 6 report the estimated totals after the first sampling stage and the second selection stage, respectively. These results clearly demonstrate the excellent balancing properties of the proposed sampling design. The selected samples reproduce the balancing variables with almost perfect accuracy. As a result, the estimators computed from the samples achieve a high level of precision. Table 5: Estimation of the distribution of parents and children by nationality (for parents) social security affiliation status (for parents), and by gender and age group (for children), for the whole population and within each Group .Auxiliary variable All Group AGroup BGroup C
+
+Parents total 115 290 5 386 106 222 3 682 Nationality Luxembourger 49 832 1 932 45 854 2 046 Not Luxembourger 65 458 3 454 60 368 1 636 Social security affiliation status Parent, blue collar 23 128 1 278 20 832 1 018 White collar 46 798 1 850 43 620 1 328 Civil servant 13 030 228 12 374 428 Self-employed, unemployed, pre-retired, invalid, retired, widow 11 629 555 10 692 382 Voluntary insured, Non-affiliated 11 841 1 277 10 160 404 Co-insured 8 864 198 8 544 122 Children total 92 518 6 786 82 488 3 244 Boy 0-4 years old 17 364 1 048 15 644 672 5-7 years old 10 976 775 9 850 351 8-12 years old 18 906 1 683 16 517 706 Girl 0-4 years old 16 511 965 14 931 615 5-7 years old 10 608 716 9 581 311 8-12 years old 18 153 1 599 15 965 589 We then examined the distribution of parents and children across the different cantons 17 Table 6: Estimation of the distribution of children gender and age, for the whole popula-tion and within each Group .Auxiliary variable All Group A Group B Group C 
+
+Children total 92 518 6 786 82 488 3 244 Boy 0-4 years old 17 367 1 050 15 645 672 5-7 years old 10 978 776 9 851 351 8-12 years old 18 907 1 684 16 516 707 Girl 0-4 years old 16 511 963 14 931 617 5-7 years old 10 605 715 9 579 311 8-12 years old 18 150 1 598 15 966 586 of Luxembourg. Although canton was not included as a balancing variable during the sample selection process, the resulting sample closely reflects the geographical distribution of the target population. Table 7 presents the distribution of parents and children by canton for both the general population and the final selected sample. As shown, the sample distributions closely match those of the population, indicating that geographic distribution was preserved despite canton not being explicitly considered in the balancing procedure. 
+
+# 8 Weighting and Calibration 
+
+In the sample, there is exactly one child i assigned to each parent k. Weighting can be applied after estimating response probabilities. The procedure is as follows: We construct the vector of totals in the population 
+
+tu =
+
+∑ 
+
+> k∈U
+
+xk
+
+∑ 
+
+> i∈V
+
+zi
+
+ .
+
+For each parent k selected along with their selected child i, we construct the vector 
+
+uk =
+
+
+
+xk
+
+zi
+
+qiri
+
+ =
+
+
+
+xk
+
+mkπkzi
+
+ .
+
+18 Table 7: Estimation of the distribution of parent and children by residence canton for the whole population and within each Group .
+
+Population Sample All Group A Group B Group C All Group A Group B Group C 
+
+Parents total 115 290 5 386 106 222 3 682 115 290 5 386 106 222 3 682 Capellen 9 850 366 9 244 240 9 866 366 9 256 244 Clervaux 3 885 190 3 515 180 3 872 190 3 500 182 Diekirch 6 115 301 5 516 298 6 133 301 5 528 304 Echternach 3 457 182 3 161 114 3 466 182 3 176 108 Esch/Alzette 34 843 1 721 31 799 1 323 34 873 1 721 31 808 1 344 Grevenmacher 5 799 246 5 418 135 5 804 246 5 426 132 Lux. Campagne 13 411 486 12 664 261 13 424 486 12 670 268 Lux. Ville 18 894 1 132 17 355 407 18 850 1 132 17 336 382 Mersch 6 760 224 6 323 213 6 774 224 6 320 230 Redange 3 752 132 3 443 177 3 754 132 3 448 174 Remich 3 916 195 3 585 136 3 903 195 3 582 126 Vianden 981 47 893 41 973 47 890 36 Wiltz 3 627 164 3 306 157 3 598 164 3 282 152 Children total 92 515 6 786 82 489 3 240 92 518 6 786 82 488 3 244 Capellen 7 933 481 7 249 203 7 929 475 7 249 205 Clervaux 3 269 244 2 842 183 3 265 253 2 835 177 Diekirch 4 823 366 4 192 265 4 923 379 4 254 290 Echternach 2 782 232 2 435 115 2 813 226 2 479 108 Esch/Alzette 27 769 2 167 24 435 1 167 27 751 2 152 24 424 1 175 Grevenmacher 4 809 317 4 371 121 4 787 317 4 360 110 Lux. Campagne 10 693 614 9 845 234 10 657 613 9 824 220 Lux. Ville 14 773 1 393 13 046 334 14 832 1 398 13 089 345 Mersch 5 444 284 4 983 177 5 393 280 4 936 177 Redange 3 129 169 2 808 152 3 122 168 2 798 156 Remich 3 141 246 2 785 110 3 130 244 2 777 109 Vianden 805 55 712 38 799 58 704 37 Wiltz 3 145 218 2 786 141 3 117 223 2 759 135 
+
+By virtue of the balancing equations (1) and (2), we have 
+
+∑
+
+> k∈U
+
+uk
+
+πk
+
+Ik ≈ tu. (3) However, due to nonresponse, the balancing equations (3) are no longer satisfied. Suppose that only a subset R of the selected parents responded to the survey. Since the response mechanism depends only on the selected parent, the nonresponse adjustment is identical for both the responding parent and the corresponding sampled child. If S = {k ∈ U | Ik = 1 }, we first estimate the response probability ̂
+
+ψk =̂ Pr( k ∈ R | S),
+
+19 for example by fitting a logistic regression model using the auxiliary variables uk as covariates. Next, following the calibration approach of Deville and S¨ arndal (1992), we compute the calibration weights gk such that 
+
+∑
+
+> k∈R
+
+gkuk
+
+πk̂ ψk
+
+≈ tu.
+
+The resulting calibration weights can then be applied to both the parent and child esti-mators, thereby compensating for unit nonresponse while preserving calibration on the auxiliary variables. The extrapolation weights for the parents are then 
+
+wk = gk
+
+πk̂ ψk
+
+, k ∈ R. 
+
+The extrapolation weights for the children are 
+
+wi = gkmk̂
+
+ψk
+
+, i ∈ R, 
+
+where child i was selected by parent k.
+
+# 9 Conclusion 
+
+A key feature of the proposed design is that balancing is achieved simultaneously on auxil-iary variables defined for both parents and children, thereby ensuring accurate estimation for the two target populations. In summary, this complex sampling design enables to col-lect a balanced sample across diverse family contexts, including blended families. Strat-ification by pairs of co-responsibility and the random selection of one child per selected parent help overcome the difficulties associated with multiple co-responsibility relation-ships. The inclusion of auxiliary variables in the sampling ensures that the results can be accurately extrapolated for both parents and children. Although managing odd cycles in co-responsibility relationships poses a theoretical challenge, this situation is expected to 20 be very rare in practice. This sampling design thus provides a novel solution for studies of modern families, yielding results that can be extrapolated to populations of parents and children, while respecting the constraints of balance and precision of the estimators. 
+
+# 10 Acknowledgments 
+
+Authors would like to thank our colleague Audrey Bousselin for her valuable comments and suggestions on earlier versions of this paper. 
+
+# References 
+
+Deville, J.-C. and S¨ arndal, C.-E. (1992). Calibration estimators in survey sampling. 
+
+Journal of the American Statistical Association , 87(418):376–382. Deville, J.-C. and Till´ e, Y. (2004). Efficient balanced sampling: The cube method. 
+
+Biometrika , 91:893–912. Hasler, C. and Till´ e, Y. (2014). Fast balanced sampling for highly stratified population. 
+
+Computational Statistics and Data Analysis , 74:81–94. Inspection G´ en´ erale de la S´ ecurit´ e Sociale (2024). Luxembourg microdata platform on labour and social protection: Data dictionary. https: // igss. gouvernement. lu/ dam-assets/ microdata-platform/ data-dictionary. pdf .Jauslin, R., Eustache, E., and Till´ e, Y. (2021). Enhanced cube implementation for highly stratified population. Japanese Journal of Statistics and Data Science , 4:783–795. 21
