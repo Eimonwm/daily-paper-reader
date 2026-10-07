@@ -1,0 +1,25 @@
+{
+  "date": "20261007",
+  "date_label": "",
+  "generated_at": "2026-10-07 23:20:46 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2610.07265v1",
+      "route": "202610/07/2610.07265v1-a-bayesian-multiscale-integrated-abundance-model-for-estimating-latent-opioid-misuse-prevalence-from-spatially-misaligned-data",
+      "title": "A Bayesian Multiscale Integrated Abundance Model for Estimating Latent Opioid Misuse Prevalence from Spatially Misaligned Data",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "male-fert"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "从错位调查数据估计潜在率的贝叶斯方法",
+      "first_seen_at": "2026-10-07 23:20:46 UTC",
+      "updated_at": "2026-10-07 23:20:46 UTC"
+    }
+  ]
+}

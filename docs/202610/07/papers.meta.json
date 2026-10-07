@@ -1,0 +1,24 @@
+{
+  "label": "2026-10-07",
+  "date": "2026-10-07",
+  "generated_at": "2026-10-07T23:20:47",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202610/07/2610.07265v1-a-bayesian-multiscale-integrated-abundance-model-for-estimating-latent-opioid-misuse-prevalence-from-spatially-misaligned-data",
+      "section": "quick",
+      "title_en": "A Bayesian Multiscale Integrated Abundance Model for Estimating Latent Opioid Misuse Prevalence from Spatially Misaligned Data",
+      "authors": "Staci A. Hepler, Brian N. White, Magdalena Cerda, William C. Miller, Lance A. Waller, David M. Kline",
+      "date": "2026-10-05",
+      "pdf": "https://arxiv.org/pdf/2610.07265v1",
+      "score": "6.0",
+      "evidence": "从错位调查数据估计潜在率的贝叶斯方法",
+      "tldr": "阿片类药物滥用小区域流行率难以直接测量，且监测数据常落在不一致地理单元上。提出贝叶斯多尺度整合丰度（MIA）模型，以原子空间单元统一不同来源地理支撑，并用Fisher非中心超几何分布建模潜在流行率。开发两阶段组合MCMC并行算法实现可扩展推断。模拟显示较常规降尺度方法偏差和RMSE更低；俄亥俄州2010-2023应用揭示县内异质性与局部高发区域。",
+      "tags": "query:male-fert",
+      "abstract_en": "Estimating small area prevalence of opioid misuse is critical for targeting public health interventions, yet direct measures are unavailable and related surveillance data are often reported on misaligned areal units. We propose a Bayesian Multiscale Integrated Abundance (MIA) model for estimating latent opioid misuse prevalence by jointly analyzing multiple indirect surveillance indicators observed on different geographic supports. The model extends existing integrated abundance models by representing all source geographies through a common set of atomic spatial units formed by the intersections of observed areal supports. Latent prevalence at the atomic level is modeled using a Fisher noncentral hypergeometric distribution, which preserves county-level prevalence totals while respecting local population constraints. To enable scalable inference, we develop a two-stage compositional Markov chain Monte Carlo algorithm that combines customized sampling strategies and parallel computing. Simulation studies show the proposed approach reduces bias and root mean squared error relative to common downscaling methods. We apply the model to Ohio data from 2010-2023, integrating state-level survey estimates, county-level counts of opioid overdose deaths and treatment admissions, and ZIP code tabulation area-level counts of emergency medical services naloxone administrations. Results reveal substantial within-county heterogeneity and identify localized areas of elevated opioid misuse prevalence that would be missed by county-level analyses.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

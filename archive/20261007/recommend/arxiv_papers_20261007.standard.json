@@ -1,0 +1,58 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-10-07T23:20:22.881883+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2610.07265v1",
+      "source": "arxiv",
+      "title": "A Bayesian Multiscale Integrated Abundance Model for Estimating Latent Opioid Misuse Prevalence from Spatially Misaligned Data",
+      "abstract": "Estimating small area prevalence of opioid misuse is critical for targeting public health interventions, yet direct measures are unavailable and related surveillance data are often reported on misaligned areal units. We propose a Bayesian Multiscale Integrated Abundance (MIA) model for estimating latent opioid misuse prevalence by jointly analyzing multiple indirect surveillance indicators observed on different geographic supports. The model extends existing integrated abundance models by representing all source geographies through a common set of atomic spatial units formed by the intersections of observed areal supports. Latent prevalence at the atomic level is modeled using a Fisher noncentral hypergeometric distribution, which preserves county-level prevalence totals while respecting local population constraints. To enable scalable inference, we develop a two-stage compositional Markov chain Monte Carlo algorithm that combines customized sampling strategies and parallel computing. Simulation studies show the proposed approach reduces bias and root mean squared error relative to common downscaling methods. We apply the model to Ohio data from 2010-2023, integrating state-level survey estimates, county-level counts of opioid overdose deaths and treatment admissions, and ZIP code tabulation area-level counts of emergency medical services naloxone administrations. Results reveal substantial within-county heterogeneity and identify localized areas of elevated opioid misuse prevalence that would be missed by county-level analyses.",
+      "authors": [
+        "Staci A. Hepler",
+        "Brian N. White",
+        "Magdalena Cerda",
+        "William C. Miller",
+        "Lance A. Waller",
+        "David M. Kline"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME",
+        "stat.AP"
+      ],
+      "published": "2026-10-05T19:06:05+00:00",
+      "link": "https://arxiv.org/pdf/2610.07265v1",
+      "tags": [
+        "keyword:male-fert",
+        "query:male-fert"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Bayesian estimation of latent rates from misaligned survey data",
+      "llm_evidence_cn": "从错位调查数据估计潜在率的贝叶斯方法",
+      "llm_evidence": "从错位调查数据估计潜在率的贝叶斯方法",
+      "canonical_evidence": "从错位调查数据估计潜在率的贝叶斯方法",
+      "llm_tldr_en": "Proposes a Bayesian Multiscale Integrated Abundance model that maps misaligned surveillance geographies to common atomic units to jointly estimate latent small-area opioid misuse prevalence from indirect indicators.",
+      "llm_tldr_cn": "小区域阿片类药物滥用流行率缺乏直接测量，且相关监测数据常报告在彼此错位的空间单元上，难以直接汇总估计。本文提出贝叶斯多尺度集成丰度模型，将所有来源地理单元拆解为共同的原子空间单元，联合多个间接监测指标进行建模。模型可给出潜在流行率的小区域估计，为公共卫生干预的资源投放提供依据，其从错位调查数据估计潜在率的方法亦可迁移到生育率等人口估计任务。",
+      "llm_tldr": "小区域阿片类药物滥用流行率缺乏直接测量，且相关监测数据常报告在彼此错位的空间单元上，难以直接汇总估计。本文提出贝叶斯多尺度集成丰度模型，将所有来源地理单元拆解为共同的原子空间单元，联合多个间接监测指标进行建模。模型可给出潜在流行率的小区域估计，为公共卫生干预的资源投放提供依据，其从错位调查数据估计潜在率的方法亦可迁移到生育率等人口估计任务。",
+      "llm_tags": [
+        "query:male-fert"
+      ],
+      "matched_query_tag": "query:male-fert",
+      "matched_query_text": "Methods for estimating fertility rates from survey data",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

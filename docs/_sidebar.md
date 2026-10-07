@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-10-07 <!--dpr-date:20261007-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202610/07/2610.07265v1-a-bayesian-multiscale-integrated-abundance-model-for-estimating-latent-opioid-misuse-prevalence-from-spatially-misaligned-data" data-sidebar-item="{&quot;title&quot;: &quot;A Bayesian Multiscale Integrated Abundance Model for Estimating Latent Opioid Misuse Prevalence from Spatially Misaligned Data&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2610.07265v1-a-bayesian-multiscale-integrated-abundance-model-for-estimating-latent-opioid-misuse-prevalence-from-spatially-misaligned-data&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;male-fert&quot;}], &quot;evidence&quot;: &quot;从错位调查数据估计潜在率的贝叶斯方法&quot;}">A Bayesian Multiscale Integrated Abundance Model for Estimating Latent Opioid Misuse Prevalence from Spatially Misaligned Data</a>
   * 2026-10-03 <!--dpr-date:20261003-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202610/03/2609.34959v1-a-joint-sampling-design-for-the-related-populations-of-parents-and-children" data-sidebar-item="{&quot;title&quot;: &quot;A Joint Sampling Design for the Related Populations of Parents and Children&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2609.34959v1-a-joint-sampling-design-for-the-related-populations-of-parents-and-children&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;male-fert&quot;}], &quot;evidence&quot;: &quot;父母子女联合抽样设计与家庭调查方法&quot;}">A Joint Sampling Design for the Related Populations of Parents and Children</a>

@@ -1,0 +1,1903 @@
+Title: A Bayesian Multiscale Integrated Abundance Model for Estimating Latent Opioid Misuse Prevalence from Spatially Misaligned Data
+
+URL Source: https://arxiv.org/pdf/2610.07265v1
+
+Published Time: Wed, 07 Oct 2026 00:25:34 GMT
+
+Number of Pages: 70
+
+Markdown Content:
+# A Bayesian Multiscale Integrated Abundance Model for Estimating Latent Opioid Misuse Prevalence from Spatially Misaligned Data 
+
+## Staci A. Hepler 1∗ Brian N. White 2 Magdalena Cerd´ a3
+
+## William C. Miller 4 Lance A. Waller 5 David M. Kline 21Department of Statistical Sciences, Wake Forest University. Email: heplersa@wfu.edu 
+
+2 Department of Biostatistics and Data Science, Wake Forest University School of Medicine 
+
+3 Department of Chronic Disease Epidemiology, Yale School of Public Health 
+
+4 Department of Epidemiology, Gillings School of Public Health, University of North Carolina at Chapel Hill 
+
+5 Department of Biostatistics and Bioinformatics, Rollins School of Public Health, Emory University 
+
+Abstract 
+
+Estimating small area prevalence of opioid misuse is critical for targeting public health interventions, yet direct measures are unavailable and related surveillance data are often reported on misaligned areal units. We propose a Bayesian Multiscale Integrated Abundance (MIA) model for estimating latent opioid misuse prevalence by jointly analyzing multiple indirect surveillance indicators observed on different geographic supports. The model extends existing integrated abundance models by 
+
+> ∗
+
+Research reported in this publication was supported by the National Institute On Drug Abuse of the National Institutes of Health under Award Number R01DA052214. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health. 
+
+1arXiv:2610.07265v1 [stat.ME] 5 Oct 2026 representing all source geographies through a common set of atomic spatial units formed by the intersections of observed areal supports. Latent prevalence at the atomic level is modeled using a Fisher noncentral hypergeometric distribution, which preserves county-level prevalence totals while respecting local population constraints. To enable scalable inference, we develop a two-stage compositional Markov chain Monte Carlo algorithm that combines customized sampling strategies and parallel computing. Simulation studies show the proposed approach reduces bias and root mean squared error relative to common downscaling methods. We apply the model to Ohio data from 2010-2023, integrating state-level survey estimates, county-level counts of opioid overdose deaths and treatment admissions, and ZIP code tabulation area-level counts of emergency medical services naloxone administrations. Results reveal substantial within-county heterogeneity and identify localized areas of elevated opioid misuse prevalence that would be missed by county-level analyses. 
+
+Keywords: small area estimation, change of support, spatial epidemiology, opioid surveil-lance, Fisher noncentral hypergeometric distribution 
+
+# 1 Introduction 
+
+The opioid epidemic remains a major public health crisis in the United States. Approxi-mately 76% of the 105,000 drug overdose deaths nationwide in 2023 involved opioids. While the total number of overdose deaths involving an opioid declined 4% from 2022 to 2023, the number is still nearly ten times higher than it was in 1999 (CDC, 2025). The impact of the opioid epidemic has been especially severe in the state of Ohio. In 2017, Ohio had the second highest age-adjusted opioid overdose death rate at 39.2 deaths per 100,000, and it reached a peak age-adjusted rate of 40.1 in 2021 before beginning to decline. In 2024, the age-adjusted opioid overdose death rate in Ohio had dropped to 20.1 deaths per 100,000 population. Despite being at its lowest level since 2014, that number remains over 13 times higher than the corresponding rate in 1999 (KFF, 2026). Effective public health responses to the opioid epidemic require information on where opioid misuse is occurring and how it varies across communities. While surveillance data such as opioid overdose death counts provide proxy information for opioid misuse prevalence 2(OMP), any surveillance indicator only provides partial information about the underlying population at risk since not all people who misuse opioids (PWMO) experience an observ-able outcome. Ideally, estimates of OMP would be used to evaluate policy, guide resource allocation, identify health service gaps, and highlight emerging hotspots. However, OMP is not observed directly at finer spatial scales. The National Survey on Drug Use and Health (NSDUH) generates estimates of OMP, but these are at the state and multi-year level (SAMHSA and Center for Behavioral Health Statistics and Quality, 2015). Thus, small area estimates of OMP must be inferred from existing indirect data sources such as overdose death counts, counts of treatment admissions, and counts of naloxone administrations. Indirect estimation is a common strategy for estimating hidden or hard-to-reach pop-ulation sizes and has been applied to estimate OMP and opioid use disorder. Capture-recapture (Jones et al., 2016; Barocas et al., 2018; Min et al., 2020; Thompson et al., 2023; Wang et al., 2024a), benchmark-multiplier (Keyes et al., 2022; Wang et al., 2024b), and multi-parameter estimation of prevalence (Markoulidakis et al., 2024, 2026) models have all been used to leverage multiple sources of data to estimate population prevalence. Each require at least some data that are individually-linked across data sources or estimates de-rived from surveys and studies with individual-level data. However, government agencies in many jurisdictions only release data in aggregate form to protect privacy and comply with legal obligations. These restrictions do not allow for use of methods based on individual-level identification and linkage and require alternative approaches based exclusively on aggregate data sources. Given privacy and aggregation restrictions, methods have been developed that rely exclusively on aggregate data. One such method uses a top-down approach with a multi-nomial distribution to infer county-level counts of opioid use disorder across the United States using county-level covariates to downscale state-level counts (Peterson et al., 2025). Another alternative is the Bayesian Integrated Abundance (BIA) model, which was devel-3oped by Hepler et al. (2023) to infer latent county-level OMP by jointly modeling multi-ple county-level surveillance outcomes. By modeling multiple aggregate outcomes jointly with state-level NSDUH survey estimates of OMP, the BIA overcomes identifiability issues known to occur with abundance models. They applied the BIA to data from Ohio on opi-oid overdose deaths and treatment admissions to infer yearly county-level OMP. Another advantage of the BIA is it permits quantification of outcome-specific rates among PWMO, which is often more meaningful than outcome rates per population. The BIA has since been applied to other states including New York (Santaella-Tenorio et al., 2024) and North Carolina (Kline et al., 2025), and it has been used to identify counties where there are discrepancies between OMP and buprenorphine prescribing (McKnight et al., 2023). The approaches described above generate estimates at the county-level. Many local health departments are organized at the county level so county-level OMP estimates are particularly valuable for state health officials tasked with allocating resources. However, counties are large, heterogeneous regions, and county-level estimates obscure within-county variability and can thus fail to identify higher resolution geographical regions with elevated OMP, which is critical information for local health departments. As one example, McMaster et al. (2025) examined drug-related mortality at the Census tract level within Cuyahoga County, Ohio. They found that while the county average drug-related mortality rate is near the statewide average, there are Census tracts within the county whose rates are substantially higher. The authors emphasize the need for more granular geographic analysis to facilitate targeted public health interventions. While this analysis was focused on drug-related mortality, we expect there is similarly large within-county variation in OMP. While most surveillance data on opioid-related indicators are available at the county level, there are instances where data on a subset of indicators are available at a finer spatial resolution such as Census tracts or ZIP codes. A major challenge when integrating such data sources is that the spatial units on which they are reported are often misaligned and 4sometimes even non-nested, creating an areal spatial change-of-support (COS) problem. Gotway and Young (2002) provide a broad overview to combining misaligned data. Bradley et al. (2016) and Bradley et al. (2015) used a Bayesian COS “bottom up” strategy to model misaligned data assuming observed data on areal units were aggregates of a spatial point process. While this has the advantage of allowing the user to integrate to any desired areal spatial support, this was designed for settings where one is modeling misaligned data on the same quantity of interest. “Top-down” approaches have commonly been used for COS with areal count data. These use a hierarchical Poisson regression model to model a latent spatial process on the finest areal spatial resolution that is linked to the outcomes through aggregation to the coarser geographical scales. This framework has been used to study the relationship between a response variable and misaligned explanatory variables and to downscale the coarse response variable to a finer spatial resolution. See, for example, Mugglin and Carlin (1998); Mugglin et al. (1999, 2000) and Peterson et al. (2025). Although there is a deep literature on spatial COS, the emphasis is on downscaling an observed variable. In our setting, we do not observe county- or sub-county-level OMP. Instead, methods to indirectly infer sub-county latent OMP that formally integrate multiple sources of information across spatially misaligned areal units are needed. In this paper, we propose the multiscale integrated abundance (MIA) model that ex-tends the Bayesian integrated abundance framework of Hepler et al. (2023). The proposed model jointly analyzes surveillance indicators observed on multiple geographic supports and estimates OMP at both county and sub-county resolutions. By representing all source geographies through a common set of atomic spatial units formed by their intersections, the model accommodates spatially misaligned data while preserving consistency across scales. The resulting framework allows public health agencies to estimate latent OMP at a much finer geographic resolution than is possible using county-level surveillance data alone. There are two main contributions in this paper. The first is the development of the MIA 5model to provide multiscale estimates that can be used to address the needs of both state and local public health officials. A novel aspect of the MIA is the integration of the Fisher Noncentral Hypergeometric (FNCH) distribution as a model for the latent atomic-level process to enforce sub-county constraints related to small area population. This model also provides estimates of OMP at all geographical levels that have standard epidemio-logical interpretations that can be readily used by health department staff and help to ease integration into practice. The second contribution is the development of a two-stage Markov chain Monte Carlo (MCMC) approach that novelly combines parallel computing with strategic sampling algorithms to efficiently satisfy model constraints while remain-ing scalable and generalizable. While our work is motivated by the need for estimates of OMP in Ohio, the MIA model can more generally be applied to prevalence estimation of hard-to-reach populations where only data on aggregate indirect indicators are available. Section 2 introduces the data from Ohio that motivated our methodological develop-ment. The MIA model and two-stage MCMC approach are described in Section 3. In Sec-tion 4, we present simulation results that compare the MIA model’s sub-county estimates to estimates that would be obtained through commonly used downscaling approaches, and in Section 5, we apply the MIA to estimate yearly, sub-county OMP in Ohio. 
+
+# 2 Data and Motivating Application 
+
+Our proposed model integrates multiple data sources at varying spatial and temporal scales, with the goal of performing multiscale inference on OMP in Ohio. Below, we describe the different data sources used, broken down by spatial resolution. 62.1 State-Level Data 
+
+The only direct data source available on OMP comes from the National Survey on Drug Use and Health (NSDUH) (SAMHSA, Center for Behavioral Health Statistics and Quality, 2003). Prior to 2015, this survey provided estimates of past-year nonmedical opioid use, and post-2015 it estimated past-year opioid misuse. Despite the change in survey language, we treat these measures as comparable over time. The NSDUH reports multi-year averaged estimates of statewide prevalence for Ohio, along with associated standard errors. We use estimates spanning 2007–2022 to inform the statewide prevalence trajectory. The survey estimates and standard errors are shown in Supplemental Material (SM) Table 1. 
+
+## 2.2 County-Level Data 
+
+The county-level data included is the same as in Hepler et al. (2023), but updated to include more recent years. More specifically, for each of Ohio’s 88 counties and each year from 2010 - 2023, we use two surveillance indicators: opioid overdose death counts and counts of treatment admissions. Death counts come from the Ohio Public Data Warehouse and include yearly county-level counts of deaths where the death certificate mentions poisoning from any opioid under the ICD-10 codes T40.0-T40.4 and T40.6. Deaths are indexed by the county of residence of the decedent. The treatment admissions counts represent unique patients and come from the Ohio Department of Behavioral Health through a data use agreement that includes counts of admissions to residential, outpatient, or intensive outpatient treatment for opioid use disorder. Treatment counts under 50 are suppressed. County-level population data is from the National Center for Health Statistics and obtained through the Ohio Public Health Data Warehouse (Ohio Public Health Data Warehouse, 2020). Maps of the county-level indicators are shown in SM Figures 1 and 2. Our county-level model includes other county-level variables as covariates. Sociodemo-7graphic variables come from the American Community Survey (ACS) 5-year estimates. The ACS variables included are the poverty rate, unemployment rate, proportion with at least a high school degree, and the proportion on food stamps. We also include data on opioid pre-scribing rates, which is publicly available from the Ohio Automated RX Reporting System. Additionally, we compile county-level indicators of being designated a health professional shortage area (HPSA) or a medically underserved (MU) area from the Health Resources and Services Administration, a high impact drug trafficking area (HIDTA) from the Drug Enforcement Agency, a metropolitan statistical area (MSA) from the United States Census Bureau, and an indicator for having an interstate highway intersect the county. 
+
+## 2.3 ZCTA-Level Data 
+
+Naloxone is an opioid antagonist used to reverse overdose. For 2017 to 2023, we have indicator data on emergency medical services (EMS)-administered naloxone counts aggre-gated to the ZIP-code level. These data were obtained from the Ohio Department of Public Safety Division of Emergency Medical Services, through the EMS Incident Report-ing System (Ohio Emergency Medical Services, 2026). Counts reflect EMS administrations recorded by EMS staff regardless of the final cause of the incident and do not reflect unique patients. We process all ZIP-code level data to the ZIP-code tabulation area (ZCTA) level because U.S. Census data sources provide demographic information at the ZCTA-level. This processing is done using a crosswalk obtained from the Missouri Census Data Center. For a detailed description, see Murphy et al. (2025). We also removed remaining ZCTA that corresponded to single delivery-point address. The final dataset includes 1063 ZCTAs. The ZCTA-level rates of EMS administered naloxone are shown in SM Figures 3-5. ZCTA-level covariates are included to capture spatial variation in EMS-administered naloxone rates. We include the proportion of each ZCTA who are unemployed and the proportion with at least a Bachelor’s degree from the ACS 2018 - 2022 5-year estimates. 8We construct indicators of urbanicity based on the rural-urban commuting area (RUCA) codes. We define ZCTAs with RUCA codes between 1-3 to be ‘metropolitan’ and ZCTAs with RUCA codes between 4-6 to be ‘micropolitan,’ and we include two indicator covariates for each designation with codes between 7-10 as a ‘rural’ reference group. 
+
+## 2.4 Atom-Level Data 
+
+Throughout, we will follow the terminology of Mugglin et al. (1999), Bradley et al. (2016), and Trevisani and Gelfand (2013) and define the source zones to be the areal units where count data are available, and the target zones as the area where we wish to make inference. Atoms are the spatial units constructed by intersecting our source geographies. In our case, counties and ZCTAs serve as the source support and atoms, which are the intersection of counties and ZCTAs, are the target support. Note that while counties and ZCTAs are non-nested, atoms are nested both within counties and ZCTAs. This construction ensures all modeled quantities can be expressed as sums over a common set of atomic units, permitting multiscale inference at both the target and source levels of geography. Our study consists of 1670 atoms across Ohio. Figure 1 illustrates source and target geographies in our application zoomed into central Ohio. We obtain atom-level population counts using the 2022 Geographic Correspondence Engine from the Missouri Census Data Center (Missouri Census Data Center, 2022). This provided county-level population counts from the 2020 Census and the proportion of the county that resided within each atom formed by intersecting counties and ZCTAs. We also included the proportion of the atom population that is unemployed and the proportion with at least a bachelor’s degree. These atom-level covariates were constructed by assuming the ZCTA-level rates from the 2018-2022 5-year ACS estimates were constant for all atoms within the ZCTA. Maps of the atom-level covariates are included in SM Figures 6 and 7. 9Figure 1: The left map shows the two source zones - Central Ohio counties (black lines) and the ZCTA that intersect them (gray lines). The right plot shows the resulting atoms (target zones) formed by intersecting the source geographies. 
+
+# 3 Bayesian Multiscale Methodology 
+
+We begin by briefly reviewing the county-level BIA that serves as the foundation for the proposed multiscale framework. This model integrates multiple county-level surveillance data sources with state-level survey information to infer latent OMP at the county level. A full description of this model is in SM Section 2.1. In Section 3.2, we describe the multiscale extension. Without loss of generality and for ease of exposition, we describe the model assuming count-valued aggregate data on counties and ZCTAs; however, the framework can be applied for any type of areal spatial units (e.g., Census tracts, cities, etc) and straightforwardly extended to more than two types of geographical units. 
+
+## 3.1 County-Level Bayesian Integrated Abundance Model 
+
+Let Y (k) 
+
+> it
+
+denote the observed count for indicator k = 1 , ..., K at county i = 1 , ..., n (C)
+
+during year t = 1 , ..., T . In our application, k = 1 corresponds to opioid overdose deaths and k = 2 corresponds to treatment admissions. Conditional on the county-level latent 10 number of PWMO, Nit , we assume 
+
+Y (k) 
+
+> it
+
+|Nit , p (k)
+
+> it ind
+
+∼ Binomial 
+
+
+
+Nit , p (k)
+
+> it
+
+
+
+, (1) where p(k) 
+
+> it
+
+represents the probability that an individual who misuses opioids experiences indicator k. We model the indicator probabilities using logistic regression logit 
+
+
+
+p(k)
+
+> it
+
+
+
+= μ(k) 
+
+> t
+
++ X(k) 
+
+> it
+
+β(k) + f (k) 
+
+> it
+
++ ϵ(k) 
+
+> it
+
+,
+
+where μ(k) 
+
+> t
+
+is a time-varying intercept capturing statewide temporal trends, X(k) 
+
+> it
+
+is a vector of centered covariates (excluding an intercept), and β(k) is a vector of regression coefficients. To capture spatial and temporal dependence, f (k) 
+
+> it
+
+is modeled with an intrinsic conditional autoregressive (ICAR) model with first-order temporal autocorrelation, and ϵ(k) 
+
+> it
+
+accounts for additional unexplained heterogeneity. Note that in our application, treatment admission counts less than 50 are censored. We account for this in the model using an interval censored likelihood as in Famoye and Wang (2004). Specific details can be found in SM Section 2.1. A challenge in this setting is that surveillance data alone do not identify the overall level of OMP (Stoner et al., 2019). To address this, we incorporate data from statewide National Survey on Drug Use and Health (NSDUH) estimates, which provide estimates of statewide OMP over multi-year periods, along with standard errors of the estimates. Let 
+
+Sa:b denote the estimate of the statewide OMP between years a and b. The estimates for our application are shown in SM Table 1. We apply a logit-transformation to the estimates and use a first-order Taylor expansion to approximate the standard error. Let μt denote the true latent statewide OMP in year t. We assume logit( μt) = βμ 
+
+> 0
+
++ βμ 
+
+> 1
+
+t, and logit( Sa:b)|βμ 
+
+> 0
+
+, β μ 
+
+> 1
+
+∼ N 1
+
+b − a + 1 
+
+> b
+
+X
+
+> t=a
+
+logit( μt), ˆse 2
+
+> a:b
+
+!
+
+. (2) The target of inference in the county-level model is the latent number of PWMO, 
+
+Nit , and the prevalence ratio, λit . Assume Nit |λit ind 
+
+∼ Binomial( Pit , μ tλit ), where Pit is 11 the known population of county i during year t and μt is the statewide OMP that also appeared in (2). The prevalence ratio is relative to the statewide OMP and modeled as log( λit ) = W(C) 
+
+> it
+
+γ + uit + vit , where W(C) 
+
+> t
+
+is a design matrix for time t containing centered covariates without an intercept, vit iid 
+
+∼ N (0 , σ 2 
+
+> v
+
+), and uit is a spatio-temporal random effect defined similarly to f (k) 
+
+> it
+
+. See SM Section 2.1 for full specification of prior distributions. 
+
+## 3.2 Multiscale Integrated Abundance Model 
+
+The multiscale integrated abundance (MIA) model extends the model in Section 3.1 to include additional indicators at a finer spatial resolution. This top-down approach yields multiscale estimates of latent OMP while also quantifying covariate effects at the different resolutions. Note that all modeling components from Section 3.1 are still incorporated within the full hierarchical model and are as defined above and in SM Section 2.1. Let Aij denote atom j within county i where i = 1 , ..., n (C) and j = 1 , ..., n (c) 
+
+> i
+
+such that n(c) 
+
+> i
+
+is used to denote the number of atoms within county i. Similarly, let Bℓk denote atom k within ZCTA ℓ, where ℓ = 1 , ..., n (Z) and k = 1 , ..., n (z) 
+
+> ℓ
+
+such that n(Z) denotes the total number of ZCTAs and n(z) 
+
+> ℓ
+
+the number of atoms within ZCTA ℓ. Observe that 
+
+∪i,j Aij = ∪ℓ,k Bℓk , but A and B will be used when we are describing an atom within acounty versus within a ZCTA, respectively. Let n(a) denote the total number of atoms. 
+
+3.2.1 ZCTA-Level Data Model 
+
+Let Z(o) 
+
+> ℓt
+
+be the observed count for ZCTA-level indicator o at ZCTA ℓ during year t.Assume Z(o) 
+
+> ℓt
+
+= P 
+
+> j
+
+Z(o) 
+
+> t
+
+(Bℓj ), where Z(o) 
+
+> t
+
+(Bℓj ) denotes the latent count of indicator o
+
+for atom j within ZCTA ℓ. For each atom, assume Z(o) 
+
+> t
+
+(Bℓj ) | Nt(Bℓj ), q (o) 
+
+> t
+
+(Bℓj ) ∼
+
+Poisson 
+
+
+
+Nt(Bℓj )q(o) 
+
+> t
+
+(Bℓj )
+
+
+
+, where Nt(Bℓj ) is the latent atom-level count of PWMO in year t, and q(o) 
+
+> t
+
+(Bℓj ) is the rate at which PWMO are counted by indicator o in that atom 12 during that year. Marginalizing over the latent atom-level counts yields 
+
+Z(o) 
+
+> ℓt
+
+| { Nt(Bℓj ), q (o) 
+
+> t
+
+(Bℓj ) : j = 1 , ..., n (z) 
+
+> ℓ
+
+} ∼ P oisson 
+
+
+
+> n(z)
+> ℓ
+
+X
+
+> j=1
+
+Nt(Bℓj )q(o) 
+
+> t
+
+(Bℓj )
+
+ . (3) We model the atom-level rates q(o) 
+
+> t
+
+(Bℓj ) with a log-linear model of the form log( q(o) 
+
+> t
+
+(Bℓj )) = X(o) 
+
+> t
+
+(Bℓj )β(o) + f (o) 
+
+> t
+
+(Bℓj ), (4) where X(o) 
+
+> t
+
+(Bℓj ) is a vector of atom-level covariates with regression coefficients β(o), and 
+
+f (o) 
+
+> t
+
+(Bℓj ) is a spatio-temporal random effect. Note that the spatial dimension of f (o) 
+
+> t
+
+(·)is large when n(a) is big. We reduce the spatial dimension by assuming f (o) 
+
+> t
+
+(Bℓj ) = 
+
+B(Bℓj )′ω(o) 
+
+> t
+
+, where B(Bℓj ) is a q-dimensional vector of Moran’s I basis functions (Hughes and Haran, 2013). The coefficients in the q-dimensional vector ω(o) 
+
+> t
+
+are modeled with a temporal autoregressive process. See SM Section 2.2 for the full specification of f (o) 
+
+> t
+
+(Bℓj ). 
+
+3.2.2 Atom-Level Model for Latent OMP 
+
+We take a top-down approach that allocates county-level latent counts of PWMO to finer spatial units, which requires a model that simultaneously enforces two structural con-straints. First, the atom-level counts must sum to the county total, Pn(c) 
+
+> i
+> j=1
+
+Nt(Aij ) = Nit ,and second, atom counts cannot exceed the atom population, Nt(Aij ) ≤ Pt(Aij ). We achieve this by modeling the vector of atom-level counts within each county using the Fisher noncentral hypergeometric distribution (FNCH), which arises when a fixed number of individuals are allocated across categories with unequal selection probabilities and finite capacities (Harkness, 1965; Fog, 2008b). This preserves the county-level totals while allow-ing covariates and spatio-temporal random effects to influence the relative allocation across atoms. Compared to a multinomial distribution, which ignores population limits, or inde-pendent binomial models, which fail to enforce the sum constraint, the FNCH satisfies both 13 constraints while providing a desirable interpretation as it models atom-level OMP. More formally, if Nt(Ai·) = 
+
+n
+
+Nt(Aij ) : j = 1 , ..., n (c)
+
+> i
+
+o
+
+denotes the vector of atom-level counts within county i, then assuming the FNCH implies the probability function of Nt(Ai·) is 
+
+P (Nt(Ai·) | { πt(Aij )}, N it ) = 1
+
+C0(ωt(Ai·)) 
+
+> n(c)
+> i
+
+Y
+
+> j=1
+
+Pt(Aij )
+
+Nt(Aij )
+
+
+
+(ωt(Aij )) Nt(Aij ) , (5) where Pn(c) 
+
+> i
+> j=1
+
+Nt(Aij ) = Nit , ωt(Aij ) = πt(Aij )1−πt(Aij ) are the atom-level odds of misuse within county i, and C0(ωt(Ai·)) is the normalizing constant. We assume atom-level OMP relates to covariates and a spatio-temporal random effect, logit ( πt(Aij )) = log ( ωt(Aij )) = W(A) 
+
+> t
+
+(Aij )′γ(A) + ζt(Aij ), (6) where W(A) 
+
+> t
+
+(Aij ) is a vector of covariates, γ(A) the corresponding regression coefficients, and ζt(Aij ) a spatio-temporal random effect. As was done previously, to reduce the di-mensionality, we incorporate spatial basis functions and assume ζt(Aij ) = B(Aij )′θt, where 
+
+B(Aij ) is a q-dimensional vector of Moran’s I basis functions at atom Aij . The vector θt is a q-dimensional vector of coefficients for the basis functions, and the coefficients can change over time. We account for temporal dependence by assuming an autoregressive model of order one for each of the i = 1 , ..., q components, 
+
+θ1,i ∼ N  0, τ 2
+
+> A,i
+
+ for t = 1 
+
+θt,i ∼ N  ϕA,i θt−1,i , τ 2
+
+> A,i
+
+ for t ≥ 1.
+
+We assign prior distributions for all remaining parameters. All regression coefficients, 
+
+β(o) and γ(A) are independently assigned mean-zero normal distributions with standard deviations of 5. The temporal autocorrelation parameters, ϕ(o) 
+
+> i
+
+and ϕA,i , and the random effect variance parameters, τ 2 
+
+> o,i
+
+and τ 2
+
+> A,i
+
+, are assigned uniform distributions over (0 , 1). Note that we chose these informative priors for the variances of the random effects to overcome identifiability challenges between the random effect and intercept parameters. 14 3.3 Two-Stage MCMC for Bayesian Inference 
+
+The full Bayesian model combines all model components specified in sections 3.1 and 3.2 in a hierarchical manner. Inference for the MIA model requires sampling from a high dimensional posterior distribution involving latent counts at both the county and atom levels. In addition to challenges with spatial dimensionality, a key computational challenge arises from the constrained structure of the atom-level counts, which must be nonnegative and sum to the county-level totals. We propose a two-stage compositional MCMC strategy that exploits the factorization of the posterior distribution and novelly combines efficient sampling algorithms with parallel computing. Let θC denote the vector of all parameters (excluding the latent counts of interest) in the county-level model of Section 3.1. That is, 
+
+θC =
+
+
+
+{μ(k) 
+
+> t
+
+}, {β(k)}, {f (k) 
+
+> it
+
+}, {ϵ(k) 
+
+> it
+
+}, {Σϵ}, {τ 2 
+
+> k
+
+}, {ϕk}, β μ 
+
+> 0
+
+, β μ 
+
+> 1
+
+, γ, {uit }, ϕ u, τ 2 
+
+> u
+
+, {vit }, σ 2
+
+> v
+
+
+
+.
+
+Similarly, let θZ denote the parameters from the ZCTA-level indicator model 
+
+θZ =
+
+
+
+{β(o)}, {f (o) 
+
+> t
+
+(Bℓj )}, {ω(o) 
+
+> t
+
+}, {ϕ(o) 
+
+> i
+
+}, {τ 2
+
+> o,i
+
+}} 
+
+
+
+,
+
+θA =  γ(A), {θt} the vector of parameters from the atom-level regression model, and 
+
+θH =  {ϕA,i }, {τ 2
+
+> A,i
+
+} the remaining hyperparameters from the atom-level model. Below, we will use the bracket notation such that [ A | B] denotes the probability function of A
+
+conditional on B. The posterior distribution is then of the form [{Nit }, {Nt(Aij )}, θC , θA, θZ , θH | { Y (k) 
+
+> it
+
+}, {Z(o) 
+
+> ℓt
+
+}, S
+
+i
+
+∝
+
+h
+
+{Y (k) 
+
+> it
+
+}, S | { Nit }, θC
+
+i h 
+
+{Z(o) 
+
+> ℓt
+
+} | { Nt(Aij )}, θZ
+
+i
+
+× [{Nt(Aij )} | { Nit }, θA] [ θA | θH ] [ θZ ] [ θH ] [ {Nit } | θC ] [ θC ]
+
+∝
+
+h
+
+{Nt(Aij )}, θA, θZ , θH | { Nit }, {Z(o) 
+
+> ℓt
+
+}
+
+i
+
+×
+
+h
+
+{Nit }, θC | { Y (k) 
+
+> it
+
+}, S
+
+i
+
+.
+
+(7) 15 This implies the full posterior distribution is the product of the county-level posterior, 
+
+h
+
+{Nit }, θC | { Y (k) 
+
+> it
+
+}, S
+
+i
+
+and the atom-level distribution 
+
+h
+
+{Nt(Aij )}, θA, θZ , θH | { Nit }, {Z(o) 
+
+> ℓt
+
+}
+
+i
+
+.
+
+The constraint Nit = Pn(c) 
+
+> i
+> j=1
+
+Nt(Aij ) makes efficient simulation of (7) difficult with stan-dard MCMC algorithms. However, the structure of the posterior distribution lends itself to a two-stage compositional MCMC approach in which we simulate from the full posterior through the following two stages: 1. Simulate M draws, 
+
+
+
+{N (m) 
+
+> it
+
+}, θ(m)
+
+> C
+
+
+
+for m = 1 , ..., M , from the county-level posterior. 2. For each draw 
+
+
+
+{N (m) 
+
+> it
+
+}, θ(m)
+
+> C
+
+
+
+from the county-level posterior, run a Metropolis-within-Gibbs MCMC algorithm to simulate from 
+
+h
+
+{Nt(Aij )}, θA, θZ , θH | { N (m) 
+
+> it
+
+}, {Z(o) 
+
+> ℓt
+
+}
+
+i
+
+.Save the last draw from the MCMC algorithm as 
+
+
+
+{Nt(Aij )(m)}, θ(m) 
+
+> A
+
+, θ(m) 
+
+> Z
+
+, θ(m)
+
+> H
+
+
+
+.To generate the samples from the county-level model in stage 1, we follow the approach of Hepler et al. (2023) and implement an adaptive Metropolis-within-Gibbs Sampler imple-mented using the R package NIMBLE (de Valpine et al., 2017). We use an automated factor slice sampler to block sample the T -dimensional vector of latent counts across all years for each county. Once the draws from the county-level model are obtained, we perform stage 2 in parallel for each m = 1 , ..., M to simulate from [{Nt(Aij )}, θA, θZ , θH | { N (m) 
+
+> it
+
+}, {Z(o) 
+
+> ℓt
+
+}
+
+i
+
+∝
+
+h
+
+{Z(o) 
+
+> ℓt
+
+} | { Nt(Aij )}, θZ
+
+i
+
+×
+
+h
+
+{Nt(Aij )} | { N (m) 
+
+> it
+
+}, θA
+
+i
+
+[θA | θH ] [ θZ ] [ θH ] . (8) In stage 2, Metropolis-within-Gibbs steps are used for each of the remaining parameters; we describe the update for each in what follows. First, note that a Metropolis-Hastings (MH) update of θA is complicated due to the intractability of the normalizing constant in 16 (5). Observe, the full conditional distribution of θA = [ γ, {θt}] is [θA | · ] ∝
+
+h
+
+{Nt(Aij )} | { N (m) 
+
+> it
+
+}, θA
+
+i
+
+[θA | θH ]= Y
+
+> i,t
+
+
+
+1
+
+C0(ωt(Ai·)) 
+
+> n(c)
+> i
+
+Y
+
+> j=1
+
+Pt(Aij )
+
+Nt(Aij )
+
+
+
+(ωt(Aij )) Nt(Aij )
+
+ × [θA | θH ] .
+
+Suppose we simulate a proposed value θ∗ 
+
+> A
+
+∼ q(· | θA), and let ωt(Aij )∗ denote the corre-sponding odds. The MH acceptance probability is then min {1, R } where 
+
+R =
+
+Q
+
+> i,t
+
+
+
+> 1
+> C0(ωt(Ai·)∗)
+
+Qn(c)
+
+> i
+> j=1
+
+ Pt(Aij ) 
+
+> Nt(Aij )
+
+ (ωt(Aij )∗)Nt(Aij )
+
+
+
+× [θ∗ 
+
+> A
+
+| θH ]
+
+Q
+
+> i,t
+
+
+
+> 1
+> C0(ωt(Ai·))
+
+Qn(c)
+
+> i
+> j=1
+
+ Pt(Aij ) 
+
+> Nt(Aij )
+
+ (ωt(Aij )) Nt(Aij )
+
+
+
+× [θA | θH ]
+
+× q(θA | θ∗
+
+> A
+
+)
+
+q(θ∗ 
+
+> A
+
+| θA) (9) The ratio of FNCH normalizing constants, Q 
+
+> i,t C0(ωt(Ai·))
+> C0(ωt(Ai·)∗)
+
+, is computationally prohibitive to compute as it requires summation over all possible vectors of atom-level counts. The 
+
+BiasedUrn R package has built-in functionality to compute the probability function, but it is extremely computationally expensive when Nit is large, which makes it prohibitive for use within an MCMC algorithm (Fog, 2008a, 2024). Recall the FNCH distribution is the conditional distribution that would be obtained if each Nt(Aij ) was independently a Binomial random variable with population Pt(Ait ) and odds of success ωt(Aij ), but conditioned on the constraint that Pn(c) 
+
+> i
+> j=1
+
+Nt(Aij ) = Nit . When 
+
+Nit is small relative to the county population, as it is in our application, the contribution of the normalizing constant in (5) is negligible and likelihood ratios are well approximated by those obtained under independent Binomial models (Harkness, 1965). Thus, R ≈ ˆR,and we approximate the MH update by accepting θ∗ 
+
+> A
+
+with probability min {1, ˆR}, where ˆR =
+
+Q
+
+> i,t
+
+nQ
+
+> j
+
+ Pt(Aij ) 
+
+> Nt(Aij )
+
+   ωt(A∗ 
+
+> ij
+
+)Nt(Aij )  1 + ωt(A∗ 
+
+> ij
+
+)−Pt(Aij )o
+
+× [θ∗ 
+
+> A
+
+| θH ]
+
+Q
+
+> i,t
+
+nQ
+
+> j
+
+ Pt(Aij ) 
+
+> Nt(Aij )
+
+ (ωt(Aij )) Nt(Aij ) (1 + ωt(Aij )) −Pt(Aij )o
+
+× [θA | θH ]
+
+× q(θA | θ∗
+
+> A
+
+)
+
+q(θ∗ 
+
+> A
+
+| θA).
+
+(10) 17 We propose a block random walk MH update for the n(c) 
+
+> i
+
+-dimensional vector Nt(Ai·)for each i, t that enforces the constraint Pn(c) 
+
+> i
+> j=1
+
+Nt(Aij ) = N (m) 
+
+> it
+
+. The idea is to randomly select two atoms within county i, a source and a destination, and move a subset of counts from the source to the destination. Since both atoms are nested within the same county, the county-level sum is preserved. This sampler was motivated by and adapted from the multinomial random walk sampler in NIMBLE and is described in more detail below. Let Nt(Ai·) denote the current state at a given iteration of the MCMC algorithm. A candidate Nt(Ai·)∗ is generated as follows. 1. Select a source index j uniformly from the set of atoms within county i with positive counts, given by S(Nt(Ai·)). That is, if S(Nt(Ai·)) = {j : Nt(Aij ) > 0}, then we select atom Aij as the source with probability P (j|Nt(Ai·)) = 1 
+
+> |S (Nt(Ai·)) |
+
+.
+
+2. Select a destination index k uniformly from {1, ..., n (c) 
+
+> i
+
+} such that P (k|Nt(Ai·)) = 1
+
+> n(c)
+> i
+
+3. Randomly select the move size ˜ n uniformly from {1, 2, ..., min( ˜M , N t(Aij )) } where ˜M
+
+is a tuning parameter. We chose ˜M = ⌊Nit /20 ⌋ in our implementation. 4. Propose Nt(Aij )∗ = Nt(Aij ) − ˜n and Nt(Aik )∗ = Nt(Aik ) + ˜ n, and all other atoms within the county remain unchanged. The proposal distribution is then 
+
+q (Nt(Ai·)∗|Nt(Ai·)) = 1
+
+|S (Nt(Ai·)) | · 1
+
+n(c)
+
+> i
+
+· 1min( ˜M , N t(Aij )) , (11) and the proposed vector is accepted with probability 
+
+α(Nt(Ai·), Nt(Ai·)∗) = min 
+
+
+
+1, [Zt | Nt(B)∗, θA][Zt | Nt(B), θA] · [Nt(Ai·)∗ | Nit , θA][Nt(Ai·) | Nit , θA] · q (Nt(Ai·)|Nt(Ai·)∗)
+
+q (Nt(Ai·)∗|Nt(Ai·)) 
+
+
+
+.
+
+Note that based on this proposal distribution, only two elements of Nt(Ai·) and Nt(A∗
+
+> i·
+
+)differ, which corresponds to atoms Aij and Aik , and they differ such that Nt(Aij )∗ =18 Nt(Aij ) − ˜n and Nt(Aik )∗ = Nt(Aik ) + ˜ n. Thus, the ratio of FNCH distributions can easily be computed as it is equivalent to what would have been obtained had the atom-level counts been modeled with independent Binomial distributions. That is, [Nt(Ai·)∗ | Nit , θA][Nt(Ai·) | Nit , θA] =
+
+(˜n−1Y
+
+> r=0
+
+Nt(Aij ) − rPt(Aij ) − Nt(Aij ) + r + 1 · Pt(Aik ) − Nt(Aik ) − rNt(Aik ) + r + 1 
+
+)
+
+×
+
+πt(Aik )/(1 − πt(Aik )) 
+
+πt(Aij )/(1 − πt(Aij )) 
+
+˜n
+
+.
+
+Without loss of generality, let ℓ1 and ℓ2 denote the ZCTAs where the source and des-tination atom reside, respectively, indexed such that Bℓ1,j = Ai,j and Bℓ2,k = Ai,k . Let 
+
+λ(o) 
+
+> t
+
+(Bℓ, ·) = P 
+
+> i
+
+Nt(Bℓ,i )q(o) 
+
+> t
+
+(Bℓ,i ) be the mean of the ZCTA-level model in (3) for ZCTA ℓ
+
+at time t, and λ(o) 
+
+> t
+
+(Bℓ, ·)∗ = P 
+
+> i
+
+Nt(Bℓ,i )∗q(o) 
+
+> t
+
+(Bℓ,i ) the corresponding mean given the pro-posed vector of latent counts ( Nt(Bℓ,i )∗ = Nt(Bℓ,i ) for all but the source and destination atoms). Then the ratio of the ZCTA-likelihood simplifies to [Zt | Nt(B∗), θA][Zt | Nt(B), θA] = Y
+
+> o
+
+exp 
+
+
+
+˜n(q(o) 
+
+> t
+
+(Bℓ1,j ) − q(o) 
+
+> t
+
+(Bℓ2,k )) 
+
+
+
+× 1 − ˜nq (o) 
+
+> t
+
+(Bℓ1,j )
+
+λ(o) 
+
+> t
+
+(Bℓ1,·)
+
+!Zℓ1
+
+1 + ˜nq (o) 
+
+> t
+
+(Bℓ2,k )
+
+λ(o) 
+
+> t
+
+(Bℓ2,·)
+
+!Zℓ2
+
+since λ(o) 
+
+> t
+
+(Bℓ1,·)∗ = λ(o) 
+
+> t
+
+(Bℓ1,·)−˜nq (o) 
+
+> t
+
+(Bℓ1,j ) and λ(o) 
+
+> t
+
+(Bℓ2,·)∗ = λ(o) 
+
+> t
+
+(Bℓ2,·)+˜ nq (o) 
+
+> t
+
+(Bℓ1,j ). Thus, the acceptance probability, α (Nt(Ai·), Nt(A∗
+
+> i·
+
+)), can easily be computed exactly. The remaining parameters, θZ and θH , can be updated using standard random walk Metropolis-Hastings updates. We implement this second stage Metropolis-within-Gibbs algorithm in NIMBLE in parallel for each of the m = 1 , ..., M draws from the stage one output. To code the atom-level models, we take advantage of the fact that the MH ac-ceptance probability for the latent atom-level counts and the approximate MH acceptance probability for the atom-level model parameters, θA are equivalent to what would be ob-tained had we assumed Binomial distributions instead of the FNCH. Default samplers 19 are used for all parameters in θA, θZ , and θH , but we customize the sampler for the latent atom-level counts to implement the block random walk MH algorithm proposed above. For each m = 1 , ..., M , we save the last iteration’s values and denote these by θ(m) 
+
+> A
+
+,
+
+θ(m) 
+
+> Z
+
+, θ(m) 
+
+> H
+
+, and Nt(Ai·)(m). Concatenating these with the stage one output yields samples, 
+
+
+
+{N (m) 
+
+> it
+
+}, {Nt(Aij )(m)}, θ(m) 
+
+> C
+
+, θ(m)
+
+> A
+
+
+
+for m = 1 , ..., M , approximately from the posterior. All code to implement the stage one and stage two MCMC algorithms is available in the SM. 
+
+# 4 Simulation Study 
+
+We performed a simulation study to investigate how well the MIA model recovers atom-level latent OMP. Since the county-level model has previously been shown to accurately recover county-level counts, Nit (Hepler et al., 2023), this simulation will focus on the multiscale model of Section 3.2 and implement the second stage of the MCMC algorithm, assuming a fixed set of county-level counts. Our simulation mimics the real-data application by using the same spatial structure and covariates. We assume the county-level counts Nit are known, and we fix those to be equal to the posterior median of the real-data analysis from Section 5, shown in SM Figure 19. We assume atom-level OMP depends on two covariates, namely the logit of the proportion of the population that is unemployed and the logit of the proportion of the population that has at least a Bachelor’s degree. The assumed values of the regression coefficients are 
+
+γ(A) = ( −1.5, 0.75 , −0.5) ′, and the coefficients of the basis functions in the spatio-temporal random effect were generated from an AR(1) model assuming temporal autocorrelation of 0.95 and standard deviation of 0.75. We simulated H = 100 sets of atom-level counts using the BiasedUrn R package to simulate from the FNCH distribution (Fog, 2024). For each simulated set of atom-level counts, we generated a single ( o = 1) ZCTA-level indicator according to the model in Section 3.2.1. We assume the rate, q(o) 
+
+> t
+
+(Bℓj ), depends 20 on indicators of metropolitan and micropolitan. The regression coefficients are β(o) =(−3.0, 1.0, 0.4) ′. The spatio-temporal random effect is simulated assuming coefficients of the basis functions follow an AR(1) model with temporal autocorrelation of 0.9 and standard deviation of 1.75. Maps of two of the simulated data sets can be found in SM Figures 8-13. We fit the ZCTA and atom-level portions of the MIA model from Section 3.2 for each of the H = 100 simulated “naloxone” ZCTA data sets. We implement the second stage of the MCMC algorithm described in Section 3.3 to simulate from the conditional posterior 
+
+h
+
+{Nt(Aij )}, θA, θZ , θH | { Nit }, {Z(o) 
+
+> ℓt
+
+}
+
+i
+
+. We also compare our model performance to two naive approaches to downscaling the county-level counts. The first comparison generates atom-level estimated counts by assuming the county-level counts are downscaled propor-tionally to the atom-level population. That is, the naive population-based estimates are computed as ˆN (P ) 
+
+> t
+
+(Aij ) = Nit × Pt(Aij ) 
+
+> Pit
+
+. The second comparison generates atom-level counts by downscaling the county-level counts in proportion to the count of naloxone administra-tions of the atoms within that county. Note that since naloxone counts are ZCTA-level, we first downscale to the atom level in proportion to population. That is, the naloxone-based naive estimates are ˆN (Z) 
+
+> t
+
+(Aij ) = Nit × ˆZt(Aij )   
+
+> P
+> jˆZt(Aij )
+
+, where ˆZt(Aij ) = Zℓ,t × Pt(Bℓk )P   
+
+> kPt(Bℓk )
+
+assuming ZCTA ℓ is the ZCTA that contains atom Aij .
+
+## 4.1 Simulation Results 
+
+The MCMC algorithms were implemented in parallel for each of the 100 simulated data sets. Each MCMC was run for 100,000 iterations using a burn-in of 50,000 iterations and thinning the output by storing every 10th sample. The average computing time across the 100 MCMC algorithms was 6.91 hours. We assessed convergence by randomly selecting several of the simulations and checking trace plots of model parameters. Maps of the estimated atom-level OMP are shown in SM Figures 14-16 for two of the simulated data sets. These maps show that our model recovers the spatio-temporal trends in latent atom-21 level OMP, particularly so in the more populous central Ohio region. Model Min. 1st Qu. Median Mean 3rd Qu. Max. Bias  Proposed -0.30919 -0.01030 -0.00162 -0.00281 0.00589 0.21318 Naive Population -0.50980 -0.01269 0.00349 -0.00323 0.01602 0.10157 Naive Naloxone -0.29507 -0.01501 -0.00263 0.00701 0.01314 1.42720 RMSE  Proposed 0.00040 0.00587 0.01161 0.01805 0.02248 0.34801 Naive Population 0.00049 0.01013 0.01922 0.02641 0.03154 0.51156 Naive Naloxone 0.00063 0.01175 0.02152 0.03679 0.03920 1.44106 MAE  Proposed 0.00032 0.00510 0.01015 0.01548 0.01923 0.30919 Naive Population 0.00039 0.00913 0.01777 0.02466 0.02962 0.50980 Naive Naloxone 0.00052 0.01010 0.01861 0.03268 0.03391 1.42720 Table 1: Summary statistics of the empirical bias, RMSE, and MAE for the proposed model and naive estimates. Note these statistics summarize over all atoms and years. We compare estimated OMP under the proposed MIA model and the two comparison models using the empirical bias, root mean-squared error (RMSE), and median absolute error (MAE). Definitions of the metrics can be found in SM Section 4, and boxplots are shown in SM Figure 17. Table 1 provides summary statistics of the metrics for the three models. The first and third quartile, median, and mean empirical bias are all closer to zero for the MIA. The maximum empirical bias for the proposed model is larger than that of the naive population-based estimates, but substantially smaller than for the naive naloxone-based estimates, which can actually exceed one since total naloxone administrations can surpass the population size. The RMSE is systematically smaller for the MIA than for the naive estimates. Notably, 79.9% of OMP estimates from the proposed model were within 0.01 of the true OMP, compared to just 60.9% and 69.9% of the estimates from the naive population- and naloxone-based downscaled estimates, respectively. While on average, the 22 empirical bias and RMSE for the proposed model are small, we acknowledge that maximum values of 0.213 and 0.348 for these quantities are large for a prevalence estimate. SM Figure 18 shows these plotted against atom-level population. Unsurprisingly, the largest errors are in atoms with very small populations, where small changes in the estimated count ˆNt(Aij )have a large impact on OMP, ˆNt(Aij )/P t(Aij ). 
+
+# 5 Application 
+
+We fit the proposed MIA model to the Ohio data described in Section 2. Briefly, we jointly model state-level survey estimates on OMP, county-level counts of opioid overdose deaths and treatment admissions, and ZCTA-level counts of EMS-administered naloxone (post-processed from ZIP-code level data as previously described). We fit the model using the two-stage compositional MCMC approach described in Section 3.3. For the coarser county-level component of the model, we include covariates, X(k) 
+
+> it
+
+, to model the county-level rates of death and treatment admissions among PWMO, given by p(1)  
+
+> it
+
+and p(2)  
+
+> it
+
+in equation (1). For the death rate, we include an indicator of whether a major interstate intersects the county as well as indicators of the county being a high impact drug trafficking area and a metropolitan statistical area. For the treatment rate, we include indicators of the county being a health professional shortage area and a medically underserved area. To model the county-level OMP ratio, λit , we include standardized covariates on the proportion of the county in poverty, unemployed, with at least a high school degree, and on food stamps, as well as the rate of prescription opioids dispensed. As in Hepler et al. (2023), we fit the county-level model using NIMBLE in R using AF slice samplers to jointly update the T -dimensional vector of county-level counts, Ni·, for each county. We ran the MCMC algorithm for 1,000,000 iterations using a burn-in of 500,000 and storing every 50th sample, resulting in M = 10 , 000 samples from the county-level 23 posterior distribution. The MCMC algorithm took 9.48 hours to run on a single core of the DEAC HPC computing cluster (Information Systems and Wake Forest University, 2021). The model for latent atom-level rate of naloxone among PWMO, q(o) 
+
+> t
+
+(Bℓj ), depends on atom-level covariates X(o) 
+
+> t
+
+(Bℓj ), as shown in (4). We include two indicators for whether the atom belongs to a ZCTA that is classified as ‘metropolitan’ (RUCA code between 1-3) or ‘micropolitan’ (RUCA code between 4-6). The primary quantities of interest are the atom-level OMP, πt(AiJ ), modeled as in (6). For the application, we assume this depends on the logit-transformed covariates: proportion of the population that is unemployed and proportion with at least a bachelor’s degree. Note that these covariates are only available at the ZCTA-level, and we assume the proportions are the same for all atoms within the ZCTA. The spatial random effects for the ZCTA-level naloxone model and the atom-level OMP model use q = 50 Moran’s I basis functions. We perform the second stage of the two-stage compositional MCMC approach in parallel for each of the M = 10 , 000 samples from the first county-level stage. We ran the algorithm for 100,000 total iterations. Note that we only need to store the last sample, but to assess convergence the second stage MCMC, we randomly selecting several of the M runs to store all samples and inspect trace plots of model parameters. The average run time for the M
+
+second-stage MCMC algorithms was 6.4 hours, and these were implemented in parallel. 
+
+## 5.1 Results 
+
+A map of the estimated atom-level OMP, ˆNt(Aij )/P t(Aij ), is shown in Figure 2. For ease of visualization, the map shows OMP binned into ten categories created based on deciles. Estimated OMP with a continuous color scale is shown in SM Figure 25 with standard deviations in SM Figure 26. Figures 3 and 4 show estimated OMP and the log prevalence ratio relative to county OMP, zoomed to only include atoms contained within central and southern Ohio, respectively. Comparing these maps to the county-level map shown in 24 Figure 2: Estimated atom-level OMP binned into increments based on deciles. SM Figure 19 yields interesting insight into the within-county heterogeneity that would be missed by a county-only analysis. For example, Franklin County in central Ohio had an estimated OMP of approximately 0.05 in 2017, decreasing to roughly 0.03 in 2023. However, the multiscale analysis indicates that some atoms within Franklin County have estimated OMP roughly three times higher, reaching values of approximately 0.15. At the county-level, Franklin County is in the middle tercile of opioid misuse prevalence, but there are atoms within Franklin county that are in the 99th percentile of OMP across the state. Scioto County in southern Ohio, considered one of the hardest hit counties in America for the opioid epidemic, has estimated prevalence as high as 0.12 in 2019. The prevalence ratios for atoms in this county range from approximately 0.1 to 1.8, indicating that while some atoms have much lower OMP than the county, other atoms are 80% higher. The log of the prevalence ratio for the entire state is in SM Figure 27. A key feature of the MIA is that regression coefficients in the atom-level model can be interpreted at the population-level, like any standard disease mapping model. Table 2 shows posterior means and 95% credible intervals of the prevalence ratios in the atom-level model of OMP, eγ(A)
+
+. Note that the variables were logit-transformed, so this represents the 25 (a) 
+
+> (b)
+
+Figure 3: Estimated atom-level OMP, Nt(Aij )/P t(Aij ), (Figure a) and log prevalence ratio of atom-level OMP relative to county-level OMP, log 
+
+Nt(Aij )/P t(Aij )
+
+> Nit /P it
+
+
+
+, (Figure b) zoomed in to atoms within central Ohio counties. multiplicative change in the odds for an increase of one on the logit scale. We estimate atom-level prevalence increases as the proportion of the population who is unemployed increases, and prevalence decreases at the proportion of the population with a college degree increases. We also estimated that atom-level rates of EMS naloxone administrations per PWMO were 77% (95% CI: 65%, 88%) higher in metropolitan compared to rural atoms (SM Table 3). Given we have more EMS naloxone administrations in more urban areas, we are able to estimate more heterogeneity in OMP, as naloxone administrations are observed in the smallest areal unit of the indicators. This also leads to estimates of OMP that shrink to the county OMP and are generally smoother in more rural areas where there are fewer naloxone administrations to inform heterogeneity in OMP across atoms. This is an appealing feature of the MIA as we are able to use finer scale information when 26 (a) 
+
+> (b)
+
+Figure 4: Estimated atom-level OMP (Figure a) and log prevalence ratio of atom-level OMP relative to county-level OMP (Figure b) zoomed in to atoms within southern Ohio. it is available while shrinking to the county OMP when we lack sufficient information to estimate more heterogeneity. The MIA is also fully interpretable at the county level. A map of estimated county-level OMP is shown in SM Figure 19 with the posterior standard deviation in SM Figure 20. Estimated regression coefficients are in SM Table 2. We estimated positive associations of county-level OMP with the proportions in poverty, on food stamps, with at least a high school degree, and unemployment. We estimated a small negative association with the opioid prescribing rate, which is potentially partly attributable to the shift in the epidemic away from prescription opioids during the time period of this study. Maps of the estimated overdose death rate among PWMO and its standard deviation are shown in SM Figures 21-22. We estimated that the county-level odds of overdose death among PWMO were 21% (95% CI: 11%, 31%) higher in metropolitan areas compared to non-metropolitan areas. Maps of the estimated opioid treatment admissions among PWMO and its standard deviation are shown in SM Figures 23-24. We did not have strong evidence of associations 27 Parameter Mean 95% CI Intercept 0.46 (0.36, 0.61) Unemployment 2.65 (2.45, 2.9) College Degree 0.75 (0.71, 0.8) Table 2: Posterior mean and 95% credible intervals or prevalence ratios in the atom-level model of prevalence of people who misuse opioids. of covariates with treatment admissions. Finally, annual estimates of state-level OMP, derived from the multi-year NSDUH estimates are shown in SM Figure 28 and exhibit a decreasing trend over time. 
+
+# 6 Discussion 
+
+In this paper, we developed the multiscale integrated abundance model (MIA), which builds on the BIA of Hepler et al. (2023) to estimate OMP at the sub-county level while remaining simultaneously interpretable at the county level. The MIA is designed so that each layer of the model is epidemiologically interpretable as areal regression models for disease map-ping. Latent sub-county OMP estimates are generated using a novel approach based on the FNCH which incorporates constraints requiring sub-county atom-level counts within a county to sum to the county total and to not exceed the atom total population. To make the model fitting computationally feasible, we developed a two-stage compositional MCMC algorithm with an approximate MH update to overcome the computational intractability of the normalizing constant associated with the FNCH. A simulation study verified that the MIA could recover atom-level prevalence estimates and outperformed naive competing approaches. We applied the MIA to data from Ohio to estimate county- and sub-county-level OMP to further characterize heterogeneity and provide estimates that can improve 28 local targeting of public health services and interventions. Estimates from the MIA make significant contributions to the epidemiological un-derstanding and public health response to the opioid epidemic. Previously, statewide, population-based estimates were primarily limited to the county level. More local analysis were typically concentrated within specific cities or counties (Wesson et al., 2018; McNeely et al., 2012). With the MIA, we are now able to provide county and sub-county estimates of OMP jointly for all counties in the state. Because of constraints on sub-county estimates, we ensure that estimates within the model are internally consistent so one can draw the same conclusions regardless of which spatial unit is being considered. This enables MIA estimates to be used by state officials to help guide resources to counties and to be used by counties to help optimize the response within their jurisdiction. In addition, the model enables the incorporation of covariates and retains standard epidemiological interpretations of parameters which facilitates exploration of other social environmental questions of in-terest and eases the integration of this work into practice. The general MIA framework can also be applied to other challenging to measure health outcomes to integrate multiple sources of data to generate small area estimates. The MIA modeling framework opens up a range of potential future research. The avail-ability of sub-county-level OMP estimates enable a more granular examination of questions related to access and gaps in the availability of health services. Prior to the MIA, questions were limited to the county-level which served as crude approximations to local accessibility of services. Future methodological research could continue to explore ways to estimate OMP on finer geographic scales, should such indicator data be available. Extensions could include connections to and adaptations of the work of Bradley et al. (2016) which would enable estimation at any geographical unit of choice. This would be particularly advanta-geous as different health departments and service organizations may have different priorities and require different spatial units of analysis. However, a unified framework across units 29 of analysis would be highly desirable so that resulting inferences and actions are consistent across agencies and not dependent on the choice of the unit of analysis. Like any model for estimating a hidden population, potential departures from assump-tions represent limitations. Estimates of OMP counts depend on the NSDUH survey re-flecting a reasonable scale for OMP. However, prevalence ratios are robust to the quality of the NSDUH survey data. We also assume that all individuals counted in each indica-tor are members of the population of interest, PWMO, and like any surveillance data, a chance of misclassification (i.e., false positives) may exist. It is also unlikely that all EMS naloxone administrations occur in the home ZIP code of the patient, although we believe this still serves as a reasonable sub-county indicator. Such spatial misattribution is a topic for future research. Spatial resolution of the estimates are limited by the availability of finer scale indicators; however, the 2-stage computing approach enables the incorporation of new indicators as they become available. Finally, we had to use an approximate MH up-date for θA parameters for computational feasibility; however, the approximation is likely reasonable as OMP is relatively low. In conclusion, the MIA integrates data from multiple sources at multiple levels of aggre-gation of spatially misaligned units to produce multiscale estimates of OMP while quan-tifying their associated uncertainty. The multiscale estimates enable decision-makers at the state and local levels of the public health system to have estimates that are relevant to their jurisdictions that are jointly estimated and consistent across levels of aggregation. Estimates from the MIA are a major advancement in understanding local epidemiology of opioid misuse and inform the targeted deployment of public health services and interven-tions to prevent morbidity and mortality associated with opioid misuse. 30 References 
+
+Barocas, J. A., White, L. F., Wang, J., Walley, A. Y., LaRochelle, M. R., Bernson, D., Land, T., Morgan, J. R., Samet, J. H., and Linas, B. P. (2018). Estimated prevalence of opioid use disorder in Massachusetts, 2011–2015: A Capture–Recapture analysis. American Journal of Public Health , 108(12):1675–1681. Bradley, J. R., Wikle, C. K., and Holan, S. H. (2015). Spatio-temporal change of support with application to American Community Survey multi-year period estimates. Stat ,4(1):255–270. Bradley, J. R., Wikle, C. K., and Holan, S. H. (2016). Bayesian spatial change of support for count-valued survey data with application to the American Community Survey. Journal of the American Statistical Association , 111(514):472–487. CDC (2025). Understanding the opioid overdose epidemic. https://www.cdc.gov/ overdose-prevention/about/understanding-the-opioid-overdose-epidemic. html . Accessed: 2026-08-17. de Valpine, P., Turek, D., Paciorek, C., Anderson-Bergman, C., Temple Lang, D., and Bodik, R. (2017). Programming with models: writing statistical algorithms for general model structures with NIMBLE. Journal of Computational and Graphical Statistics ,26:403–417. Famoye, F. and Wang, W. (2004). Censored generalized Poisson regression model. Com-putational Statistics and Data Analysis , 46(3):547–560. Fog, A. (2008a). Calculation methods for Wallenius’ noncentral hypergeometric distribu-tion. Communications in Statistics—Simulation and Computation , 37(2):258–273. 31 Fog, A. (2008b). Sampling methods for Wallenius’ and Fisher’s noncentral hypergeometric distributions. Communications in Statistics—Simulation and Computation , 37(2):241– 257. Fog, A. (2024). Biasedurn: Biased urn model distributions. R package version 2.0.12. Gotway, C. and Young, L. (2002). Combining incompatible spatial data. Journal of the American Statistical Association , 97(458):632–648. Harkness, W. L. (1965). Properties of the extended hypergeometric distribution. The Annals of Mathematical Statistics , 36(3):938–945. Hepler, S. A., Kline, D. M., Bonny, A., McKnight, E., and Waller, L. A. (2023). An integrated abundance model for estimating county-level prevalence of opioid misuse in Ohio. Journal of the Royal Statistical Society Series A: Statistics in Society .Hughes, J. and Haran, M. (2013). Dimension reduction and alleviation of confounding for spatial generalized linear mixed models. Journal of the Royal Statistical Society Series B: Statistical Methodology , 75(1):139–159. Information Systems and Wake Forest University (2021). WFU High Performance Com-puting Facility. Jones, H. E., Welton, N. J., Ades, A. E., Pierce, M., and Davies, W. (2016). Problem drug use prevalence estimation revisited: heterogeneity in capture-recapture and the role of external evidence. Addiction (Abingdon, England) , 111(3):438–447. Keyes, K. M., Rutherford, C., Hamilton, A., Barocas, J. A., Gelberg, K. H., Mueller, P. P., Feaster, D. J., El-Bassel, N., and Cerd´ a, M. (2022). What is the prevalence of and trend in opioid use disorder in the United States from 2010 to 2019? Using multiplier 32 approaches to estimate prevalence for an unknown population size. Drug and Alcohol Dependence Reports , 3:100052. KFF (2026). Opioid overdose death rates and all drug overdose death rates per 100,000 population. https://www.kff.org/state-category/mental-health/opioids/ . Ac-cessed: 2026-08-17. Kline, D. M., White, B. N., Lancaster, K. E., Egan, K. L., Murphy, E., Miller, W. C., and Hepler, S. A. (2025). Estimating prevalence of opioid misuse in north carolina counties from 2016–2021: An integrated abundance model approach. Epidemiology , 36(3):310. Markoulidakis, A., Hickman, M., McAuley, A., Barnsdale, L. R., Welton, N. J., Glancy, M., Shivaji, T., Collins, C., Lang, J., de Wit, F., Hunt, G., Wilkinson, L., Fraser, R., Yeung, A., Horsburgh, K., Priyadarshi, S., Hutchinson, S. J., and Jones, H. E. (2024). Prevalence of opioid dependence in Scotland 2015–2020: A multi-parameter estimation of prevalence (MPEP) study. Addiction , 119(8):1410–1420. Markoulidakis, A., Hickman, M., Welton, N. J., Meligkotsidou, L., and Jones, H. E. (2026). Multi-Parameter Estimation of Prevalence (MPEP): A Bayesian modelling approach to estimate the prevalence of opioid dependence. arXiv:2602.21713 [stat]. McKnight, E. R., Dong, Q., Brook, D. L., Hepler, S. A., Kline, D. M., Bonny, A. E., Hepler, S., and Kline, D. (2023). A descriptive study on opioid misuse prevalence and office-based buprenorphine access in ohio prior to the removal of the drug addiction treatment act of 2000 waiver. Cureus , 15(3). McMaster, R., Masarweh-Zawahri, L., Flynn, K. C., Deo, V. S., and Flannery, D. J. (2025). Drug overdose death among residents of urban Census tracts: How granular geographical analyses uncover socioenvironmental correlates in Cuyahoga County, Ohio. Journal of Urban Health , 102(2):445–458. 33 McNeely, J., Gourevitch, M. N., Paone, D., Shah, S., Wright, S., and Heller, D. (2012). Estimating the prevalence of illicit opioid use in New York City using multiple data sources. BMC Public Health , 12(1):443. Min, J. E., Pearce, L. A., Homayra, F., Dale, L. M., Barocas, J. A., Irvine, M. A., Slaun-white, A. K., McGowan, G., Torban, M., and Nosyk, B. (2020). Estimates of opioid use disorder prevalence from a regression-based multi-sample stratified capture-recapture analysis. Drug and Alcohol Dependence , 217:108337. Missouri Census Data Center (2022). Geocorr 2022: Geographic correspondence engine. 
+
+https://mcdc.missouri.edu/applications/geocorr2022.html . Accessed: 2026-07-20. Mugglin, A. and Carlin, B. (1998). Hierarchical modeling in geographic information sys-tems: Population interpolation over incompatible zones. Journal of Agricultural, Biolog-ical, and Environmental Statistics , 3(2):111–130. Mugglin, A., Carlin, B., Zhu, L., and Conlon, E. (1999). Bayesian areal interpolation, estimation, and smoothing: an inferential approach for geographic information systems. 
+
+Environment and Planning A: Economy and Space , 31(8):1337–1352. Mugglin, A. S., Carlin, B. P., and Gelfand, A. E. (2000). Fully model-based approaches for spatially misaligned data. Journal of the American Statistical Association , 95(451):877– 887. Murphy, E., Kline, D., McKnight, E., Bonny, A., Miller, W. C., Waller, L., and Hepler, S. A. (2025). Integrating data at multiple spatial scales to estimate the local burden of the opioid syndemic. Spatial and spatio-temporal epidemiology , 53:100720. Ohio Emergency Medical Services (2026). Nalxone Watch. Technical report. 34 Ohio Public Health Data Warehouse (2020). Ohio resident mortality data. Peterson, E. N., Edwards, A., Wetzel, M., Waller, L. A., Cooper, H., and Yarbrough, C. (2025). A Bayesian Spatio-Temporal Top-Down Framework for Estimating Opioid Use Disorder Risk Under Data Sparsity. https://arxiv.org/html/2506.02303v1. SAMHSA and Center for Behavioral Health Statistics and Quality (2015). 2014 national survey on drug use and health: detailed tables. tex.howpublished: Rockville, MD. SAMHSA, Center for Behavioral Health Statistics and Quality (2003). National survey on drug use and health. Santaella-Tenorio, J., Hepler, S. A., Rivera-Aguirre, A., Kline, D. M., and Cerda, M. (2024). Estimation of the prevalence of opioid misuse in New York State counties, 2007-2018: a Bayesian spatiotemporal abundance model approach. American Journal of Epidemiology ,193(7):959–967. Stoner, O., Economou, T., and Drummond Marques da Silva, G. (2019). A Hierarchi-cal Framework for Correcting Under-Reporting in Count Data. Journal of the Amer-ican Statistical Association , 114(528):1481–1492. Publisher: Taylor & Francis eprint: https://doi.org/10.1080/01621459.2019.1573732. Thompson, K., Barocas, J. A., Delcher, C., Bae, J., Hammerslag, L., Wang, J., Chandler, R., Villani, J., Walsh, S., and Talbert, J. (2023). The prevalence of opioid use disorder in Kentucky’s counties: A two-year multi-sample capture-recapture analysis. Drug and Alcohol Dependence , 242:109710. Trevisani, M. and Gelfand, A. (2013). Spatial misalignment models for small area estima-tion: a simulation study. In Advances in theoretical and applied statistics , pages 269–279. Springer. 35 Wang, J., Bernson, D., Erdman, E. A., Villani, J., Chandler, R., Kline, D., White, L. F., and Barocas, J. A. (2024a). Intersectional inequities and longitudinal prevalence es-timates of opioid use disorder in Massachusetts 2014–2020: a multi-sample capture-recapture analysis. The Lancet Regional Health - Americas , 32:100709. Wang, J., Kline, D. M., and White, L. F. (2024b). On the estimation of population size—A comparison of capture-recapture and multiplier-benchmark methods. Statistical Methods in Medical Research , 33(10):1818–1835. Wesson, P. D., Mirzazadeh, A., and McFarland, W. (2018). A Bayesian approach to synthe-size estimates of the size of hidden populations: the Anchored Multiplier. International Journal of Epidemiology , 47(5):1636–1644. 36 Supplementary Material: A Bayesian Multiscale Integrated Abundance Model for Estimating Latent Opioid Misuse Prevalence from Spatially Misaligned Data 
+
+# 1 Supplemental Data 
+
+## 1.1 State-Level Data 
+
+Year Estimate SE 2007 - 2010 0.0550 0.0024 2011 - 2014 0.0520 0.0026 2015 - 2016 0.0470 0.0041 2016 - 2017 0.0510 0.0037 2017 - 2018 0.0410 0.0033 2018 - 2019 0.0430 0.0043 2021 - 2022 0.0340 0.0040 Table 1: NSDUH estimates and standard errors (SE) of past-year opioid misuse included in analysis. 11.2 County-Level Data 
+
+Figure 1: Observed county-level opioid overdose death rates per population for 2010 to 2023. 2Figure 2: Observed county-level opioid treatment rates per population for 2010 to 2023. Note that counts less than 50 were suppressed, and the rates corresponding to counties with suppressed values are shown as gray on the map. 31.3 ZCTA-Level Data 
+
+Figure 3: Observed ZCTA-level rates of EMS administered naloxone per population for 2017 to 2023. 4Figure 4: Observed ZCTA-level rates of EMS administered naloxone per population for 2017 to 2023, zoomed in to only include ZCTA that intersect with central Ohio counties. 
+
+Figure 5: Observed ZCTA-level rates of EMS administered naloxone per population for 2017 to 2023, zoomed in to only include ZCTA that intersect with southern Ohio counties. 51.4 Atom-Level Data 
+
+Figure 6: Proportion of the atom’s population that is unemployed. The top map is for all atoms in Ohio, the bottom left map zooms into central Ohio, and the bottom right map shows atoms in southern Ohio. 6Figure 7: Proportion of the atom’s population with at least a bachelor’s degree. The top map is for all atoms in Ohio, the bottom left map zooms into central Ohio, and the bottom right map shows atoms in southern Ohio. 72 Supplemental Modeling Details 
+
+## 2.1 County-Level Bayesian Integrated Abundance Model 
+
+The Bayesian Integrated Abundance (BIA) model that is the foundation of the proposed MIA model is briefly reviewed in the main text, but the full model is described in detail below. Let Y (k) 
+
+> it
+
+denote the observed count for indicator k = 1 , ..., K at county i = 1 , ..., n (C)
+
+during year t = 1 , ..., T . In our application, k = 1 corresponds to opioid overdose deaths and k = 2 corresponds to treatment admissions. Conditional on the county-level latent number of PWMO, Nit , we assume 
+
+Y (k) 
+
+> it
+
+|Nit , p (k)
+
+> it ind
+
+∼ Binomial 
+
+(
+
+Nit , p (k)
+
+> it
+
+)
+
+, (1) where p(k) 
+
+> it
+
+represents the probability that an individual who misuses opioids is counted by indicator k. We model the indicator probabilities using logistic regression logit 
+
+(
+
+p(k)
+
+> it
+
+)
+
+= μ(k) 
+
+> t
+
++ X(k) 
+
+> it
+
+β(k) + f (k) 
+
+> it
+
++ ϵ(k) 
+
+> it
+
+,
+
+where μ(k) 
+
+> t
+
+is a time-varying intercept capturing statewide temporal trends, X(k) 
+
+> it
+
+is a vector of centered covariates (excluding an intercept), β(k) is a vector of regression coefficients, 
+
+f (k) 
+
+> it
+
+is a spatio-temporal random effect, and ϵ(k) 
+
+> it
+
+accounts for additional unexplained hetero-geneity. Note that in our application, treatment admission counts, Y (2)  
+
+> it
+
+, that are less than 50 are censored. We account for this in the model using an interval censored likelihood as in Famoye & Wang (2004). More specifically, let 
+
+cit =
+
+{
+
+0 treatment count observed 1 treatment count censored . (2) For cit = 1, we know the actual treatment count in county i during year t must be between 0 and 49. The likelihood is then 
+
+L(p(1) , p(2) , N|Y(1) , Y(2) ) = 
+
+
+
+> T
+
+∏
+
+> t=1
+> n(C)
+
+∏
+
+> i=1
+
+f
+
+(
+
+Y (1)  
+
+> it
+
+|p(1)  
+
+> it
+
+, N it 
+
+)
+
+×
+
+
+
+> T
+
+∏
+
+> t=1
+> n(C)
+
+∏
+
+> i=1
+
+[
+
+f
+
+(
+
+Y (2)  
+
+> it
+
+|p(2)  
+
+> it
+
+, N it 
+
+)] 1−cit [
+
+F
+
+(
+
+49 |p(2)  
+
+> it
+
+, N it 
+
+)
+
+− F
+
+(
+
+0|p(2)  
+
+> it
+
+, N it 
+
+)] cit 
+
+
+
+8where f
+
+(
+
+·| p(1)  
+
+> it
+
+, N it 
+
+)
+
+is the probability mass function of the binomial distribution with pop-ulation size Nit and rate p(1)  
+
+> it
+
+, and F
+
+(
+
+·| p(2)  
+
+> it
+
+, N it 
+
+)
+
+is the cumulative distribution function and 
+
+f
+
+(
+
+·| p(2)  
+
+> it
+
+, N it 
+
+)
+
+the probability mass function of the binomial distribution with population size Nit and rate p(2)  
+
+> it
+
+.To capture spatial and temporal dependence, we assume the random effects follow an intrinsic conditional autoregressive (ICAR) model across counties, coupled with first-order temporal autoregression. Specifically, for t = 1 
+
+f (k) 
+
+> it
+
+|f (k)
+
+> −i,t
+
+, τ 2 
+
+> k
+
+∼ N
+
+(
+
+1
+
+wi+
+
+∑
+
+> j
+
+wij f (k) 
+
+> jt
+
+, τ 2
+
+> k
+
+wi+
+
+)
+
+, (3) and for t = 2 , ..., T f (k) 
+
+> it
+
+|f (k)
+
+> −i,t
+
+, f (k)
+
+> i,t −1
+
+, τ 2 
+
+> k
+
+, ϕ k ∼ N
+
+(
+
+ϕkf (k) 
+
+> i,t −1
+
++ 1
+
+wi+
+
+∑
+
+> j
+
+wij (f (k) 
+
+> jt
+
+− ϕkf (k)
+
+> j,t −1
+
+), τ 2
+
+> k
+
+wi+
+
+)
+
+, (4) where f (k) 
+
+> −i,t
+
+= {f (k) 
+
+> jt
+
+: j̸ = i}, wij is an indicator that counties i and j share a border, 
+
+wi+ = ∑ 
+
+> j
+
+wij is the total number of neighbors for county i, τ 2 
+
+> k
+
+is related to the con-ditional variance, and ϕk is a temporal autocorrelation parameter. To capture between-outcome residual correlation, we assume each ϵit =
+
+(
+
+ϵ(1)  
+
+> it
+
+, ..., ϵ (K)
+
+> it
+
+)
+
+independently has a 
+
+K-dimensional multivariate normal distribution with mean zero and covariance matrix Σ ϵ.A challenge in this setting is that surveillance data alone do not identify the overall level of OMP (Stoner et al. 2019). To address this, we incorporate data from statewide National Survey on Drug Use and Health (NSDUH) estimates, which provide estimates of statewide OMP over multi-year periods, along with standard errors of the estimates. Let 
+
+Sa:b denote the estimate of the statewide OMP between years a and b. The estimates for Ohio used in our application are shown in Table 1. We apply a logit-transformation to the estimates and use a first-order Taylor expansion to approximate the standard error. Let ˆse a:b denote the resulting standard error of the logit-transformed estimated OMP. Let μt
+
+denote the true latent statewide OMP in year t. We assume logit( μt) = βμ 
+
+> 0
+
++ βμ 
+
+> 1
+
+t, and logit( Sa:b)|βμ 
+
+> 0
+
+, β μ 
+
+> 1
+
+∼ N
+
+(
+
+1
+
+b − a + 1 
+
+> b
+
+∑
+
+> t=a
+
+logit( μt), ˆse 2
+
+> a:b
+
+)
+
+. (5) 9The target of inference in the county-level model is the latent number of PWMO, Nit ,and the prevalence ratio, λit . Assume 
+
+Nit |λit ind 
+
+∼ Binomial( Pit , μ tλit ),
+
+where Pit is the known population of county i during year t and μt is the statewide OMP that also appeared in (5). The prevalence ratio is relative to the statewide OMP and modeled as log( λit ) = W(C) 
+
+> it
+
+γ + uit + vit ,
+
+where W(C) 
+
+> t
+
+is a design matrix for time t containing centered covariates without an in-tercept, vit iid 
+
+∼ N (0 , σ 2 
+
+> v
+
+), and uit is a spatio-temporal random effect defined analogously to (3)-(4) with ϕu a temporal autocorrelation parameter and τ 2 
+
+> u
+
+the conditional variance parameter. All intercepts and regression coefficients are independently assigned diffuse mean-zero normal distributions with standard deviations of 100, and temporal autocorrelation param-eters are assumed to be uniform over (0 , 1). All variance parameters are assigned inverse gamma prior distributions with shape and scale of 0.5. The residual covariance matrix Σϵ
+
+has an inverse Wishart prior with identity scale matrix and K degrees of freedom. 
+
+## 2.2 ZCTA-Level Outcome Model Additional Details 
+
+Recall, Z(o) 
+
+> ℓ,t
+
+denotes the observed count for ZCTA-level indicator o at ZCTA ℓ during year 
+
+t, and we assume Z(o) 
+
+> ℓ,t
+
+= ∑ 
+
+> j
+
+Z(o) 
+
+> t
+
+(Bℓj ), where Z(o) 
+
+> t
+
+(Bℓj ) denotes the latent count of indicator 
+
+o for atom j within ZCTA ℓ. For each atom, assume 
+
+Z(o) 
+
+> t
+
+(Bℓj ) | Nt(Bℓj ), q (o) 
+
+> t
+
+(Bℓj ) ∼ Poisson 
+
+(
+
+Nt(Bℓj )q(o) 
+
+> t
+
+(Bℓj )
+
+)
+
+,
+
+where Nt(Bℓj ) is the latent atom-level count of PWMO in year t, and q(o) 
+
+> t
+
+(Bℓj ) is the rate at which PWMO are counted by indicator o in that atom during that year. We model 
+
+q(o) 
+
+> t
+
+(Bℓj ) with a log-linear model of the form log( q(o) 
+
+> t
+
+(Bℓj )) = X(o) 
+
+> t
+
+(Bℓj )β(o) + f (o) 
+
+> t
+
+(Bℓj ), (6) where X(o) 
+
+> t
+
+(Bℓj ) is a vector of atom-level covariates with regression coefficients β(o) and 
+
+f (o) 
+
+> t
+
+(Bℓj ) is a spatio-temporal random effect. 10 If n(a) is large, as in our application, an atom-level spatio-temporal random effect makes the model computationally expensive. We assume f (o) 
+
+> t
+
+(Bℓj ) = B(Bℓj )′ω(o) 
+
+> t
+
+, where B(Bℓj )is a q-dimensional vector of Moran’s I basis functions at atom Bℓj (Hughes & Haran 2013). More specifically, for our application the basis functions are the q eigenvectors of the Moran operator, 
+
+(
+
+I − X(o)1
+
+(
+
+X(o)′ 
+
+> 1
+
+X(o)1
+
+)−1
+
+X(o)′
+
+> 1
+
+)
+
+A
+
+(
+
+I − X(o)1
+
+(
+
+X(o)′ 
+
+> 1
+
+X(o)1
+
+)−1
+
+X(o)′
+
+> 1
+
+)
+
+,
+
+corresponding to the q largest, positive eigenvalues, where X(o)1 is the design matrix used in (6) in year t = 1 and A is the atom-level adjacency matrix. Note that the atom-level covariates used in our application are static, so Xt = X1 for all t, but that does not have to hold generally. The vector ω(o) 
+
+> t
+
+is a q-dimensional vector of coefficients for the basis functions for indicator o at time t. We account for temporal dependence by assuming an autoregressive model of order one for each of the i = 1 , ..., q coefficients. That is, 
+
+ω(o)1,i ∼ N (0, τ 2
+
+> o,i
+
+) for t = 1 
+
+ω(o) 
+
+> t,i
+
+∼ N
+
+(
+
+ϕ(o) 
+
+> i
+
+ω(o)
+
+> t−1,i
+
+, τ 2
+
+> o,i
+
+)
+
+for t ≥ 1,
+
+where τ 2 
+
+> o,i
+
+are variance parameters and ϕ(o) 
+
+> i
+
+are autocorrelation parameters for each basis function i = 1 , ..., q and each ZCTA-level outcome o.
+
+# 3 Supplemental Simulation Data and Results 
+
+## 3.1 Simulated Latent Atom-Level Counts of Misuse 
+
+In this section, we show maps of the simulated latent atom-level prevalence of misuse, 
+
+Nt(Ait )/P t(Aij ), for the 8th and 23rd simulated data sets. The atom-level counts were simulated assuming the FNCH distribution described in the main manuscript, and as such, the atoms within a county are forced to sum to the county-level value Nit , which is assumed to be the same for all 100 simulate data sets. Figure 8 shows maps for the entire state of Ohio. To more easily visualize the spatial heterogeneity, we show the same maps but zoomed in to only include central Ohio counties (Figure 9) and southern Ohio counties (Figure 10). Central Ohio counties are defined to include Franklin, Delaware, Licking, Fairfield, Pickaway, Madison, and Union counties. Southern Ohio counties include Adams, 11 Athens, Brown, Clermont, Gallia, Highland, Hocking, Jackson, Lawrence, Meigs, Pike, Ross, Scioto, and Vinton counties. 12 (a) 
+
+> (b)
+
+Figure 8: Simulated atom-level prevalence of misuse for the 8th (Figure a) and 23rd (Figure b) simulated data sets. 13 (a) 
+
+> (b)
+
+Figure 9: Simulated atom-level prevalence of misuse, zoomed into the atoms contained within central Ohio counties, for the 8th (Figure a) and 23rd (Figure b) simulated data sets. 14 (a) 
+
+> (b)
+
+Figure 10: Simulated atom-level prevalence of misuse, zoomed into the atoms contained within southern Ohio counties, for the 8th (Figure a) and 23rd (Figure b) simulated data sets. 15 3.2 Simulated ZCTA-level Counts of Naloxone Administrations 
+
+Figures 11 - 13 show maps of the ZCTA-level rates, Zℓt /P ℓt . The ZCTA-level counts serve as the observed “data” in the simulation study. Maps are shown for the 8th and 23rd simulated data set. Figure 11 shows the map for the entire state of Ohio; whereas Figures 12 and 13 zoom in to show just the ZCTA that intersect with central Ohio and southern Ohio counties, respectively. 16 (a) 
+
+> (b)
+
+Figure 11: Simulated ZCTA-level rates of naloxone administrations for the 8th (Figure a) and 23rd (Figure b) simulated data sets. 17 (a) 
+
+> (b)
+
+Figure 12: Simulated ZCTA-level rates of naloxone administrations, zoomed to show the ZCTA that intersect central Ohio counties, for the 8th (Figure a) and 23rd (Figure b) simulated data sets. 18 (a) 
+
+> (b)
+
+Figure 13: Simulated ZCTA-level rates of naloxone administrations, zoomed to show the ZCTA that intersect southern Ohio counties, for the 8th (Figure a) and 23rd (Figure b) simulated data sets. 19 3.3 Maps of Estimated Atom-Level Rates of Misuse 
+
+This section shows the corresponding maps of the estimated atom-level prevalence of mis-use, ˆNt(Aij )/P t(Aij ), resulting from the proposed MIA model. The results shown here are the result of fitting the proposed model to the 8th and 23rd simulated data sets shown in the previous section, and the corresponding truth are the maps in Section 3.1. 20 (a) 
+
+> (b)
+
+Figure 14: Estimated atom-level prevalence of misuse after fitting the 8th (Figure a) and 23rd (Figure b) simulated data sets. 21 (a) 
+
+> (b)
+
+Figure 15: Estimated atom-level prevalence of misuse, zoomed into the atoms contained within central Ohio counties, after fitting the 8th (Figure a) and 23rd (Figure b) simulated data sets. 22 (a) 
+
+> (b)
+
+Figure 16: Estimated atom-level prevalence of misuse, zoomed into the atoms contained within southern Ohio counties, after fitting the 8th (Figure a) and 23rd (Figure b) simulated data sets. 23 4 Additional Simulation Results 
+
+Figure 17: Boxplots of the empirical bias (left) and RMSE (right) for each location-time combination for the proposed MIA model estimates, the comparison estimates that down-scale proportionally to naloxone counts, and the comparison estimates that downscale proportionally to population size. Figure 17 contains boxplots of the empirical bias and root mean-squared error (RMSE) of the estimated OMP for our proposed MIA model and the two comparison models. The empirical bias is averaged over the 100 simulated data sets and computed as computed as bias ijt = 1100 
+
+∑100 
+
+> m=1
+
+( ˆNt(Aij )/P t(Aij ) − Nt(Aij )/P t(Aij )
+
+)
+
+, and the RMSE is given by RMSE ijt =
+
+√
+
+> 1100
+
+∑100 
+
+> m=1
+
+( ˆNt(Aij )/P t(Aij ) − Nt(Aij )/P t(Aij )
+
+)2
+
+. For the proposed model, the estimated atom-level counts are computed as the median of the posterior distribution, and the boxplots summarize these quantities across all locations and times. Note that outliers are portrayed as light gray dots, and the figure has been zoomed in such that not all outliers appear. 24 Figure 18: Plot of the empirical bias and RMSE versus the atom-level population. In general, we see the error decreases as the population increases. 25 5 Supplemental Application Results 
+
+## 5.1 County-Level Model Results 
+
+Figure 19: County-level estimated OMP for 2010 to 2023. 26 Figure 20: Standard deviation of county-level OMP for 2010 to 2023. 
+
+Figure 21: Estimated county-level rate of opioid overdose death among PWMO. 27 Figure 22: Standard deviation of the rate of opioid overdose death among PWMO. 
+
+Figure 23: Estimated county-level rate of opioid treatment admissions among PWMO. 28 Figure 24: Standard deviation of the rate of opioid treatment admissions among PWMO. Parameter Mean 95% CI Treatment Rate HPSA -0.02 (-0.08, 0.04) MU 0.04 (-0.03, 0.1) Death Rate Interstates 0.05 (-0.03, 0.13) HIDTA 0.02 (-0.06, 0.11) MSA 0.19 (0.1, 0.27) Misuse Prevalence Poverty 0.18 (0.13, 0.22) Unemployed 0.02 (-0.02, 0.07) High School Degree 0.13 (0.11, 0.17) Food Stamps 0.31 (0.27, 0.36) Prescribing Rate -0.05 (-0.08, -0.02) Table 2: Estimates and 95% credible intervals for the regression coefficients in the outcome-level models for the rates of treatment and death among those who misuse opioids, as well as the covariate effects of the county-level prevalence of misuse. 29 5.2 Sub-County Level Model Results 
+
+Figure 25: Estimated atom-level OMP. Parameter Mean CI Intercept -3.08 (-3.14, -3.03) Metropolitan 0.57 (0.5, 0.63) Micropolitan 0.01 (-0.03, 0.05) Table 3: Estimates and 95% credible intervals for the regression coefficients in the ZCTA-level model of the rate of naloxone administrations among people who misuse opioids. 30 Figure 26: Posterior standard deviation of atom-level OMP. Parameter Mean 95% CI Intercept -0.77 (-1.01, -0.49) Unemployment 0.98 (0.9, 1.06) College Degree -0.28 (-0.34, -0.22) Table 4: Estimates and 95% credible intervals for the regression coefficients in the atom-level model of prevalence of people who misuse opioids. 31 Figure 27: Log prevalence ratio of atom-level OMP relative to the county-level OMP. 32 5.3 State-Level Results 
+
+Figure 28: Estimated state-level OMP with the 95% credible interval shown as the shaded region. The NSDUH survey estimates are shown as points plotted at the midpoint of the time period of the survey. The error bars are 1.95 standard deviations above and below the estimate, using the standard deviations provided by NSDUH. 
+
+# References 
+
+Famoye, F. & Wang, W. (2004), ‘Censored generalized Poisson regression model’, Compu-tational Statistics and Data Analysis 46 (3), 547–560. Hughes, J. & Haran, M. (2013), ‘Dimension reduction and alleviation of confounding for spatial generalized linear mixed models’, Journal of the Royal Statistical Society Series B: Statistical Methodology 75 (1), 139–159. Stoner, O., Economou, T. & Drummond Marques da Silva, G. (2019), ‘A Hierarchical 33 Framework for Correcting Under-Reporting in Count Data’, Journal of the Ameri-can Statistical Association 114 (528), 1481–1492. Publisher: Taylor & Francis eprint: https://doi.org/10.1080/01621459.2019.1573732. 34
